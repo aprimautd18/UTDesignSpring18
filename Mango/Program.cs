@@ -1641,13 +1641,13 @@ namespace Mango
 
         static void Main(string[] args)
         {
-            var connectionString = "mongodb://localhost";
+            var connectionString = "mongodb://mongoUser:penguincity123@35.226.81.174";
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase("Demo2");
 
             //Check if it connect or not
             if (database.RunCommandAsync((Command<BsonDocument>)"{ping:1}")
-                    .Wait(1000))
+                    .Wait(5000))
             {
                 Console.WriteLine("Connected");
             }
