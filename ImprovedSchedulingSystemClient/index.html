@@ -9,13 +9,17 @@
   <title>My AngularJS App</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="app.css">
 
+  <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <!-- endbower -->
+  
+  <link rel="stylesheet" href="app.css">
+
+  <!-- bower:js -->
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-
-
+  <!-- endbower -->
 </head>
 <body>
   <ul class="menu">
@@ -34,21 +38,15 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-
-  <!--start PROD imports
-  <script src="lib/js/libraries.min.js"></script>
-  <script src="lib/js/app.min.js"></script>
-  end PROD imports-->
-
-  <!--start DEV imports-->
+  <!-- bower:js -->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <!-- endbower -->
   <script src="app.js"></script>
   <script src="view1/view1.js"></script>
   <script src="view2/view2.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
-  <!--end DEV imports-->
 </body>
 </html>

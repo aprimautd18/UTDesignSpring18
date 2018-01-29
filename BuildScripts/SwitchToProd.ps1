@@ -1,7 +1,3 @@
-$configFiles = Get-ChildItem ..\ImprovedSchedulingSystemApi\ *.config -rec
-foreach ($file in $configFiles)
-{
-    (Get-Content $file.PSPath) |
-    Foreach-Object { $_ -replace "Dev", "Demo" } |
-    Set-Content $file.PSPath
-}
+(Get-Content ..\ImprovedSchedulingSystemApi\ImprovedSchedulingSystemApi\wwwroot\index.html).replace('<!-- In production use:
+  <script src=\"//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js\"></script>
+  -->', '<script src=\"//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js\"></script>') | Set-Content ..\ImprovedSchedulingSystemClient\app\index.html
