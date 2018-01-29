@@ -55,5 +55,5 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-string-replace');
       grunt.loadNpmTasks('grunt-contrib-concat');
       grunt.loadNpmTasks('grunt-contrib-uglify');
-      grunt.registerTask('default', ['concat', 'string-replace', 'uglify']);
+      grunt.registerTask('default', ['string-replace']);
     };
