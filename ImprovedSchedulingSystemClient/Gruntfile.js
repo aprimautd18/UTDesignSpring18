@@ -1,8 +1,5 @@
 //Wrapper function with one parameter
 module.exports = function(grunt) {
-
-  var name = '-v';
-
     grunt.initConfig({
       'string-replace': {
         inline: {
@@ -32,31 +29,31 @@ module.exports = function(grunt) {
         }
     },
       uglify: {
-        options: {
-          sourceMapRoot: '../',
-          sourceMap: 'distrib/'+name+'.min.js.map',
-          sourceMapUrl: name+'.min.js.map'
+        build: {
+            files: [{
+                expand: true,
+                src: '*.js',
+                dest: 'app/lib/js',
+                cwd: 'build/lib/js/',
+            ext: '.min.js'
+            }]
+          },
         },
-        target : {
-          src : ['lib/js/*.js'],
-          dest : 'lib/js/' + name + '.min.js'
-        }
-      },
         concat: {
             libraries : {
               src : ['app/bower_components/**/*.js'],
-              dest : 'lib/js/libraries.js',
+              dest : 'build/lib/js/libraries.js',
             },
             app: {
                 src : ['app/**/*.js', '!app/bower_components/**/*.js'],
-                dest : 'lib/js/app.js',
+                dest : 'build/lib/js/app.js',
             }
-          }
         }
+        
       });
 
       grunt.loadNpmTasks('grunt-string-replace');
       grunt.loadNpmTasks('grunt-contrib-concat');
       grunt.loadNpmTasks('grunt-contrib-uglify');
-      grunt.registerTask('default', ['concat', 'uglify', 'string-replace']);
+      grunt.registerTask('default', ['concat', 'string-replace', 'uglify']);
     };
