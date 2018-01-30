@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         },
         concat: {
             libraries : {
-              src : ['app/bower_components/angular/angular.js', 'app/bower_components/angular-route/angular-route.js'],
+              src : ['app/bower_components/**/*.js'],
               dest : 'build/lib/js/libraries.js',
             },
             app: {
