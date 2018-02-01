@@ -41,9 +41,9 @@ namespace ImprovedSchedulingSystemApi
                 });
 
                 // Set the comments path for the Swagger JSON and UI
-                //var basepath = AppContext.BaseDirectory;
-                //var xmlPath = Path.Combine(basepath, "ImprovedSchedulingSystemApi.xml");
-                //c.IncludeXmlComments(xmlPath);
+                var basepath = AppContext.BaseDirectory;
+                var xmlPath = Path.Combine(basepath, "ImprovedSchedulingSystemApi.xml");
+                c.IncludeXmlComments(xmlPath);
 
             });
 

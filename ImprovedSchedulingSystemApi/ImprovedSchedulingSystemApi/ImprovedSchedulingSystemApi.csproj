@@ -5,15 +5,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\net461\wwwroot\ImprovedSchedulingSystemApi.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net461\ImprovedSchedulingSystemApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\net461\wwwroot\ImprovedSchedulingSystemApi.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net461\ImprovedSchedulingSystemApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+	<None Include="ImprovedSchedulingSystemApi.xml" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>
