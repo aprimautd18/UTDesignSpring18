@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
+using ImprovedSchedulingSystemApi.Models.CustomerApiDTO;
 
 namespace ImprovedSchedulingSystemApi.Controllers
 {
@@ -22,12 +23,17 @@ namespace ImprovedSchedulingSystemApi.Controllers
             testCustomerone.firstName = "Alex";
             testCustomerone.lastName = "Khun";
             testCustomerone.address = "123 street";
+            testCustomerone.apptTime = new apptTime();
+            testCustomerone.apptTime.startTime = new DateTime(2018,02,01,04,00,00);
+            testCustomerone.apptTime.endTime = new DateTime(2018, 02, 01, 05, 00, 00);
             Customer testCustomertwo = new Customer();
             testCustomertwo.Id = 2;
             testCustomertwo.firstName = "K";
             testCustomertwo.lastName = "Felten";
             testCustomertwo.address = "123 street";
-
+            testCustomertwo.apptTime = new apptTime();
+            testCustomertwo.apptTime.startTime = new DateTime(2018, 02, 01, 13, 00, 00);
+            testCustomertwo.apptTime.endTime = new DateTime(2018, 02, 01, 14, 00, 00);
             testCustomers.Add(testCustomerone);
             testCustomers.Add(testCustomertwo);
         }
