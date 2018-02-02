@@ -4,12 +4,12 @@ Appointment Project
 
 ### Mongo Db server Credentials:
 
-Address: 35.226.179.59
-Port: 27017
-Authntication: Username / Password
-Username: mongoUser
-Password: alexsplushpenguin123
-Authentication Database: admin
+Address: 35.226.179.59<br/>
+Port: 27017<br/>
+Authntication: Username / Password<br/>
+Username: mongoUser<br/>
+Password: alexsplushpenguin123<br/>
+Authentication Database: admin<br/>
 
 ### Server Links
 
