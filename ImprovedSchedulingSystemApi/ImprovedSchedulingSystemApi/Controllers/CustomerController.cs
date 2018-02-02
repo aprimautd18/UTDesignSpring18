@@ -21,7 +21,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
             Customer testCustomerone = new Customer();
             testCustomerone.Id = 1;
             testCustomerone.firstName = "Alex";
-            testCustomerone.lastName = "Khun";
+            testCustomerone.lastName = "Kuhn";
             testCustomerone.address = "123 street";
             testCustomerone.apptTime = new apptTime();
             testCustomerone.apptTime.startTime = new DateTime(2018,02,01,04,00,00);
