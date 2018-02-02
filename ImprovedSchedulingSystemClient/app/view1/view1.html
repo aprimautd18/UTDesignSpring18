@@ -25,13 +25,14 @@
                         <td>Appt Start Time</td>
                         <td>Appt End Time</td>
                     </tr>
+
                     <tr ng-repeat="x in data">
                         <td>{{ x.id}}</td>
                         <td>{{ x.firstName }}</td>
                         <td>{{ x.lastName }}</td>
                         <td>{{ x.address}}</td>
-                        <td>{{ x.apptTime.startTime}}</td>
-                        <td>{{ x.apptTime.endTime}}</td>
+                        <td>{{ x.apptTime.startTime | date:'medium'}}</td>
+                        <td>{{ x.apptTime.endTime | date:'medium'}}</td>
                     </tr>
                 </table>
             </div>
