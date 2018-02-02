@@ -1,1 +1,64 @@
-<p>This is the partial for view 1. Created dev branch</p>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="view1.css">
+<body>
+
+<div class="header">
+    <img class="aprimaLogo" src="https://www.softwareadvice.com/imglib/products/logos-hd/logo_1035_hd.png?v=5c5e443e059e50a99c9c30187c5babd9">
+    <div class="headerMessage">Schedule for the day:</div>
+</div>
+
+<div ng-app="demo" ng-controller="demoCtrl">
+    <div class="container apptWrapper">
+        <div class="">
+            <div class="dailyAppointments">
+                <div>
+                    {{data.firstName}}
+                </div>
+                <table>
+                    <tr>
+                        <td>ID</td>
+                        <td>First Name</td>
+                        <td>Last Name</td>
+                        <td>Address</td>
+                        <td>Appt Start Time</td>
+                        <td>Appt End Time</td>
+                    </tr>
+
+                    <tr ng-repeat="x in data">
+                        <td>{{ x.id}}</td>
+                        <td>{{ x.firstName }}</td>
+                        <td>{{ x.lastName }}</td>
+                        <td>{{ x.address}}</td>
+                        <td>{{ x.apptTime.startTime | date:'medium'}}</td>
+                        <td>{{ x.apptTime.endTime | date:'medium'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    var app = angular.module('demo', []);
+    app.controller('demoCtrl', function($scope,$http) {
+        $scope.firstname = "John";
+        $scope.lastname = "Doe";
+        //$scope.data = [{"id":1,"firstName":"Alex","lastName":"Khun","address":"123 street", "apptTime" : { "startTime" : "8:30am", "endTime" : "9:00am"}},
+        //    {"id":2,"firstName":"K","lastName":"Felten","address":"123 street", "apptTime" : { "startTime" : "8:30am", "endTime" : "9:00am"}}];
+
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer")
+            .then(function(response) {
+                console.log("im here bi");
+                console.log(response.data);
+                $scope.data = response.data;
+            });
+    });
+
+
+</script>
+
+
+</html>
