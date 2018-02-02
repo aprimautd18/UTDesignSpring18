@@ -1,7 +1,5 @@
 <html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="view1.css">
+<link rel="stylesheet" href="view1/view1.css">
 <body>
 
 <div class="header">
@@ -41,24 +39,5 @@
 </div>
 
 </body>
-<script>
-    var app = angular.module('demo', []);
-    app.controller('demoCtrl', function($scope,$http) {
-        $scope.firstname = "John";
-        $scope.lastname = "Doe";
-        //$scope.data = [{"id":1,"firstName":"Alex","lastName":"Khun","address":"123 street", "apptTime" : { "startTime" : "8:30am", "endTime" : "9:00am"}},
-        //    {"id":2,"firstName":"K","lastName":"Felten","address":"123 street", "apptTime" : { "startTime" : "8:30am", "endTime" : "9:00am"}}];
-
-        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer")
-            .then(function(response) {
-                console.log("im here bi");
-                console.log(response.data);
-                $scope.data = response.data;
-            });
-    });
-
-
-</script>
-
 
 </html>
