@@ -1,1 +1,43 @@
-<p>This is the partial for view 1.</p>
+<html>
+<link rel="stylesheet" href="view1/view1.css">
+<body>
+
+<div class="header">
+    <img class="aprimaLogo" src="https://www.softwareadvice.com/imglib/products/logos-hd/logo_1035_hd.png?v=5c5e443e059e50a99c9c30187c5babd9">
+    <div class="headerMessage">Schedule for the day:</div>
+</div>
+
+<div ng-app="demo" ng-controller="demoCtrl">
+    <div class="container apptWrapper">
+        <div class="">
+            <div class="dailyAppointments">
+                <div>
+                    {{data.firstName}}
+                </div>
+                <table>
+                    <tr>
+                        <td>ID</td>
+                        <td>First Name</td>
+                        <td>Last Name</td>
+                        <td>Address</td>
+                        <td>Appt Start Time</td>
+                        <td>Appt End Time</td>
+                    </tr>
+
+                    <tr ng-repeat="x in data">
+                        <td>{{ x.id}}</td>
+                        <td>{{ x.firstName }}</td>
+                        <td>{{ x.lastName }}</td>
+                        <td>{{ x.address}}</td>
+                        <td>{{ x.apptTime.startTime | date:'medium'}}</td>
+                        <td>{{ x.apptTime.endTime | date:'medium'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
