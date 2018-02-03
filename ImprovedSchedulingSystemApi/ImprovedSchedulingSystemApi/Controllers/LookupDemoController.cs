@@ -31,8 +31,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <param name="firstName">First Name of the patient</param>
         /// <param name="lastName">Last Name of the patient</param>
         /// <param name="calName">Name of the Calender</param>
-        /// <param name="startTime">Start Time</param>
-        /// <param name="endTime">End Time</param>
+        /// <param name="startTime">Start Time(should be able to pass in a datetime)</param>
+        /// <param name="endTime">End Time(should be able to pass in a datetime)</param>
         /// <returns>A response contatining a list of appointments that meet ALL of the search criteria(AND search)</returns>
         [Produces("application/json")]
         [HttpGet]
