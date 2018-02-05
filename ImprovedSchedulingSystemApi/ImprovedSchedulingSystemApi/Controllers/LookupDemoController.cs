@@ -60,6 +60,11 @@ namespace ImprovedSchedulingSystemApi.Controllers
             List<AppointmentDemoModel> data = db.search(MongoAccessor.APPOINTMENTCOLLECTION, lastName, firstName,
                 calName, starttimeDateTime, endtimeDateTime);
 
+            if (data.Count == 0)
+            {
+                return NotFound();
+            }
+
             return Ok(data);
         } 
 
