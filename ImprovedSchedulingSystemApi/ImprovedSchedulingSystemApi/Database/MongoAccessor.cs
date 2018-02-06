@@ -30,7 +30,7 @@ namespace ImprovedSchedulingSystemApi.Database
         {
             collection.InsertOne(model);
         }
-
+  
         public async void addManyRecords(List<AppointmentDemoModel> modelList, IMongoCollection<AppointmentDemoModel> collection)
         {
             await collection.InsertManyAsync(modelList); //This says don't return the data until this task is completed(But becuase their is no return, it doesn't matter)
@@ -53,7 +53,7 @@ namespace ImprovedSchedulingSystemApi.Database
 
             var builder = Builders<AppointmentDemoModel>.Filter; // Contructs a filter for the search.(Id normally use a lambda but in this case we need to incrumentally build the query)
             FilterDefinition<AppointmentDemoModel> filter = FilterDefinition<AppointmentDemoModel>.Empty; // Place to store the filter for the find query
-
+            
             if (last_name != null)
             {
                 filter = filter & builder.Eq(x => x.LastName, last_name);
@@ -70,6 +70,7 @@ namespace ImprovedSchedulingSystemApi.Database
             if (start_datetime != DateTime.MinValue)
             {
                 filter = filter & builder.Eq(x => x.StartDateTime, start_datetime);
+                
             }
             if (end_datetime != DateTime.MinValue)
             {

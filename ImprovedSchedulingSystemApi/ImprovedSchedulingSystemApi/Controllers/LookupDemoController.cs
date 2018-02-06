@@ -25,6 +25,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         }
 
 
+
         /// <summary>
         /// Searches for an appointment in the mongodb database(NOTE - THIS IS BEFORE WE REDISGNED THE DB AND FOR EXAMPLE PURPOSES ONLY)
         /// </summary>
