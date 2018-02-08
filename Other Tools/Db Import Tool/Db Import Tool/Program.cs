@@ -10,6 +10,8 @@ namespace Db_Import_Tool
     {
         static void Main(string[] args)
         {
+
+
         }
     }
 }
