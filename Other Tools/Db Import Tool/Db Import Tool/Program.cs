@@ -100,13 +100,13 @@ namespace Db_Import_Tool
                             System.Globalization.CultureInfo.InvariantCulture);
                         newAppointment.reason = seperatedValues[5];
 
-
+                     
                         foreach (var x in calendarsToInsert)
                         {
                             if (newAppointment.aptstartTime >= x.startTime && newAppointment.aptstartTime <= x.endTime && seperatedValues[2].Equals(x.calName))
                             {
                                 x.appointments.Add(newAppointment);
-                                continue;
+                               
                             }
                         }
 
@@ -116,9 +116,19 @@ namespace Db_Import_Tool
                             percent = percent + 0.5;
                             Console.WriteLine(percent + "% Generated...");
                         }
+
                     }
 
+                    List<CalendarModel> uploadOne = new List<CalendarModel>();
+                    List<CalendarModel> uploadTwo = new List<CalendarModel>();
 
+                    uploadOne = calendarsToInsert.GetRange(0, calendarsToInsert.Count / 2);
+                    uploadTwo = calendarsToInsert.GetRange(calendarsToInsert.Count / 2, calendarsToInsert.Count);
+
+                    Console.WriteLine("Inserting Calendar/Appointment Data Set 1 into DB");
+                    calendarDB.addManyRecords(uploadOne);
+                    Console.WriteLine("Inserting Calendar/Appointment Data Set 2 into DB");
+                    calendarDB.addManyRecords(uploadTwo);
                 }
 
                
@@ -126,8 +136,7 @@ namespace Db_Import_Tool
 
 
                
-                Console.WriteLine("Inserting Calendar/Appointment Data into DB...");
-                calendarDB.addManyRecords(calendarsToInsert);
+
 
             }
             catch (Exception e)
