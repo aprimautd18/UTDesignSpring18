@@ -10,6 +10,11 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 {
     public class CalendarModel
     {
+		public CalendarModel()
+        {
+            appointments = new List<AppointmentModel>();
+        }
+		
         [BsonId]
         public ObjectId id { get; set; }
 

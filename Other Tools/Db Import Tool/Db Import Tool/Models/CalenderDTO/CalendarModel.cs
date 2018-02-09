@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.WebEncoders.Testing;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -10,6 +9,12 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 {
     public class CalendarModel
     {
+
+        public CalendarModel()
+        {
+            appointments = new List<AppointmentModel>();
+        }
+
         [BsonId]
         public ObjectId id { get; set; }
 
