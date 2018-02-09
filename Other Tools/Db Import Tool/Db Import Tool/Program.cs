@@ -93,6 +93,7 @@ namespace Db_Import_Tool
                     {
                         String[] seperatedValues = line.Split('|');
                         AppointmentModel newAppointment = new AppointmentModel();
+                        newAppointment.id = ObjectId.GenerateNewId();
                         newAppointment.CustomerId = CustomersToInsert[lineNumber].id;
                         newAppointment.aptstartTime = DateTime.ParseExact(seperatedValues[3],
                             "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
@@ -106,7 +107,7 @@ namespace Db_Import_Tool
                             if (newAppointment.aptstartTime >= x.startTime && newAppointment.aptstartTime <= x.endTime && seperatedValues[2].Equals(x.calName))
                             {
                                 x.appointments.Add(newAppointment);
-                                calendarDB.addRecord(x);
+                                break;
                             }
                         }
 
@@ -118,7 +119,7 @@ namespace Db_Import_Tool
                         }
 
                     }
-                    /*
+                    
                     List<CalendarModel> uploadOne = new List<CalendarModel>();
                     List<CalendarModel> uploadTwo = new List<CalendarModel>();
 
@@ -130,7 +131,7 @@ namespace Db_Import_Tool
                     calendarDB.addManyRecords(uploadOne);
                     Console.WriteLine("Inserting Calendar/Appointment Data Set 2 into DB");
                     calendarDB.addManyRecords(calendarsToInsert);
-                    */
+                    
                 }
 
                

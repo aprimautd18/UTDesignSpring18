@@ -9,7 +9,7 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 {
     public class AppointmentModel
     {
-        [BsonId]
+        [BsonElement("appointmentID")]
         public ObjectId id { get; set; }
 
         [BsonElement("customerId")]
