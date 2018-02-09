@@ -53,6 +53,7 @@ app.controller('demoCtrl', function($scope,$http) {
             console.log("im here bi");
             //console.log(response.data);
             var appointments = changeDateTime(response.data);
+            console.log("Appointments" + appointments);
             $scope.data.todayAppointment = appointments;
             $scope.data.calendarData.push(addBlankAppts(appointments));
             fillTimeSlots($scope);
