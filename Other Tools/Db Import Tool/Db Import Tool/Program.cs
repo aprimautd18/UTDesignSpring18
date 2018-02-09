@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.Models.CustomerDTO;
+using MongoDB.Bson;
 
 namespace Db_Import_Tool
 {
@@ -52,11 +54,13 @@ namespace Db_Import_Tool
                     }
 
                 }
-                Console.WriteLine("Generating Customers and Inserting Appointments...");
+                Console.WriteLine("Generating Customers...");
+                List<CustomerModel> CustomersToInsert = new List<CustomerModel>();
                 using (StreamReader reader = new StreamReader(AppointmentDataFile))
                 {
                     String headerLine = reader.ReadLine();
                     String line;
+                    int phoneNumberGen = 1111111111;
                     while ((line = reader.ReadLine()) != null)
                     {
                         CustomerModel newCustomer = new CustomerModel();
@@ -64,8 +68,31 @@ namespace Db_Import_Tool
                         String[] seperatedValues = line.Split('|');
                         newCustomer.firstName = seperatedValues[1];
                         newCustomer.lastName = seperatedValues[0];
-                        customerDB.addRecord(newCustomer);
-                        newAppointment.CustomerId = newCustomer.id;
+                        newCustomer.phoneNumber = phoneNumberGen++.ToString();
+                        newCustomer.id = new ObjectId();
+                        CustomersToInsert.Add(newCustomer);
+
+
+                        
+                    }
+
+
+                }
+
+                Console.WriteLine("Writing Customer Data to DB...");
+                customerDB.addManyRecords(CustomersToInsert);
+
+                Console.WriteLine("Generating Appointments...");
+                using (StreamReader reader = new StreamReader(AppointmentDataFile))
+                {
+                    String headerLine = reader.ReadLine();
+                    String line;
+                    int lineNumber = 0;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        String[] seperatedValues = line.Split('|');
+                        AppointmentModel newAppointment = new AppointmentModel();
+                        newAppointment.CustomerId = CustomersToInsert[lineNumber].id;
                         newAppointment.aptstartTime = DateTime.ParseExact(seperatedValues[3],
                             "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                         newAppointment.aptendTime = DateTime.ParseExact(seperatedValues[4], "yyyy-MM-dd HH:mm:ss",
@@ -82,11 +109,19 @@ namespace Db_Import_Tool
                             }
                         }
 
-                        
+                        lineNumber++;
+
                     }
 
+
                 }
-                Console.WriteLine("Inserting Data into DB...");
+
+               
+
+
+
+               
+                Console.WriteLine("Inserting Calendar/Appointment Data into DB...");
                 calendarDB.addManyRecords(calendarsToInsert);
 
             }

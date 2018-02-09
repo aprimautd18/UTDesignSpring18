@@ -27,9 +27,9 @@ namespace ImprovedSchedulingSystemApi.Database
             collection.InsertOne(model);
         }
 
-        public async void addManyRecords(List<T> modelList)
+        public void addManyRecords(List<T> modelList)
         {
-            await collection.InsertManyAsync(modelList); //This says don't return the data until this task is completed(But becuase their is no return, it doesn't matter)
+            collection.InsertMany(modelList); //This says don't return the data until this task is completed(But becuase their is no return, it doesn't matter)
         }
 
         public List<T> returnAll()
