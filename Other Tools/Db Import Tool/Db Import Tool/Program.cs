@@ -114,7 +114,7 @@ namespace Db_Import_Tool
                         if (lineNumber % 5000 == 0)
                         {
                             percent = percent + 0.5;
-                            Console.WriteLine(percent + "Generated...");
+                            Console.WriteLine(percent + "% Generated...");
                         }
                     }
 
