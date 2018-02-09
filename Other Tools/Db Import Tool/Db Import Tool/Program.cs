@@ -106,7 +106,7 @@ namespace Db_Import_Tool
                             if (newAppointment.aptstartTime >= x.startTime && newAppointment.aptstartTime <= x.endTime && seperatedValues[2].Equals(x.calName))
                             {
                                 x.appointments.Add(newAppointment);
-                               
+                                calendarDB.addRecord(x);
                             }
                         }
 
@@ -114,21 +114,23 @@ namespace Db_Import_Tool
                         if (lineNumber % 5000 == 0)
                         {
                             percent = percent + 0.5;
-                            Console.WriteLine(percent + "% Generated...");
+                            Console.WriteLine(percent + "% Generated and saved to db...");
                         }
 
                     }
-
+                    /*
                     List<CalendarModel> uploadOne = new List<CalendarModel>();
                     List<CalendarModel> uploadTwo = new List<CalendarModel>();
 
                     uploadOne = calendarsToInsert.GetRange(0, calendarsToInsert.Count / 2);
-                    uploadTwo = calendarsToInsert.GetRange(calendarsToInsert.Count / 2, calendarsToInsert.Count);
+                    calendarsToInsert.RemoveRange(0, calendarsToInsert.Count / 2);
+
 
                     Console.WriteLine("Inserting Calendar/Appointment Data Set 1 into DB");
                     calendarDB.addManyRecords(uploadOne);
                     Console.WriteLine("Inserting Calendar/Appointment Data Set 2 into DB");
-                    calendarDB.addManyRecords(uploadTwo);
+                    calendarDB.addManyRecords(calendarsToInsert);
+                    */
                 }
 
                
