@@ -1,1 +1,46 @@
-<p>This is the partial for view 2.</p>
+<html>
+<link rel="stylesheet" href="view2/view2.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<body>
+
+<div class="header">
+    <div class="headerMessage">Calendar View:</div>
+</div>
+
+<div ng-app="demo" ng-controller="demoCtrl">
+    <div class="container calWrapper">
+        <div class="row">
+            <div class="appointments col-4">
+                <div>
+                    Your Appointments for the Day
+                </div>
+                <table>
+                    <tr>
+                        <td>First Name</td>
+                        <td>Last Name</td>
+                        <td>Calendar Name</td>
+                        <td>Appt Start Time</td>
+                        <td>Appt End Time</td>
+                        <td>Reason</td>
+                    </tr>
+
+                    <tr ng-repeat="x in data">
+                        <td>{{ x.firstName }}</td>
+                        <td>{{ x.lastName }}</td>
+                        <td>{{ x.calendarName }}</td>
+                        <td>{{ x.startDateTime | date:'medium'}}</td>
+                        <td>{{ x.endDateTime | date:'medium'}}</td>
+                        <td>{{ x.reason }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-8">
+                Moose
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
