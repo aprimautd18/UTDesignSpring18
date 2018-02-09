@@ -88,6 +88,7 @@ namespace Db_Import_Tool
                     String headerLine = reader.ReadLine();
                     String line;
                     int lineNumber = 0;
+                    double percent = 0.0;
                     while ((line = reader.ReadLine()) != null)
                     {
                         String[] seperatedValues = line.Split('|');
@@ -110,7 +111,11 @@ namespace Db_Import_Tool
                         }
 
                         lineNumber++;
-
+                        if (lineNumber % 5000 == 0)
+                        {
+                            percent = percent + 0.5;
+                            Console.WriteLine(percent + "Generated...");
+                        }
                     }
 
 
