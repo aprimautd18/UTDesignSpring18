@@ -10,8 +10,8 @@
 <div ng-app="demo" ng-controller="demoCtrl">
     <div class="container calWrapper">
         <div class="row">
-            <div class="appointments col-4">
-                <div>
+            <div class="appointmentsList col-4">
+                <div class="dailyAppointmentTitle">
                     Your Appointments for the Day
                 </div>
                 <table>
@@ -24,7 +24,7 @@
                         <td>Reason</td>
                     </tr>
 
-                    <tr ng-repeat="x in data">
+                    <tr ng-repeat="x in data.todayAppointment">
                         <td>{{ x.firstName }}</td>
                         <td>{{ x.lastName }}</td>
                         <td>{{ x.calendarName }}</td>
@@ -34,13 +34,43 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-8">
-                Moose
+            <div class="calendarContainer col-8">
+                <div class="calendarTitle">
+                    Weekly Calendar View
+                </div>
+                <div class="calenderHeaders">
+                    <table class="weekContainer">
+                        <tr>
+                            <td class="weekHeader">Monday</td>
+                            <td class="weekHeader">Tuesday</td>
+                            <td class="weekHeader">Wednesday</td>
+                            <td class="weekHeader">Thursday</td>
+                            <td class="weekHeader">Friday</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="calenderContents">
+                    <div class="calenderTimes">
+                        <div class="times" ng-repeat="timeSlot in data.calendarTimes">
+                            {{ timeSlot.time }}
+                        </div>
+                    </div>
+                    <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
+                        <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
+                            <div class="appointmentMessaging" >
+                                {{ a.lastName }}, {{ a.firstName }}
+                                <br>
+                                {{ a.startDateTime | date: 'medium' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 </body>
+
 
 </html>
