@@ -3,16 +3,13 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
 
-<div class="header">
-    <div class="headerMessage">Calendar View:</div>
-</div>
 
 <div ng-app="demo" ng-controller="demoCtrl">
     <div class="container calWrapper">
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    Your Appointments for the Day
+                    Your appointments for the Day: 2/25/2025
                 </div>
                 <table>
                     <tr>
@@ -28,8 +25,8 @@
                         <td>{{ x.firstName }}</td>
                         <td>{{ x.lastName }}</td>
                         <td>{{ x.calendarName }}</td>
-                        <td>{{ x.startDateTime | date:'medium'}}</td>
-                        <td>{{ x.endDateTime | date:'medium'}}</td>
+                        <td>{{ x.startDateTime | date:'shortTime'}}</td>
+                        <td>{{ x.endDateTime | date:'shortTime'}}</td>
                         <td>{{ x.reason }}</td>
                     </tr>
                 </table>
@@ -60,7 +57,7 @@
                             <div class="appointmentMessaging" >
                                 {{ a.lastName }}, {{ a.firstName }}
                                 <br>
-                                {{ a.startDateTime | date: 'medium' }}
+                                {{ a.startDateTime | date: 'shortTime' }}
                             </div>
                         </div>
                     </div>
