@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
@@ -115,22 +110,24 @@ namespace Db_Import_Tool
                         if (lineNumber % 5000 == 0)
                         {
                             percent = percent + 0.5;
-                            Console.WriteLine(percent + "% Generated and saved to db...");
+                            Console.WriteLine(percent + "% Generated...");
+
                         }
 
                     }
-                    
-                    List<CalendarModel> uploadOne = new List<CalendarModel>();
-                    List<CalendarModel> uploadTwo = new List<CalendarModel>();
 
-                    uploadOne = calendarsToInsert.GetRange(0, calendarsToInsert.Count / 2);
-                    calendarsToInsert.RemoveRange(0, calendarsToInsert.Count / 2);
+					percent = 0.0;
+                    for (int i = 0; i < calendarsToInsert.Count; i++)
+                    {
+                        
+                        calendarDB.addRecord(calendarsToInsert[i]);
+                        if (i % 7337 == 0)
+                        {
+                            percent = percent + 1;
+                            Console.WriteLine(percent + "% Generated...");
 
-
-                    Console.WriteLine("Inserting Calendar/Appointment Data Set 1 into DB");
-                    calendarDB.addManyRecords(uploadOne);
-                    Console.WriteLine("Inserting Calendar/Appointment Data Set 2 into DB");
-                    calendarDB.addManyRecords(calendarsToInsert);
+                        }
+                    }
                     
                 }
 
@@ -145,6 +142,7 @@ namespace Db_Import_Tool
             catch (Exception e)
             {
                 Console.WriteLine("The file could not be read:");
+
                 Console.WriteLine(e.Message);
             }
 

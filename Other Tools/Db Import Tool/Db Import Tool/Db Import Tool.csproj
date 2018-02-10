@@ -79,6 +79,7 @@
     <Compile Include="Database\ModelAccessors\CalendarAccessor.cs" />
     <Compile Include="Database\ModelAccessors\CustomerAccessor.cs" />
     <Compile Include="Database\MongoAbstract.cs" />
+    <Compile Include="Models\AppointmentDemoModel.cs" />
     <Compile Include="Models\CalenderDTO\AppointmentModel.cs" />
     <Compile Include="Models\CalenderDTO\CalendarModel.cs" />
     <Compile Include="Models\CustomerDTO\CustomerModel.cs" />
