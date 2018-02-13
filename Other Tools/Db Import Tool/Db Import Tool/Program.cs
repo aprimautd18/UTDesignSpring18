@@ -60,7 +60,7 @@ namespace Db_Import_Tool
                     {
                         CustomerModel newCustomer = new CustomerModel();
                         AppointmentModel newAppointment = new AppointmentModel();
-                        String[] seperatedValues = line.Split('|');
+                        String[] seperatedValues = line.Split(',');
                         newCustomer.firstName = seperatedValues[1];
                         newCustomer.lastName = seperatedValues[0];
                         newCustomer.phoneNumber = phoneNumberGen++.ToString();
@@ -86,7 +86,7 @@ namespace Db_Import_Tool
                     double percent = 0.0;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        String[] seperatedValues = line.Split('|');
+                        String[] seperatedValues = line.Split(',');
                         AppointmentModel newAppointment = new AppointmentModel();
                         newAppointment.id = ObjectId.GenerateNewId();
                         newAppointment.CustomerId = CustomersToInsert[lineNumber].id;
@@ -107,7 +107,7 @@ namespace Db_Import_Tool
                         }
 
                         lineNumber++;
-                        if (lineNumber % 5000 == 0)
+                        if (lineNumber % 2198 == 0)
                         {
                             percent = percent + 0.5;
                             Console.WriteLine(percent + "% Generated...");
@@ -124,7 +124,7 @@ namespace Db_Import_Tool
                         if (i % 7337 == 0)
                         {
                             percent = percent + 1;
-                            Console.WriteLine(percent + "% Generated...");
+                            Console.WriteLine(percent + "% Uploaded to DB...");
 
                         }
                     }
