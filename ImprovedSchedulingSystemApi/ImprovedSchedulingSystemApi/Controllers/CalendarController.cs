@@ -19,8 +19,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
     
         [Produces("application/json")]
-        [Route("api/Calendar/dateLookup")]
-        [HttpGet]
+        [HttpGet("dateLookup")]
         public IActionResult dateLookup( [FromQuery] string calName, [FromQuery] string startTime, [FromQuery] int range)
         {
 
@@ -45,12 +44,11 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
             //list to store the returned values
             List<CalendarModel> data = new List<CalendarModel>();
-            data.Add( db.dateLookup(calName, starttimeDateTime));
 
             //in the case of large range 
-            for (int i = 1; i < range; i++)
+            for (int i = 0; i < range; i++)
             {
-               data.Add ( db.dateLookup(calName, starttimeDateTime.AddDays(1)));
+               data.Add ( db.dateLookup(calName, starttimeDateTime.AddDays(i)));
                
             }
 
