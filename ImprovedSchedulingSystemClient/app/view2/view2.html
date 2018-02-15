@@ -9,12 +9,11 @@
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    Your appointments for the Day: 2/25/2025
+                    <input type="date" onclick="dateSelector()" value="2023-10-09">
                 </div>
                 <table>
                     <tr>
-                        <td>First Name</td>
-                        <td>Last Name</td>
+                        <td>Customer ID</td>
                         <td>Calendar Name</td>
                         <td>Appt Start Time</td>
                         <td>Appt End Time</td>
@@ -22,11 +21,10 @@
                     </tr>
 
                     <tr ng-repeat="x in data.todayAppointment">
-                        <td>{{ x.firstName }}</td>
-                        <td>{{ x.lastName }}</td>
-                        <td>{{ x.calendarName }}</td>
-                        <td>{{ x.startDateTime | date:'shortTime'}}</td>
-                        <td>{{ x.endDateTime | date:'shortTime'}}</td>
+                        <td>{{ x.customerId }}</td>
+                        <td>{{ x.calName }}</td>
+                        <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                        <td>{{ x.aptendTime | date:'shortTime'}}</td>
                         <td>{{ x.reason }}</td>
                     </tr>
                 </table>
@@ -55,9 +53,9 @@
                     <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
                         <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
                             <div class="appointmentMessaging" >
-                                {{ a.lastName }}, {{ a.firstName }}
+                                 {{ a.customerId }}
                                 <br>
-                                {{ a.startDateTime | date: 'shortTime' }} -  {{ a.endDateTime | date: 'shortTime' }}
+                                {{ a.aptstartTime | date: 'shortTime' }} -  {{ a.aptendTime | date: 'shortTime' }}
                             </div>
                         </div>
                     </div>
