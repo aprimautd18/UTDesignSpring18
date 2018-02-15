@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       'string-replace': {
         inline: {
             files: {
-                'app/**/*.js': 'app/**/*.js'
+                'app/**': 'app/**'
             },
             options: {
                 replacements: [
