@@ -26,7 +26,7 @@ namespace ImprovedSchedulingSystemApi.ViewModels.dateLookup
         public DateTime aptendTime { get; set; }
 
     
-        public string reason { get; set; }
+       // public string reason { get; set; }
 
         public int status { get; set; }
 
