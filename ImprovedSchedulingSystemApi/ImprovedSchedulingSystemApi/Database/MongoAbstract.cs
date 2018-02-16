@@ -39,7 +39,5 @@ namespace ImprovedSchedulingSystemApi.Database
             return list;
         }
 
- 
-
     }
 }
