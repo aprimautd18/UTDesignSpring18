@@ -13,15 +13,23 @@ namespace ImprovedSchedulingSystemApi.ViewModels.dateLookup
         public dateLookup_CalendarViewModel(CalendarModel calendar)
         {
             CustomerAccessor db = new CustomerAccessor();
-            id = calendar.id;
-            calName = calendar.calName;
-            startTime = calendar.startTime;
-            endTime = calendar.endTime;
             appointments = new List<dateLookup_AppointmentViewModel>();
-            foreach (var x in calendar.appointments)
+            if (calendar == null)
             {
-                appointments.Add(new dateLookup_AppointmentViewModel(x, db.searchByCustomerId(x.CustomerId)));
+
             }
+            else
+            {
+                id = calendar.id;
+                calName = calendar.calName;
+                startTime = calendar.startTime;
+                endTime = calendar.endTime;
+                foreach (var x in calendar.appointments)
+                {
+                    appointments.Add(new dateLookup_AppointmentViewModel(x, db.searchByCustomerId(x.CustomerId)));
+                }
+            }
+           
 
         }
 

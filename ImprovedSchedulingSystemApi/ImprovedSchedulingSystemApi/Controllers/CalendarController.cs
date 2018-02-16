@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace ImprovedSchedulingSystemApi.Controllers
 {
@@ -43,12 +45,17 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             //list to store the returned values
-            List<CalendarModel> data = new List<CalendarModel>();
+            List<dateLookup_CalendarViewModel> data = new List<dateLookup_CalendarViewModel>();
 
             //in the case of large range 
             for (int i = 0; i < range; i++)
             {
-               data.Add ( db.dateLookup(calName, starttimeDateTime.AddDays(i)));
+                CalendarModel test = db.dateLookup(calName, starttimeDateTime.AddDays(i));
+                if (test != null)
+                {
+                    data.Add(new dateLookup_CalendarViewModel(test));
+                }
+            
                
             }
 
