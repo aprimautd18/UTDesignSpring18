@@ -7,6 +7,12 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 {
+
+    public enum StatusCodes
+    {
+        CheckedIn=1, Scheduled=2, Canceled=3, Discharged=4, InProcess=5
+    }
+
     public class AppointmentModel
     {
         [BsonElement("appointmentID")]
@@ -25,7 +31,7 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
         public string reason { get; set; }
         
         [BsonElement("status")]
-        public int status { get; set; }
+        public StatusCodes status { get; set; }
 
     }
 }
