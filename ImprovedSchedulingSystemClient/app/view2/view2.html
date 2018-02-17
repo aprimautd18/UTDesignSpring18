@@ -9,20 +9,20 @@
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    <input type="date" onclick="dateSelector()" value="2023-10-09">
+                    <input type="date" value="{{ selectedDate }}" ng-controller="dateController">
                 </div>
                 <table>
                     <tr>
-                        <td>Customer ID</td>
-                        <td>Calendar Name</td>
+                        <td>First Name</td>
+                        <td>Last Name</td>
                         <td>Appt Start Time</td>
                         <td>Appt End Time</td>
-                        <td>Reason</td>
+                        <td>Status</td>
                     </tr>
 
                     <tr ng-repeat="x in data.todayAppointment">
-                        <td>{{ x.customerId }}</td>
-                        <td>{{ x.calName }}</td>
+                        <td>{{ x.customer.firstName }}</td>
+                        <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
                         <td>{{ x.aptendTime | date:'shortTime'}}</td>
                         <td>{{ x.reason }}</td>
@@ -53,7 +53,7 @@
                     <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
                         <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
                             <div class="appointmentMessaging" >
-                                 {{ a.customerId }}
+                                 {{ a.customer.lastName }} , {{ a.customer.firstName }}
                                 <br>
                                 {{ a.aptstartTime | date: 'shortTime' }} -  {{ a.aptendTime | date: 'shortTime' }}
                             </div>
