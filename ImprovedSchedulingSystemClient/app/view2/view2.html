@@ -11,6 +11,8 @@
                 <div class="dailyAppointmentTitle">
                     <input type="date" value="{{ selectedDate }}" ng-controller="dateController">
                 </div>
+                <div ng-init="statusCodes = ['Checked In', 'Scheduled', 'Canceled', 'Discharged', 'In Process']">
+                </div>
                 <table>
                     <tr>
                         <td>First Name</td>
@@ -25,7 +27,7 @@
                         <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
                         <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                        <td>{{ x.reason }}</td>
+                        <td>{{ statusCodes[x.status] }}</td>
                     </tr>
                 </table>
             </div>
