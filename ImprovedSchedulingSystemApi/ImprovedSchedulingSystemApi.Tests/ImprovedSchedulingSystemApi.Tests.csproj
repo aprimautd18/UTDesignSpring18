@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{00AD7ABA-19BE-4ED6-9555-F47C7ADEB137}</ProjectGuid>
+    <ProjectGuid>{7CE6E6AA-E6E9-4B0D-9A24-396012BFD164}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImprovedSchedulingSystemApi.Tests</RootNamespace>
@@ -48,14 +48,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller.Test\UnitTest1.cs" />
+    <Compile Include="Database.Test\CalendarAccessor_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database.Test\" />
+    <ProjectReference Include="..\ImprovedSchedulingSystemApi\ImprovedSchedulingSystemApi.csproj">
+      <Project>{e2d2540d-eb53-4c6c-ba4e-1baaab9799f1}</Project>
+      <Name>ImprovedSchedulingSystemApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,14 +1,16 @@
 ﻿using System;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ImprovedSchedulingSystemApi.Tests.Controller.Test
+namespace ImprovedSchedulingSystemApi.Tests.Database.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class CalendarAccessor_Test
     {
         [TestMethod]
         public void TestMethod1()
         {
+
         }
     }
 }
