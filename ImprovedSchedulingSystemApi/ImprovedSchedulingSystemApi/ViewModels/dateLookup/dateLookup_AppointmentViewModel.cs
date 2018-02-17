@@ -17,6 +17,7 @@ namespace ImprovedSchedulingSystemApi.ViewModels.dateLookup
             customer = new dateLookup_CustomerViewModel(customerData);
             aptstartTime = appointment.aptstartTime;
             aptendTime = appointment.aptendTime;
+            status = appointment.status;
         }
 
         public ObjectId id { get; set; }
@@ -24,8 +25,10 @@ namespace ImprovedSchedulingSystemApi.ViewModels.dateLookup
         public DateTime aptstartTime { get; set; }
         public DateTime aptendTime { get; set; }
 
-        //Might not need this data, will ask.
-        //public string reason { get; set; }
+    
+       // public string reason { get; set; }
+
+        public int status { get; set; }
 
     }
 }

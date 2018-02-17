@@ -23,6 +23,9 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 
         [BsonElement("reason")]
         public string reason { get; set; }
+        
+        [BsonElement("status")]
+        public int status { get; set; }
 
     }
 }
