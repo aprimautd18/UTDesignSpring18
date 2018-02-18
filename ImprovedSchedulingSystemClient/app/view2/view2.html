@@ -9,7 +9,7 @@
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    <input type="date" value="{{ selectedDate }}" ng-controller="dateController">
+                    <input type="date" ng-controller="dateController" ng-model="selectedDate">
                 </div>
                 <div ng-init="statusCodes = ['Checked In', 'Scheduled', 'Canceled', 'Discharged', 'In Process']">
                 </div>

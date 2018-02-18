@@ -41,7 +41,9 @@ app.controller('demoCtrl', function($scope,$http) {
 
 });
 app.controller('dateController', function($scope) {
-    $scope.selectedDate = "2018-02-16";
+    var todayDate = new Date();
+    $scope.selectedDate = todayDate;
+
 
 });
 
