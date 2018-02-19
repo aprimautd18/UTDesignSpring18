@@ -10,7 +10,7 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 
     public enum StatusCodes
     {
-        CheckedIn=1, Scheduled=2, Canceled=3, Discharged=4, InProcess=5
+        Scheduled = 0, CheckedIn = 1, InProcess = 2, Discharged = 4, Canceled = 5
     }
 
     public class AppointmentModel
