@@ -3,97 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
 using ImprovedSchedulingSystemApi.Models.CustomerApiDTO;
+using ImprovedSchedulingSystemApi.Models.CustomerDTO;
 
 namespace ImprovedSchedulingSystemApi.Controllers
 {
 
-    [Route("api/[controller]")]
+
+    [Route("api/Customer")]
     public class CustomerController : Controller
     {
 
-        private List<Customer> testCustomers = new List<Customer>();
+        CustomerAccessor db = new CustomerAccessor();
 
-        public CustomerController()
-        {
-            Customer testCustomerone = new Customer();
-            testCustomerone.Id = 1;
-            testCustomerone.firstName = "Alex";
-            testCustomerone.lastName = "Kuhn";
-            testCustomerone.address = "123 Street";
-            testCustomerone.apptTime = new apptTime();
-            testCustomerone.apptTime.startTime = new DateTime(2018,02,01,04,00,00);
-            testCustomerone.apptTime.endTime = new DateTime(2018, 02, 01, 05, 00, 00);
-            Customer testCustomertwo = new Customer();
-            testCustomertwo.Id = 2;
-            testCustomertwo.firstName = "K";
-            testCustomertwo.lastName = "Felten";
-            testCustomertwo.address = "123 Street";
-            testCustomertwo.apptTime = new apptTime();
-            testCustomertwo.apptTime.startTime = new DateTime(2018, 02, 01, 13, 00, 00);
-            testCustomertwo.apptTime.endTime = new DateTime(2018, 02, 01, 14, 00, 00);
-            Customer testCustomerthree = new Customer();
-            testCustomerthree.Id = 3;
-            testCustomerthree.firstName = "Mario";
-            testCustomerthree.lastName = "Peach";
-            testCustomerthree.address = "324 Burbon Street";
-            testCustomerthree.apptTime = new apptTime();
-            testCustomerthree.apptTime.startTime = new DateTime(2018, 02, 01, 22, 00, 00);
-            testCustomerthree.apptTime.endTime = new DateTime(2018, 02, 01, 23, 30, 00);
-            Customer testCustomerfour = new Customer();
-            testCustomerfour.Id = 4;
-            testCustomerfour.firstName = "Pit";
-            testCustomerfour.lastName = "Arm";
-            testCustomerfour.address = "4400 Shoulder Alley";
-            testCustomerfour.apptTime = new apptTime();
-            testCustomerfour.apptTime.startTime = new DateTime(2018, 02, 28, 08, 00, 00);
-            testCustomerfour.apptTime.endTime = new DateTime(2018, 02, 28, 09, 00, 00);
-            Customer testCustomerfive = new Customer();
-            testCustomerfive.Id = 5;
-            testCustomerfive.firstName = "Sigh";
-            testCustomerfive.lastName = "Tigress";
-            testCustomerfive.address = "2600 Neer Drive";
-            testCustomerfive.apptTime = new apptTime();
-            testCustomerfive.apptTime.startTime = new DateTime(2018, 03, 26, 14, 00, 00);
-            testCustomerfive.apptTime.endTime = new DateTime(2018, 03, 26, 15, 00, 00);
-            testCustomers.Add(testCustomerone);
-            testCustomers.Add(testCustomertwo);
-            testCustomers.Add(testCustomerthree);
-            testCustomers.Add(testCustomerfour);
-            testCustomers.Add(testCustomerfive);
-
-        }
 
         /// <summary>
-        /// Retreives all of the Customer objects
+        /// Search for a list of customers by their details
         /// </summary>
-        /// <returns></returns>
-        [HttpGet]
+        /// <param name="firstName">First name of the customer</param>
+        /// <param name="lastName">Last name of the customer</param>
+        /// <param name="phoneNumber">Phone Number of the customer</param>
+        /// <returns>A list of customer making the search parameters</returns>
         [Produces("application/json")]
-        public IEnumerable<Customer> GetAll()
+        [HttpGet("customerLookup")]
+        public IActionResult customerLookup([FromQuery]string firstName, [FromQuery]string lastName, [FromQuery]string phoneNumber)
         {
-            return testCustomers.ToList();
-        }
-
-        /// <summary>
-        /// Retrieves a specific object
-        /// </summary>
-        /// <param name="id">Id of the customer to retrieve</param>
-        /// <returns></returns>
-        [HttpGet("{id}", Name = "GetCustomer")]
-        [Produces("application/json")]
-        public IActionResult GetById(long id)
-        {
-            var customer = testCustomers.FirstOrDefault(t => t.Id == id);
-            if (customer == null)
+            if (firstName == null && lastName == null && phoneNumber == null)
+            {
+                return BadRequest();
+            }
+            List<CustomerModel> data = db.searchByCustomerDetails(firstName, lastName, phoneNumber);
+            if (data.Count == 0)
             {
                 return NotFound();
             }
-            return new ObjectResult(customer);
+            return Ok(data);
         }
 
+        /*
         /// <summary>
         /// Adds a new customer object(becuase their is no databse yet it will not save)
         /// </summary>
@@ -110,6 +60,6 @@ namespace ImprovedSchedulingSystemApi.Controllers
             testCustomers.Add(customer);
             return CreatedAtRoute("GetCustomer", new {id = customer.Id}, customer);
         }
-
+        */
     }
 }
