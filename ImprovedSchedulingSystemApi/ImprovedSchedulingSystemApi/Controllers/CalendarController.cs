@@ -28,7 +28,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("dateLookup")]
-        public IActionResult dateLookup( [FromQuery] string calName, [FromQuery] string startTime, [FromQuery] int range)
+        public IActionResult dateLookup( [FromQuery] string calName, [FromQuery] string startTime, [FromQuery] int range = 1)
         {
 
 
