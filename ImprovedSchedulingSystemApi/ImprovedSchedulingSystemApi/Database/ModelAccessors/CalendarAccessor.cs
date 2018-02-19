@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ImprovedSchedulingSystemApi.Database
@@ -32,6 +33,12 @@ namespace ImprovedSchedulingSystemApi.Database
             List<CalendarModel> returnedItems = collection.Find(filter).ToList();
             return returnedItems.FirstOrDefault();
 
+
+        }
+
+        public List<AppointmentModel> appointmentLookupById(ObjectId id)
+        {
+            return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.CustomerId == id).ToList();
 
         }
 

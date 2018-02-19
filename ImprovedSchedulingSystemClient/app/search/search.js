@@ -12,6 +12,7 @@ angular.module('myApp.search', ['ngRoute'])
 
 }]);
 
+
 var app = angular.module('search', []);
 app.controller('searchCtrl', function($scope,$http) {
     $scope.input = "searchHere";
@@ -33,3 +34,4 @@ app.controller('searchCtrl', function($scope,$http) {
 
     }
 });
+
