@@ -9,9 +9,9 @@
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    <input type="date" ng-controller="dateController" ng-model="selectedDate">
+                    <input type="date" ng-controller="dateController" ng-model="selectedDate" ng-change="updateDate()">
                 </div>
-                <div ng-init="statusCodes = ['Checked In', 'Scheduled', 'Canceled', 'Discharged', 'In Process']">
+                <div ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
                 </div>
                 <table>
                     <tr>
