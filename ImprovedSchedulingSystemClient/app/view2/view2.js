@@ -40,11 +40,31 @@ app.controller('demoCtrl', function($scope,$http) {
         });
 
 });
-app.controller('dateController', function($scope) {
+app.controller('dateController', function($scope, $http) {
     var todayDate = new Date();
     $scope.selectedDate = todayDate;
-
-
+    $scope.updateDate = function() {
+        console.log("ive been changed my guys");
+        var selectedDate = new Date($scope.selectedDate);
+        selectedDate = selectedDate.toISOString();
+        //selectedDate.set
+        console.log(selectedDate);
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=" + selectedDate + "&range=5")
+            .then(function (response) {
+                console.log("im fancy and new");
+                //console.log(response.data);
+                var appointments = (response.data);
+                console.log("Appointments" + appointments);
+                $scope.data.todayAppointment = appointments[0].appointments;
+                $scope.data.calendarData = [];
+                for (var daily in appointments) {
+                    $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
+                }
+                console.log("Data?");
+                console.log($scope);
+                fillTimeSlots($scope);
+            });
+    }
 });
 
 function fillTimeSlots($scope) {

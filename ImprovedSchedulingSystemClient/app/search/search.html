@@ -1,22 +1,37 @@
 <html>
+
+<link rel="stylesheet" href="search/search.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
-<div ng-init="friends = [{name:'John', phone:'555-1276'},
-                         {name:'Mary', phone:'800-BIG-MARY'},
-                         {name:'Mike', phone:'555-4321'},
-                         {name:'Adam', phone:'555-5678'},
-                         {name:'Julie', phone:'555-8765'},
-                         {name:'Juliette', phone:'555-5678'}]"></div>
-<hr>
-<label>Any: <input ng-model="search.$"></label> <br>
-<label>Name only <input ng-model="search.name"></label><br>
-<label>Phone only <input ng-model="search.phone"></label><br>
-<label>Equality <input type="checkbox" ng-model="strict"></label><br>
-<table id="searchObjResults">
-    <tr><th>Name</th><th>Phone</th></tr>
-    <tr ng-repeat="friendObj in friends | filter:search:strict">
-        <td>{{friendObj.name}}</td>
-        <td>{{friendObj.phone}}</td>
-    </tr>
-</table>
+<div ng-app="search" ng-controller="searchCtrl">
+    <div class="container">
+        <div class="searchContainer">
+            <form ng-submit="searchEngine()">
+                <input type="text" ng-model="searchText">
+            </form>
+        </div>
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Appt Start Time</td>
+                <td>Appt End Time</td>
+                <td>Status</td>
+            </tr>
+
+            <tr ng-repeat="x in searchResults">
+                <td>{{ x.customer.firstName }}</td>
+                <td>{{ x.customer.lastName }}</td>
+                <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                <td>{{ statusCodes[x.status] }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 </body>
+
+
 </html>
+
