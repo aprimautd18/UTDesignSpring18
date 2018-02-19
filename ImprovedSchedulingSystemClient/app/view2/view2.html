@@ -1,1 +1,73 @@
-<p>This is the partial for view 2.</p>
+<html>
+<link rel="stylesheet" href="view2/view2.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<body>
+
+
+<div ng-app="demo" ng-controller="demoCtrl">
+    <div class="container calWrapper">
+        <div class="row">
+            <div class="appointmentsList col-4">
+                <div class="dailyAppointmentTitle">
+                    <input type="date" ng-controller="dateController" ng-model="selectedDate">
+                </div>
+                <div ng-init="statusCodes = ['Checked In', 'Scheduled', 'Canceled', 'Discharged', 'In Process']">
+                </div>
+                <table>
+                    <tr>
+                        <td>First Name</td>
+                        <td>Last Name</td>
+                        <td>Appt Start Time</td>
+                        <td>Appt End Time</td>
+                        <td>Status</td>
+                    </tr>
+
+                    <tr ng-repeat="x in data.todayAppointment">
+                        <td>{{ x.customer.firstName }}</td>
+                        <td>{{ x.customer.lastName }}</td>
+                        <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                        <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                        <td>{{ statusCodes[x.status] }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="calendarContainer col-8">
+                <div class="calendarTitle">
+                    Weekly Calendar View
+                </div>
+                <div class="calenderHeaders">
+                    <table class="weekContainer">
+                        <tr>
+                            <td class="weekHeader">Monday</td>
+                            <td class="weekHeader">Tuesday</td>
+                            <td class="weekHeader">Wednesday</td>
+                            <td class="weekHeader">Thursday</td>
+                            <td class="weekHeader">Friday</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="calenderContents">
+                    <div class="calenderTimes">
+                        <div class="times" ng-repeat="timeSlot in data.calendarTimes">
+                            {{ timeSlot.time }}
+                        </div>
+                    </div>
+                    <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
+                        <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
+                            <div class="appointmentMessaging" >
+                                 {{ a.customer.lastName }} , {{ a.customer.firstName }}
+                                <br>
+                                {{ a.aptstartTime | date: 'shortTime' }} -  {{ a.aptendTime | date: 'shortTime' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+</html>

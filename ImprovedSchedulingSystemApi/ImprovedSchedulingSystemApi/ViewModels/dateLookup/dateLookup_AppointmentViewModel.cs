@@ -28,7 +28,7 @@ namespace ImprovedSchedulingSystemApi.ViewModels.dateLookup
     
        // public string reason { get; set; }
 
-        public int status { get; set; }
+        public StatusCodes status { get; set; }
 
     }
 }
