@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
 using ImprovedSchedulingSystemApi.Models.CustomerApiDTO;
 using ImprovedSchedulingSystemApi.Models.CustomerDTO;
+using MongoDB.Bson;
 
 namespace ImprovedSchedulingSystemApi.Controllers
 {
@@ -37,6 +38,30 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
             List<CustomerModel> data = db.searchByCustomerDetails(firstName, lastName, phoneNumber);
             if (data.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(data);
+        }
+
+        /// <summary>
+        /// Lookup a customer by their specific customer id
+        /// </summary>
+        /// <param name="_id">The customers ObjectiD</param>
+        /// <returns>A single customer model element containing all of the details fo the customer</returns>
+        [Produces("application/json")]
+        [HttpGet("customerLookup")]
+        public IActionResult customerLookupById([FromQuery]string _id)
+        {
+            ObjectId objectIdStorage = ObjectId.Parse(_id);
+            if (objectIdStorage == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+
+            
+            CustomerModel data = db.searchByCustomerId(objectIdStorage);
+            if (data == null)
             {
                 return NotFound();
             }
