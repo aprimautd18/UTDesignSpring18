@@ -21,7 +21,8 @@ app.controller('demoCtrl', function($scope,$http) {
     $scope.data.calendarTimes = [];
     $scope.data.todayAppointment = [];
     $scope.data.calendarData = [];
-   
+
+
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2023-10-09%2000%3A00%3A00&range=5")
         .then(function(response) {
             console.log("im here bi");
@@ -34,9 +35,16 @@ app.controller('demoCtrl', function($scope,$http) {
                 $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
             }
             console.log("Data?");
-            console.log($scope.data.calendarData);
+            console.log($scope);
             fillTimeSlots($scope);
         });
+
+});
+app.controller('dateController', function($scope) {
+    var todayDate = new Date();
+    $scope.selectedDate = todayDate;
+
+
 });
 
 function fillTimeSlots($scope) {
@@ -122,6 +130,12 @@ function addBlankAppts (input) {
     return output;
 }
 
-function dateSelector() {
-
+function updateList($http,$scope) {
+    // var currDate = new Date($scope.selectedDate);
+    // $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=" + currDate +"&range=1")
+    //     .then(function(response, $scope) {
+    //         console.log("Update List");
+    //         $scope.data.todayAppointment = response.data;
+    //     });
+    console.log("The list should be updated now");
 }
