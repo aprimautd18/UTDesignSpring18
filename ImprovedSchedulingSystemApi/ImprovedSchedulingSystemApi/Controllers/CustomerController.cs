@@ -50,7 +50,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <param name="_id">The customers ObjectiD</param>
         /// <returns>A single customer model element containing all of the details fo the customer</returns>
         [Produces("application/json")]
-        [HttpGet("customerLookup")]
+        [HttpGet("customerLookupByID")]
         public IActionResult customerLookupById([FromQuery]string _id)
         {
             ObjectId objectIdStorage = ObjectId.Parse(_id);
@@ -68,13 +68,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok(data);
         }
 
-        /*
-        /// <summary>
-        /// Adds a new customer object(becuase their is no databse yet it will not save)
-        /// </summary>
-        /// <param name="customer">Customer to save</param>
-        /// <returns>A newly-created customer</returns>
-        [HttpPost]
+/*
         public IActionResult AddCustomer([FromBody]Customer customer)
         {
             if (customer == null)
