@@ -150,12 +150,3 @@ function addBlankAppts (input) {
     return output;
 }
 
-function updateList($http,$scope) {
-    // var currDate = new Date($scope.selectedDate);
-    // $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=" + currDate +"&range=1")
-    //     .then(function(response, $scope) {
-    //         console.log("Update List");
-    //         $scope.data.todayAppointment = response.data;
-    //     });
-    console.log("The list should be updated now");
-}
