@@ -26,18 +26,6 @@ namespace ImprovedSchedulingSystemApi.Controllers
         }
 
 
-
-        /// <summary>
-        /// Searches for an appointment in the mongodb database(NOTE - THIS IS BEFORE WE REDISGNED THE DB AND FOR EXAMPLE PURPOSES ONLY)
-        /// </summary>
-        /// <param name="firstName">First Name of the patient</param>
-        /// <param name="lastName">Last Name of the patient</param>
-        /// <param name="calName">Name of the Calender</param>
-        /// <param name="startTime">Start Time(should be able to pass in a datetime)</param>
-        /// <param name="endTime">End Time(should be able to pass in a datetime)</param>
-        /// <returns>A response contatining a list of appointments that meet ALL of the search criteria(AND search)</returns>
-        [Produces("application/json")]
-        [HttpGet]
         public IActionResult search([FromQuery] string firstName,[FromQuery] string lastName, [FromQuery] string calName, [FromQuery] string startTime, [FromQuery] string endTime)
         {
 
