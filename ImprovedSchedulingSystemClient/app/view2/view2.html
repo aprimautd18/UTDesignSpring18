@@ -9,25 +9,25 @@
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    Your appointments for the Day: 2/25/2025
+                    <input type="date" ng-controller="dateController" ng-model="selectedDate" ng-change="updateDate()">
+                </div>
+                <div ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
                 </div>
                 <table>
                     <tr>
                         <td>First Name</td>
                         <td>Last Name</td>
-                        <td>Calendar Name</td>
                         <td>Appt Start Time</td>
                         <td>Appt End Time</td>
-                        <td>Reason</td>
+                        <td>Status</td>
                     </tr>
 
                     <tr ng-repeat="x in data.todayAppointment">
-                        <td>{{ x.firstName }}</td>
-                        <td>{{ x.lastName }}</td>
-                        <td>{{ x.calendarName }}</td>
-                        <td>{{ x.startDateTime | date:'shortTime'}}</td>
-                        <td>{{ x.endDateTime | date:'shortTime'}}</td>
-                        <td>{{ x.reason }}</td>
+                        <td>{{ x.customer.firstName }}</td>
+                        <td>{{ x.customer.lastName }}</td>
+                        <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                        <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                        <td>{{ statusCodes[x.status] }}</td>
                     </tr>
                 </table>
             </div>
@@ -55,9 +55,9 @@
                     <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
                         <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
                             <div class="appointmentMessaging" >
-                                {{ a.lastName }}, {{ a.firstName }}
+                                 {{ a.customer.lastName }} , {{ a.customer.firstName }}
                                 <br>
-                                {{ a.startDateTime | date: 'shortTime' }} -  {{ a.endDateTime | date: 'shortTime' }}
+                                {{ a.aptstartTime | date: 'shortTime' }} -  {{ a.aptendTime | date: 'shortTime' }}
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,43 @@
+<html>
+
+<link rel="stylesheet" href="search/search.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<body>
+<div ng-app="search" ng-controller="searchCtrl">
+    <div class="container">
+        <div class="searchContainer">
+            <form>
+                <select ng-model="searchCalendar" ng-options="x for x in calendarNames">
+                <input type="date" ng-model="searchDate">
+                <button type="submit" ng-click="searchEngine()">Submit</button>
+            </form>
+        </div>
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Appt Start Time</td>
+                <td>Appt End Time</td>
+                <td>Status</td>
+            </tr>
+
+            <tr ng-repeat="x in searchResults">
+                <td>{{ x.customer.firstName }}</td>
+                <td>{{ x.customer.lastName }}</td>
+                <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
+                    {{ statusCodes[x.status] }}</td>
+            </tr>
+        </table>
+        <form>
+
+        </form>
+    </div>
+</div>
+
+</body>
+
+
+</html>
+

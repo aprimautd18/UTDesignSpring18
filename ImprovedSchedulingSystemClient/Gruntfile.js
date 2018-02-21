@@ -4,25 +4,13 @@ module.exports = function(grunt) {
       'string-replace': {
         inline: {
             files: {
-                'app/index.html': 'app/index.html'
+                './': 'app/**/*.*'
             },
             options: {
                 replacements: [
                     {
-                        pattern: '<!--start PROD imports',
-                        replacement: '<!--start PROD imports-->'
-                    },
-                    {
-                        pattern: 'end PROD imports-->',
-                        replacement: '<!--end PROD imports-->'
-                    },
-                    {
-                        pattern: '<!--start DEV imports-->',
-                        replacement: '<!--start DEV imports'
-                    },
-                    {
-                        pattern: '<!--end DEV imports-->',
-                        replacement: 'end DEV imports-->'
+                        pattern: 'https://seniordesign2018dev.azurewebsites.net',
+                        replacement: ''
                     }
                 ]
             }
@@ -55,5 +43,5 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-string-replace');
       grunt.loadNpmTasks('grunt-contrib-concat');
       grunt.loadNpmTasks('grunt-contrib-uglify');
-      grunt.registerTask('default', ['concat', 'uglify', 'string-replace']);
+      grunt.registerTask('default', ['string-replace']);
     };

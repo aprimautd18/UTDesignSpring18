@@ -21,43 +21,50 @@ app.controller('demoCtrl', function($scope,$http) {
     $scope.data.calendarTimes = [];
     $scope.data.todayAppointment = [];
     $scope.data.calendarData = [];
-    //$scope.data = [{"id":1,"firstName":"Alex","lastName":"Khun","address":"123 street", "apptTime" : { "startTime" : "8:30am", "endTime" : "9:00am"}},
-    //    {"id":2,"firstName":"K","lastName":"Felten","address":"123 street", "apptTime" : { "startTime" : "8:30am", "endTime" : "9:00am"}}];
 
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/LookupDemo?startTime=2025-02-25T8%3A00%3A00Z&endTime=2025-02-25T20%3A00%3A00Z")
+
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2023-10-09%2000%3A00%3A00&range=5")
         .then(function(response) {
             console.log("im here bi");
             //console.log(response.data);
-            $scope.data.calendarData.push(addBlankAppts(changeDateTime(response.data)));
-        });
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/LookupDemo?startTime=2025-02-25T8%3A00%3A00Z&endTime=2025-02-25T20%3A00%3A00Z")
-        .then(function(response) {
-            console.log("im here bi");
-            //console.log(response.data);
-            $scope.data.calendarData.push(addBlankAppts(changeDateTime(response.data)));
-        });
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/LookupDemo?startTime=2025-02-25T8%3A00%3A00Z&endTime=2025-02-25T20%3A00%3A00Z")
-        .then(function(response) {
-            console.log("im here bi");
-            //console.log(response.data);
-            $scope.data.calendarData.push(addBlankAppts(changeDateTime(response.data)));
-        });
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/LookupDemo?startTime=2025-02-25T8%3A00%3A00Z&endTime=2025-02-25T20%3A00%3A00Z")
-        .then(function(response) {
-            console.log("im here bi");
-            //console.log(response.data);
-            $scope.data.calendarData.push(addBlankAppts(changeDateTime(response.data)));
-        });
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/LookupDemo?startTime=2025-02-25T8%3A00%3A00Z&endTime=2025-02-25T20%3A00%3A00Z")
-        .then(function(response) {
-            console.log("im here bi");
-            //console.log(response.data);
-            var appointments = changeDateTime(response.data);
+            var appointments = (response.data);
             console.log("Appointments" + appointments);
-            $scope.data.todayAppointment = appointments;
-            $scope.data.calendarData.push(addBlankAppts(appointments));
+            $scope.data.todayAppointment = appointments[0].appointments;
+
+            for(var daily in appointments) {
+                $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
+            }
+            console.log("Data?");
+            console.log($scope);
             fillTimeSlots($scope);
         });
+
+});
+app.controller('dateController', function($scope, $http) {
+    var todayDate = new Date();
+    $scope.selectedDate = todayDate;
+    $scope.updateDate = function() {
+        console.log("ive been changed my guys");
+        var selectedDate = new Date($scope.selectedDate);
+        selectedDate = selectedDate.toISOString();
+        //selectedDate.set
+        console.log(selectedDate);
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=" + selectedDate + "&range=5")
+            .then(function (response) {
+                console.log("im fancy and new");
+                //console.log(response.data);
+                var appointments = (response.data);
+                console.log("Appointments" + appointments);
+                $scope.data.todayAppointment = appointments[0].appointments;
+                $scope.data.calendarData = [];
+                for (var daily in appointments) {
+                    $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
+                }
+                console.log("Data?");
+                console.log($scope);
+                fillTimeSlots($scope);
+            });
+    }
 });
 
 function fillTimeSlots($scope) {
@@ -84,8 +91,8 @@ function fillTimeSlots($scope) {
 function calculatePixelHeights (appointment) {
     var pixelHeight, current, next;
 
-    current = new Date(appointment.startDateTime);
-    next = new Date(appointment.endDateTime);
+    current = new Date(appointment.aptstartTime);
+    next = new Date(appointment.aptendTime);
 
     pixelHeight = ((next - current) / 100000) * 2;
 
@@ -95,19 +102,29 @@ function calculatePixelHeights (appointment) {
 function addBlankAppts (input) {
     var output = [];
     var current, next, blank, blankDateTime;
-
+    if(input.appointments.length < 1) {
+        blank = {};
+        blank.aptstartTime = input.startTime;
+        blank.aptendTime = input.endTime;
+        blank.firstName = " ";
+        blank.isBlank = "blank";
+        blank.heightInPixels = calculatePixelHeights(blank);
+        output.push(blank);
+        return output;
+    }
+    input = input.appointments;
     input[0].heightInPixels = calculatePixelHeights(input[0]);
 
     output.push(input[0]);
     for(var x = 1; x<input.length; x ++) {
-        current = new Date(input[x-1].endDateTime);
-        next = new Date(input[x].startDateTime);
+        current = new Date(input[x-1].aptendTime);
+        next = new Date(input[x].aptstartTime);
         var timeDiff = next - current;
         if(timeDiff > 0) {
             //using slice because it passes by reference and not by value which results in duplicates
             blank = input.slice(x-1,x);
-            blank.startDateTime = current;
-            blank.endDateTime = next;
+            blank.aptstartTime = current;
+            blank.aptendTime = next;
             blank.firstName = " ";
             blank.isBlank = "blank";
             blank.heightInPixels = calculatePixelHeights(blank);
@@ -116,55 +133,20 @@ function addBlankAppts (input) {
         input[x].heightInPixels = calculatePixelHeights(input[x]);
         output.push(input[x]);
     }
-
-    console.log(output);
-    return output;
-}
-
-function changeDateTime (input) {
-    var date, prevDate;
-    var output = [];
-
-    //d current time + random time
-
-    var firstAppt = input[0];
-    date = new Date(firstAppt.startDateTime);
-    date.setHours(8);
-    date.setMinutes(0);
-    firstAppt.startDateTime = date;
-
-    date = new Date(firstAppt.startDateTime);
-    date.setHours(date.getHours() + getRandomInt(2));
-    date.setMinutes(date.getMinutes() + (getRandomInt(3) * 15) + 15);
-    firstAppt.endDateTime = date;
-
-    output.push(firstAppt);
-
-    for(var x = 1; x<input.length; x++){
-
-        var appt = input[x];
-        date = new Date(appt.startDateTime);
-        prevDate = new Date(output[x-1].endDateTime);
-        date.setHours(prevDate.getHours());
-        date.setMinutes(prevDate.getMinutes() + (getRandomInt(3) * 15) + 15);
-        appt.startDateTime = date;
-
-        if(date.getHours() >= 17) {
-            console.log(output);
-            return output;
-        }
-
-        date = new Date(appt.startDateTime);
-        date.setHours(date.getHours() + getRandomInt(2));
-        date.setMinutes(date.getMinutes() + (getRandomInt(3) * 15) + 15);
-        appt.endDateTime = date;
-
-        output.push(appt);
+    var lastAppt = new Date(output[output.length - 1].aptendTime);
+    if(lastAppt.getHours() < 17) {
+        blank = {};
+        blank.aptstartTime = lastAppt;
+        var endTime = new Date(lastAppt);
+        endTime.setHours(17);
+        endTime.setMinutes(0);
+        blank.aptendTime = endTime;
+        blank.firstName = " ";
+        blank.isBlank = "blank";
+        blank.heightInPixels = calculatePixelHeights(blank);
+        output.push(blank);
     }
     console.log(output);
     return output;
 }
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-}

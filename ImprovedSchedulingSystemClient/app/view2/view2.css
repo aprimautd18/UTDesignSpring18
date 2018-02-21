@@ -40,7 +40,7 @@ table tr:nth-child(even) {
 }
 
 .blank {
-    background-color: grey;
+    background-color: lightgrey;
 }
 
 .blank .appointmentMessaging {
