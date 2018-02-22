@@ -27,7 +27,11 @@
                         <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
                         <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                        <td>{{ statusCodes[x.status] }}</td>
+                        <td>
+                            <select>
+                                <option ng-repeat="codes in statusCodes">{{codes}}</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
             </div>
