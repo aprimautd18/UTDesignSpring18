@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
 using ImprovedSchedulingSystemApi.Models.CustomerApiDTO;
 using ImprovedSchedulingSystemApi.Models.CustomerDTO;
+using MongoDB.Bson;
 
 namespace ImprovedSchedulingSystemApi.Controllers
 {
@@ -43,13 +44,31 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok(data);
         }
 
-        /*
         /// <summary>
-        /// Adds a new customer object(becuase their is no databse yet it will not save)
+        /// Lookup a customer by their specific customer id
         /// </summary>
-        /// <param name="customer">Customer to save</param>
-        /// <returns>A newly-created customer</returns>
-        [HttpPost]
+        /// <param name="_id">The customers ObjectiD</param>
+        /// <returns>A single customer model element containing all of the details fo the customer</returns>
+        [Produces("application/json")]
+        [HttpGet("customerLookupByID")]
+        public IActionResult customerLookupById([FromQuery]string _id)
+        {
+            ObjectId objectIdStorage = ObjectId.Parse(_id);
+            if (objectIdStorage == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+
+            
+            CustomerModel data = db.searchByCustomerId(objectIdStorage);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            return Ok(data);
+        }
+
+/*
         public IActionResult AddCustomer([FromBody]Customer customer)
         {
             if (customer == null)

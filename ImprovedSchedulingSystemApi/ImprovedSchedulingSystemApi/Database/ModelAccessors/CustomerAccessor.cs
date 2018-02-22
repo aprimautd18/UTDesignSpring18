@@ -45,5 +45,7 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             List<CustomerModel> returnedItems = collection.Find(filter).ToList();
             return returnedItems;
         }
+
+
     }
 }

@@ -6,8 +6,10 @@
 <div ng-app="search" ng-controller="searchCtrl">
     <div class="container">
         <div class="searchContainer">
-            <form ng-submit="searchEngine()">
-                <input type="text" ng-model="searchText">
+            <form>
+                <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
+                <input type="date" ng-model="searchDate">
+                <button type="submit" ng-click="searchEngine()">Submit</button>
             </form>
         </div>
         <table>
@@ -24,9 +26,13 @@
                 <td>{{ x.customer.lastName }}</td>
                 <td>{{ x.aptstartTime | date:'shortTime'}}</td>
                 <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                <td>{{ statusCodes[x.status] }}</td>
+                <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
+                    {{ statusCodes[x.status] }}</td>
             </tr>
         </table>
+        <form>
+
+        </form>
     </div>
 </div>
 

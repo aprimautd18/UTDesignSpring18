@@ -27,7 +27,11 @@
                         <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
                         <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                        <td>{{ statusCodes[x.status] }}</td>
+                        <td>
+                            <select>
+                                <option ng-repeat="codes in statusCodes">{{codes}}</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -38,11 +42,14 @@
                 <div class="calenderHeaders">
                     <table class="weekContainer">
                         <tr>
+                            <td class="weekHeader">Sunday</td>
                             <td class="weekHeader">Monday</td>
                             <td class="weekHeader">Tuesday</td>
                             <td class="weekHeader">Wednesday</td>
                             <td class="weekHeader">Thursday</td>
                             <td class="weekHeader">Friday</td>
+                            <td class="weekHeader">Saturday</td>
+
                         </tr>
                     </table>
                 </div>
