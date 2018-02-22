@@ -40,15 +40,11 @@
                     Weekly Calendar View
                 </div>
                 <div class="calenderHeaders">
-                    <table class="weekContainer">
+                    <table class="weekContainer" ng-init="daysOfWeek = {0 :'Sunday', 1 : 'Monday', 2 : 'Tuesday',3 : 'Wednesday',4 : 'Thursday',5 : 'Friday',6 :  'Saturday'}">
                         <tr>
-                            <td class="weekHeader">Sunday</td>
-                            <td class="weekHeader">Monday</td>
-                            <td class="weekHeader">Tuesday</td>
-                            <td class="weekHeader">Wednesday</td>
-                            <td class="weekHeader">Thursday</td>
-                            <td class="weekHeader">Friday</td>
-                            <td class="weekHeader">Saturday</td>
+                            <td class="weekHeader" ng-repeat="day in daysOfWeek">{{day}}<br>
+                                {{data.calendarData[$index][0].aptstartTime | date:"mediumDate"}}
+                            </td>
 
                         </tr>
                     </table>
