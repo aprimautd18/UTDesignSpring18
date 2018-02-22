@@ -16,6 +16,7 @@ namespace ImprovedSchedulingSystemApi.Database
 
         public MongoAbstract()
         {
+            MongoDefaults.MaxConnectionIdleTime = TimeSpan.FromMinutes(3);
             _mongoclient = new MongoClient(CONNECTIONSTRING);
             db = _mongoclient.GetDatabase("applicationDatabase");
             collection = collectionSet();
