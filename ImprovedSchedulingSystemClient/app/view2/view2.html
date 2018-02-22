@@ -36,6 +36,9 @@
                 </table>
             </div>
             <div class="calendarContainer col-8">
+                <div class="scrollableTimeBar" ng-style="{top: scrollableTimeBarHeight+ 'px'}">
+
+                </div>
                 <div class="calendarTitle">
                     Weekly Calendar View
                 </div>
@@ -50,6 +53,7 @@
                     </table>
                 </div>
                 <div class="calenderContents">
+
                     <div class="calenderTimes">
                         <div class="times" ng-repeat="timeSlot in data.calendarTimes">
                             {{ timeSlot.time }}

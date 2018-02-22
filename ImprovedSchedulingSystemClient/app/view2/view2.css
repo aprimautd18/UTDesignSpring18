@@ -75,3 +75,9 @@ table tr:nth-child(even) {
     width: 14%;
     text-align: center;
 }
+
+.scrollableTimeBar {
+    position: relative;
+    width: 100%;
+    top: 100px;
+    border-bottom: 2px solid rgba(0, 0, 255, .5);}

@@ -33,6 +33,7 @@ app.controller('demoCtrl', function($scope,$http) {
             }
             fillTimeSlots($scope);
         });
+    timeBarHeight($scope);
 
 });
 app.controller('dateController', function($scope, $http) {
@@ -60,8 +61,21 @@ app.controller('dateController', function($scope, $http) {
                 console.log($scope);
                 fillTimeSlots($scope);
             });
+        timeBarHeight($scope);
     }
 });
+
+function timeBarHeight($scope) {
+    var currentTime = new Date();
+    var dayStart = new Date(currentTime);
+    dayStart.setHours(8);
+    dayStart.setMinutes(0);
+    var diff = Math.abs(currentTime - dayStart);
+    console.log("time diff");
+    console.log(diff);
+    $scope.scrollableTimeBarHeight = 70 + (diff/47492);
+
+}
 
 function daysBetween(firstDate, secondDate) {
     var newDate1 = new Date(firstDate);
