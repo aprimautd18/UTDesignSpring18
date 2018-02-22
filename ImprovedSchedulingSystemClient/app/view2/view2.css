@@ -64,7 +64,7 @@ table tr:nth-child(even) {
     max-width: 100% !important;
 }
 .dailyColumn {
-    width: 20%;
+    width: 15%;
     flex-direction: column;
 }
 
@@ -72,6 +72,6 @@ table tr:nth-child(even) {
     width: 100%;
 }
 .weekHeader {
-    width: 20%;
+    width: 14%;
     text-align: center;
 }

@@ -7,7 +7,7 @@
     <div class="container">
         <div class="searchContainer">
             <form>
-                <select ng-model="searchCalendar" ng-options="x for x in calendarNames">
+                <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
                 <input type="date" ng-model="searchDate">
                 <button type="submit" ng-click="searchEngine()">Submit</button>
             </form>
