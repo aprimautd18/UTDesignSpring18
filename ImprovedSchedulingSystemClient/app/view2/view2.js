@@ -40,6 +40,7 @@ app.controller('dateController', function($scope, $http) {
     var todayDate = new Date("2024-11-16");
     $scope.selectedDate = todayDate;
     $scope.updateDate = function() {
+        timeBarHeight($scope);
         var selectedDate = new Date($scope.selectedDate);
         selectedDate = selectedDate.toISOString();
         //selectedDate.set
@@ -61,7 +62,6 @@ app.controller('dateController', function($scope, $http) {
                 console.log($scope);
                 fillTimeSlots($scope);
             });
-        timeBarHeight($scope);
     }
 });
 
@@ -73,7 +73,7 @@ function timeBarHeight($scope) {
     var diff = Math.abs(currentTime - dayStart);
     console.log("time diff");
     console.log(diff);
-    $scope.scrollableTimeBarHeight = 70 + (diff/47492);
+    $scope.scrollableTimeBarHeight = Math.min(70 + (diff/47492), 750);
 
 }
 
