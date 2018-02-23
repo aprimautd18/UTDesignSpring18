@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using MongoDB.Bson;
@@ -42,6 +43,13 @@ namespace ImprovedSchedulingSystemApi.Database
 
         }
 
+        public bool updateAppointmentStatus(ObjectId _id, StatusCodes newCode)
+        {
+            var findAppointmentFilter = Builders<CalendarModel>.Filter.Where(x => x.appointments.Any(y => y.id == _id));
+            var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1].status, newCode);
+            UpdateResult updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
+            return updateResult.IsAcknowledged;
+        }
 
     }
 }

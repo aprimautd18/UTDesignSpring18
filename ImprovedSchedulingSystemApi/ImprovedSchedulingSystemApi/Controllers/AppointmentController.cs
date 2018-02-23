@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
+using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -41,6 +42,24 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             return Ok(data);
+        }
+
+        [HttpPost("updateAppointmentStatus")]
+        public IActionResult updateAppointmentStatus([FromBody]updateStatusViewModel model)
+        {
+            ObjectId parsedId = ObjectId.Parse(model._id);
+            if (parsedId == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+
+            bool success = db.updateAppointmentStatus(parsedId, model.newCode);
+            if (success == false)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
 
     }
