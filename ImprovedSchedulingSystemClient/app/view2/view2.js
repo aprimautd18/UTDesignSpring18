@@ -61,8 +61,8 @@ app.controller('dateController', function($scope, $http) {
                     $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
                 }
                 $scope.data.calendarData[todayIndex].isCorrectDay="correct";
-                console.log("Data?");
-                console.log($scope);
+                console.log("today index?");
+                console.log(todayIndex);
                 fillTimeSlots($scope);
             });
     }
@@ -74,18 +74,17 @@ function timeBarHeight($scope) {
     dayStart.setHours(8);
     dayStart.setMinutes(0);
     var diff = Math.abs(currentTime - dayStart);
-    console.log("time diff");
-    console.log(diff);
     $scope.scrollableTimeBarHeight = Math.min(85 + (diff/47492), 765);
 
 }
 
 function daysBetween(firstDate, secondDate) {
     var newDate1 = new Date(firstDate);
+    newDate1.setHours(0);
     var newDate2 = new Date(secondDate);
     var diff = (newDate1 - newDate2);
     var daysApart = Math.abs(diff / 86400000);
-    daysApart = Math.floor(daysApart);
+    daysApart = Math.round(daysApart);
     return daysApart;
 }
 
