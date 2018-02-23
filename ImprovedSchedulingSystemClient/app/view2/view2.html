@@ -14,7 +14,7 @@
                 <div ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
                 </div>
                 <table>
-                    <tr>
+                    <tr class="dailyHeader">
                         <td>First Name</td>
                         <td>Last Name</td>
                         <td>Appt Start Time</td>
@@ -22,7 +22,7 @@
                         <td>Status</td>
                     </tr>
 
-                    <tr ng-repeat="x in data.todayAppointment">
+                    <tr class="dailyContents" ng-repeat="x in data.todayAppointment">
                         <td>{{ x.customer.firstName }}</td>
                         <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
