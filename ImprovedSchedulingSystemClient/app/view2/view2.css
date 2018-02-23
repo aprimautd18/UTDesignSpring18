@@ -67,6 +67,9 @@ table tr:nth-child(even) {
     flex-direction: row;
     font-size: 12px;
 }
+.correct{
+    border:2px solid red;
+}
 
 .calWrapper {
     max-width: 100% !important;

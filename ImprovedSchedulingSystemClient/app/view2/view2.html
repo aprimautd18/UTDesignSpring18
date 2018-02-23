@@ -59,7 +59,7 @@
                             {{ timeSlot.time }}
                         </div>
                     </div>
-                    <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
+                    <div class="dailyColumn {{calendar.isCorrectDay}}" ng-repeat="calendar in data.calendarData">
                         <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
                             <div class="appointmentMessaging" >
                                  {{ a.customer.lastName }} , {{ a.customer.firstName }}

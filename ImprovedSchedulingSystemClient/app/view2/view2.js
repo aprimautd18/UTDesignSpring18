@@ -52,12 +52,15 @@ app.controller('dateController', function($scope, $http) {
                 var appointments = (response.data);
                 console.log("Refreshed Appts");
                 console.log(appointments);
+
                 var todayIndex = daysBetween(appointments[0].startTime,selectedDate);
+                appointments[todayIndex].isCorrectDay="correct";
                 $scope.data.todayAppointment = appointments[todayIndex].appointments;
                 $scope.data.calendarData = [];
                 for (var daily in appointments) {
                     $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
                 }
+                $scope.data.calendarData[todayIndex].isCorrectDay="correct";
                 console.log("Data?");
                 console.log($scope);
                 fillTimeSlots($scope);
