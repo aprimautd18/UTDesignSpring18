@@ -58,6 +58,7 @@ table tr:nth-child(even) {
 .calenderContents {
     display: flex;
     flex-direction: row;
+    font-size: 12px;
 }
 
 .calWrapper {
@@ -72,6 +73,7 @@ table tr:nth-child(even) {
     width: 100%;
 }
 .weekHeader {
+    font-size: 14px;
     width: 14%;
     text-align: center;
 }
@@ -81,3 +83,11 @@ table tr:nth-child(even) {
     width: 100%;
     top: 100px;
     border-bottom: 2px solid rgba(0, 0, 255, .5);}
+
+::-webkit-datetime-edit-fields-wrapper { background: silver; }
+::-webkit-datetime-edit-text { color: red; padding: 0 0.3em; }
+::-webkit-datetime-edit-month-field { color: blue; }
+::-webkit-datetime-edit-day-field { color: green; }
+::-webkit-datetime-edit-year-field { color: purple; }
+::-webkit-inner-spin-button { }
+::-webkit-calendar-picker-indicator { background: orange; }
