@@ -4,10 +4,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <body>
 <div ng-app="search" ng-controller="searchCtrl">
-    <div class="container">
+    <div class="container searchContainerWrapper">
         <div class="searchContainer">
             <form>
-                <select ng-model="searchCalendar" ng-options="x for x in calendarNames">
+                <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
                 <input type="date" ng-model="searchDate">
                 <button type="submit" ng-click="searchEngine()">Submit</button>
             </form>

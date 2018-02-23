@@ -14,7 +14,7 @@
                 <div ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
                 </div>
                 <table>
-                    <tr>
+                    <tr class="dailyHeader">
                         <td>First Name</td>
                         <td>Last Name</td>
                         <td>Appt Start Time</td>
@@ -22,37 +22,44 @@
                         <td>Status</td>
                     </tr>
 
-                    <tr ng-repeat="x in data.todayAppointment">
+                    <tr class="dailyContents" ng-repeat="x in data.todayAppointment">
                         <td>{{ x.customer.firstName }}</td>
                         <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
                         <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                        <td>{{ statusCodes[x.status] }}</td>
+                        <td>
+                            <select>
+                                <option ng-repeat="codes in statusCodes">{{codes}}</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
             </div>
             <div class="calendarContainer col-8">
+                <div class="scrollableTimeBar" ng-style="{top: scrollableTimeBarHeight+ 'px'}">
+
+                </div>
                 <div class="calendarTitle">
                     Weekly Calendar View
                 </div>
                 <div class="calenderHeaders">
-                    <table class="weekContainer">
+                    <table class="weekContainer" ng-init="daysOfWeek = {0 :'Sunday', 1 : 'Monday', 2 : 'Tuesday',3 : 'Wednesday',4 : 'Thursday',5 : 'Friday',6 :  'Saturday'}">
                         <tr>
-                            <td class="weekHeader">Monday</td>
-                            <td class="weekHeader">Tuesday</td>
-                            <td class="weekHeader">Wednesday</td>
-                            <td class="weekHeader">Thursday</td>
-                            <td class="weekHeader">Friday</td>
+                            <td class="weekHeader" ng-repeat="day in daysOfWeek">{{day}}<br>
+                                {{data.calendarData[$index][0].aptstartTime | date:"mediumDate"}}
+                            </td>
+
                         </tr>
                     </table>
                 </div>
                 <div class="calenderContents">
+
                     <div class="calenderTimes">
                         <div class="times" ng-repeat="timeSlot in data.calendarTimes">
                             {{ timeSlot.time }}
                         </div>
                     </div>
-                    <div class="dailyColumn" ng-repeat="calendar in data.calendarData">
+                    <div class="dailyColumn {{calendar.isCorrectDay}}" ng-repeat="calendar in data.calendarData">
                         <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
                             <div class="appointmentMessaging" >
                                  {{ a.customer.lastName }} , {{ a.customer.firstName }}

@@ -23,7 +23,6 @@ app.controller('searchCtrl', function($scope,$http) {
 
     $scope.searchEngine = function () {
         console.log("in here");
-        //$scope.searchDate = $scope.searchDate.toLocaleDateString();
         var dummyDate = $scope.searchDate.toISOString();
         console.log(dummyDate);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=" + $scope.searchCalendar + "&startTime=" + dummyDate + "&range=1")

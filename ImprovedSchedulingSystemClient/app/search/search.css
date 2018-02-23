@@ -1,3 +1,7 @@
+.searchContainerWrapper {
+    margin-left: 0px !important;
+}
+
 table, th , td  {
     border: 1px solid grey;
     border-collapse: collapse;

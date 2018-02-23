@@ -23,49 +23,70 @@ app.controller('demoCtrl', function($scope,$http) {
     $scope.data.calendarData = [];
 
 
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2023-10-09%2000%3A00%3A00&range=5")
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2023-10-09%2000%3A00%3A00&range=7")
         .then(function(response) {
-            console.log("im here bi");
-            //console.log(response.data);
             var appointments = (response.data);
-            console.log("Appointments" + appointments);
             $scope.data.todayAppointment = appointments[0].appointments;
 
             for(var daily in appointments) {
                 $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
             }
-            console.log("Data?");
-            console.log($scope);
             fillTimeSlots($scope);
         });
+    timeBarHeight($scope);
 
 });
 app.controller('dateController', function($scope, $http) {
-    var todayDate = new Date();
+    var todayDate = new Date("2024-11-16");
     $scope.selectedDate = todayDate;
     $scope.updateDate = function() {
-        console.log("ive been changed my guys");
+        timeBarHeight($scope);
         var selectedDate = new Date($scope.selectedDate);
+        selectedDate.setDate(selectedDate.getDate() - 1);
         selectedDate = selectedDate.toISOString();
-        //selectedDate.set
         console.log(selectedDate);
-        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=" + selectedDate + "&range=5")
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=" + selectedDate + "&range=7")
             .then(function (response) {
                 console.log("im fancy and new");
                 //console.log(response.data);
                 var appointments = (response.data);
-                console.log("Appointments" + appointments);
-                $scope.data.todayAppointment = appointments[0].appointments;
+                console.log("Refreshed Appts");
+                console.log(appointments);
+
+                var todayIndex = daysBetween(appointments[0].startTime,selectedDate);
+                appointments[todayIndex].isCorrectDay="correct";
+                $scope.data.todayAppointment = appointments[todayIndex].appointments;
                 $scope.data.calendarData = [];
                 for (var daily in appointments) {
                     $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
                 }
-                console.log("Data?");
-                console.log($scope);
+                $scope.data.calendarData[todayIndex].isCorrectDay="correct";
+                console.log("today index?");
+                console.log(todayIndex);
                 fillTimeSlots($scope);
             });
     }
 });
+
+function timeBarHeight($scope) {
+    var currentTime = new Date();
+    var dayStart = new Date(currentTime);
+    dayStart.setHours(8);
+    dayStart.setMinutes(0);
+    var diff = Math.abs(currentTime - dayStart);
+    $scope.scrollableTimeBarHeight = Math.min(85 + (diff/47492), 765);
+
+}
+
+function daysBetween(firstDate, secondDate) {
+    var newDate1 = new Date(firstDate);
+    newDate1.setHours(0);
+    var newDate2 = new Date(secondDate);
+    var diff = (newDate1 - newDate2);
+    var daysApart = Math.abs(diff / 86400000);
+    daysApart = Math.round(daysApart);
+    return daysApart;
+}
 
 function fillTimeSlots($scope) {
     var time;
