@@ -42,8 +42,8 @@ app.controller('dateController', function($scope, $http) {
     $scope.updateDate = function() {
         timeBarHeight($scope);
         var selectedDate = new Date($scope.selectedDate);
+        selectedDate.setDate(selectedDate.getDate() - 1);
         selectedDate = selectedDate.toISOString();
-        //selectedDate.set
         console.log(selectedDate);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=" + selectedDate + "&range=7")
             .then(function (response) {
