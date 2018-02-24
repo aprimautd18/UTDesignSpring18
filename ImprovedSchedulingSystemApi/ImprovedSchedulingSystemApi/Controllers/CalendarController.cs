@@ -132,5 +132,16 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
             return Ok(data);
         }
-    }
+
+        /// <summary>
+        /// Gets a list of all of the potiental calendar names in the calender collection
+        /// </summary>
+        /// <returns>String list of calendar names</returns>
+        [Produces("application/json")]
+        [HttpGet("getCalendarNames")]
+        public IActionResult getCalenderNames()
+        {
+            List<string> calNames = db.retreiveCalendarNames();
+            return Ok(calNames);
+        }
 }

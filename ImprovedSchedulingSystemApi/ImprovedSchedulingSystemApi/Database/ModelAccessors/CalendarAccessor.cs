@@ -51,5 +51,10 @@ namespace ImprovedSchedulingSystemApi.Database
             return updateResult.IsAcknowledged;
         }
 
+        public List<string> retreiveCalendarNames()
+        {
+            return collection.AsQueryable().Select(x => x.calName).Distinct().ToList();
+        }
+
     }
 }
