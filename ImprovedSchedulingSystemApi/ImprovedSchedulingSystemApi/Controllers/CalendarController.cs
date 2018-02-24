@@ -28,13 +28,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("dateLookup")]
-        public IActionResult dateLookup( [FromQuery] string calName, [FromQuery] string startTime, [FromQuery] int range = 1)
+        public IActionResult dateLookup([FromQuery] string calName, [FromQuery] string startTime,
+            [FromQuery] int range = 1)
         {
 
 
             DateTime starttimeDateTime;
-           
-        
+
+
             DateTime.TryParse(startTime, CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out starttimeDateTime);
@@ -45,7 +46,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 return BadRequest();
             }
 
-            if(range <= 0)
+            if (range <= 0)
             {
                 range = 1;
             }
@@ -61,8 +62,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 {
                     data.Add(new dateLookup_CalendarViewModel(test));
                 }
-            
-               
+
+
             }
 
             return Ok(data);
@@ -144,4 +145,5 @@ namespace ImprovedSchedulingSystemApi.Controllers
             List<string> calNames = db.retreiveCalendarNames();
             return Ok(calNames);
         }
+    }
 }
