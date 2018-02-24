@@ -19,15 +19,17 @@ namespace ImprovedSchedulingSystemApi.Controllers
     {
         CalendarAccessor db = new CalendarAccessor();
 
-       
+
         /// <summary>
         /// Reterives all of the appointments associated with a specific customer ID 
         /// </summary>
         /// <param name="id">The id of the customer to lookup appointments for </param>
         /// <returns>A list of Appointments associated with the customer</returns>
+        /// <response code="200">Returns the appointments associated with the customer ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupById")]
-        public IActionResult appointmentLookupById([FromQuery] string id)
+        [HttpGet("appointmentLookupByCustomerId")]
+        [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
+        public IActionResult appointmentLookupByCustomerId([FromQuery] string id)
         {
             ObjectId parsedId = ObjectId.Parse(id);
             if (parsedId == ObjectId.Empty)
@@ -35,7 +37,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 return BadRequest();
             }
 
-            List<AppointmentModel> data = db.appointmentLookupById(parsedId);
+            List<AppointmentModel> data = db.appointmentLookupByCustomerId(parsedId);
             if (data == null)
             {
                 return NotFound();
@@ -44,10 +46,16 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok(data);
         }
 
+        /// <summary>
+        /// Allows for the status field of the appointments to be updated
+        /// </summary>
+        /// <param name="model">contains the id and the newCode to update to</param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Status was successfully updated</response>
         [HttpPost("updateAppointmentStatus")]
         public IActionResult updateAppointmentStatus([FromBody]updateStatusViewModel model)
         {
-            ObjectId parsedId = ObjectId.Parse(model._id);
+            ObjectId parsedId = ObjectId.Parse(model.id);
             if (parsedId == ObjectId.Empty)
             {
                 return BadRequest();

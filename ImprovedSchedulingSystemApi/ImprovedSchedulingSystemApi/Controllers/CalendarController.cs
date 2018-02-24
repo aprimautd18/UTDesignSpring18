@@ -26,8 +26,10 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <param name="startTime">The Date to do the lookup with</param>
         /// <param name="range">The number of days to return(Defaults to 1)</param>
         /// <returns></returns>
+        /// <response code="200">Returns the List of Calendar Objects</response>
         [Produces("application/json")]
         [HttpGet("dateLookup")]
+        [ProducesResponseType(typeof(List<dateLookup_CalendarViewModel>), 200)]
         public IActionResult dateLookup([FromQuery] string calName, [FromQuery] string startTime,
             [FromQuery] int range = 1)
         {
@@ -75,8 +77,10 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <param name="calName">The name of the calendar to retreive the dates from</param>
         /// <param name="startTime">The Date to do the lookup with</param>
         /// <returns>A list of 7 Calendar objects for the week Sunday-Saturday</returns>
+        /// <response code="200">Returns the List of Calendar Objects</response>
         [Produces("application/json")]
         [HttpGet("weekLookup")]
+        [ProducesResponseType(typeof(List<dateLookup_CalendarViewModel>), 200)]
         public IActionResult dateLookupByContainedDay([FromQuery] string calName, [FromQuery] string startTime)
         {
             DateTime starttimeDateTime;
@@ -138,8 +142,10 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// Gets a list of all of the potiental calendar names in the calender collection
         /// </summary>
         /// <returns>String list of calendar names</returns>
+        /// <response code="200">Returns the list of string objects</response>
         [Produces("application/json")]
         [HttpGet("getCalendarNames")]
+        [ProducesResponseType(typeof(List<string>), 200)]
         public IActionResult getCalenderNames()
         {
             List<string> calNames = db.retreiveCalendarNames();

@@ -28,8 +28,10 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <param name="lastName">Last name of the customer</param>
         /// <param name="phoneNumber">Phone Number of the customer</param>
         /// <returns>A list of customer making the search parameters</returns>
+        /// <response code="200">Returns the list of Customer Objects</response>
         [Produces("application/json")]
         [HttpGet("customerLookup")]
+        [ProducesResponseType(typeof(List<CustomerModel>), 200)]
         public IActionResult customerLookup([FromQuery]string firstName, [FromQuery]string lastName, [FromQuery]string phoneNumber)
         {
             if (firstName == null && lastName == null && phoneNumber == null)
@@ -49,8 +51,10 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// </summary>
         /// <param name="_id">The customers ObjectiD</param>
         /// <returns>A single customer model element containing all of the details fo the customer</returns>
+        /// <response code="200">Returns the Customer Object</response>
         [Produces("application/json")]
         [HttpGet("customerLookupByID")]
+        [ProducesResponseType(typeof(CustomerModel), 200)]
         public IActionResult customerLookupById([FromQuery]string _id)
         {
             ObjectId objectIdStorage = ObjectId.Parse(_id);

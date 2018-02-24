@@ -37,7 +37,7 @@ namespace ImprovedSchedulingSystemApi.Database
 
         }
 
-        public List<AppointmentModel> appointmentLookupById(ObjectId id)
+        public List<AppointmentModel> appointmentLookupByCustomerId(ObjectId id)
         {
             return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.CustomerId == id).ToList();
 
