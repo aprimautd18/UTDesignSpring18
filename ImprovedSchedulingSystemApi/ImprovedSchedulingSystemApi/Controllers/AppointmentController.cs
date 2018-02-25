@@ -74,6 +74,12 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Allows a new appointment to be added given the calendarId and an appointment model. 
+        /// </summary>
+        /// <param name="model">THe data the api needs. Look athteh example for more info. If you need any clarification, send us a message</param>
+        /// <returns>The newly added appointment containing the new id value generated for the appointment</returns>
+        /// /// <response code="201">Appointment was sucessfully added</response>
         [HttpPost("addAppointment")]
         public IActionResult addAppointment([FromBody]addAppointmentViewModel model)
         {
