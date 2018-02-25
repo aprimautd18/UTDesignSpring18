@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using ImprovedSchedulingSystemApi.ViewModels.addAppiontment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +19,9 @@ namespace ImprovedSchedulingSystemApi.Controllers
     public class AppointmentController : Controller
     {
         CalendarAccessor db = new CalendarAccessor();
+
+
+
 
 
         /// <summary>
@@ -68,6 +72,20 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpPost("addAppointment")]
+        public IActionResult addAppointment([FromBody]addAppointmentViewModel model)
+        {
+            ObjectId calId;
+            ObjectId.TryParse(model.calendarId, out calId);
+            AppointmentModel newAppointment = db.addAppointment(calId, model.appointment);
+            if (newAppointment == null)
+            {
+                return BadRequest();
+            }
+            //Need to change to a created at action. 
+            return Created(new Uri("https://seniordesign2018dev.azurewebsites.net/"), newAppointment);
         }
 
     }
