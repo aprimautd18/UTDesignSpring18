@@ -15,7 +15,7 @@ namespace ImprovedSchedulingSystemApi.ViewModels.addAppiontment
         public string calendarId { get; set; }
 
         [Required]
-        public AppointmentModel appointment { get; set; }
+        public addAppointmentSubViewModel appointment { get; set; }
 
     }
 }

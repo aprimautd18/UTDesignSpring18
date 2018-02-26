@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using ImprovedSchedulingSystemApi.ViewModels.addAppiontment;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -56,18 +57,19 @@ namespace ImprovedSchedulingSystemApi.Database
             return collection.AsQueryable().Select(x => x.calName).Distinct().ToList();
         }
 
-        public AppointmentModel addAppointment(ObjectId calendarId, AppointmentModel newAppointment)
+        public AppointmentModel addAppointment(ObjectId calendarId, addAppointmentSubViewModel newAppointment)
         {
-            newAppointment.id = ObjectId.GenerateNewId();
+            AppointmentModel Appointment = newAppointment.toAppointmentModel();
+            Appointment.id = ObjectId.GenerateNewId();
             var findCalendarFilter = Builders<CalendarModel>.Filter.Where(x => x.id == calendarId);
-            var addAppointmentToListFilter = Builders<CalendarModel>.Update.Push(x => x.appointments, newAppointment);
+            var addAppointmentToListFilter = Builders<CalendarModel>.Update.Push(x => x.appointments, Appointment);
             UpdateResult updateResult = collection.UpdateOne(findCalendarFilter, addAppointmentToListFilter);
             if (!updateResult.IsAcknowledged)
             {
                 return null;
             }
 
-            return newAppointment;
+            return Appointment;
         }
 
     }

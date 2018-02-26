@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
@@ -77,20 +78,21 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <summary>
         /// Allows a new appointment to be added given the calendarId and an appointment model. 
         /// </summary>
-        /// <param name="model">THe data the api needs. Look athteh example for more info. If you need any clarification, send us a message</param>
+        /// <param name="model">The data the api needs. Look at the example for more info. If you need any clarification, send us a message</param>
         /// <returns>The newly added appointment containing the new id value generated for the appointment</returns>
         /// /// <response code="201">Appointment was sucessfully added</response>
         [HttpPost("addAppointment")]
-        public IActionResult addAppointment([FromBody]addAppointmentViewModel model)
+        public IActionResult addAppointment( [FromBody]addAppointmentViewModel model)
         {
-            ObjectId calId;
-            ObjectId.TryParse(model.calendarId, out calId);
+
+            ObjectId calId =  ObjectId.Parse(model.calendarId);
             AppointmentModel newAppointment = db.addAppointment(calId, model.appointment);
             if (newAppointment == null)
             {
                 return BadRequest();
             }
             //Need to change to a created at action. 
+            
             return Created(new Uri("https://seniordesign2018dev.azurewebsites.net/"), newAppointment);
         }
 
