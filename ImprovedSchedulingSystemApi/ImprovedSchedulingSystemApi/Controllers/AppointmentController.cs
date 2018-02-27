@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
-using ImprovedSchedulingSystemApi.ViewModels.addAppiontment;
+using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
@@ -85,15 +85,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         public IActionResult addAppointment( [FromBody]addAppointmentViewModel model)
         {
 
-            ObjectId calId =  ObjectId.Parse(model.calendarId);
-            AppointmentModel newAppointment = db.addAppointment(calId, model.appointment);
-            if (newAppointment == null)
-            {
-                return BadRequest();
-            }
-            //Need to change to a created at action. 
-            
-            return Created(new Uri("https://seniordesign2018dev.azurewebsites.net/"), newAppointment);
+            return Ok();
         }
 
     }
