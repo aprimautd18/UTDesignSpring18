@@ -56,5 +56,19 @@ namespace ImprovedSchedulingSystemApi.Database
             return collection.AsQueryable().Select(x => x.calName).Distinct().ToList();
         }
 
+        public AppointmentModel addAppointment(ObjectId calendarId, AppointmentModel newAppointment)
+        {
+            newAppointment.id = ObjectId.GenerateNewId();
+            var findCalendarFilter = Builders<CalendarModel>.Filter.Where(x => x.id == calendarId);
+            var addAppointmentToListFilter = Builders<CalendarModel>.Update.Push(x => x.appointments, newAppointment);
+            UpdateResult updateResult = collection.UpdateOne(findCalendarFilter, addAppointmentToListFilter);
+            if (!updateResult.IsAcknowledged)
+            {
+                return null;
+            }
+
+            return newAppointment;
+        }
+
     }
 }

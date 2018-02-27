@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +20,9 @@ namespace ImprovedSchedulingSystemApi.Controllers
     public class AppointmentController : Controller
     {
         CalendarAccessor db = new CalendarAccessor();
+
+
+
 
 
         /// <summary>
@@ -68,6 +73,23 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Allows a new appointment to be added given the calendarId and an appointment model. 
+        /// </summary>
+        /// <param name="model">The data the api needs. Look at the example for more info. Leave the appointment ID blank as we will generate it. If you need any clarification, send us a message</param>
+        /// <returns>The newly added appointment containing the new id value generated for the appointment</returns>
+        /// /// <response code="200">Appointment was sucessfully added</response>
+        [HttpPost("addAppointment")]
+        public IActionResult addAppointment( [FromBody]addAppointmentViewModel model)
+        {
+            if (model.Appointment == null || model.calendarId == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+            AppointmentModel returnedItem = db.addAppointment(model.calendarId, model.Appointment);
+            return Ok(returnedItem);
         }
 
     }

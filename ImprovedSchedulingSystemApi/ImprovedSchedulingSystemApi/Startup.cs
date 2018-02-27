@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Models.CustomModelBinders;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +31,17 @@ namespace ImprovedSchedulingSystemApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(opts =>
+            {
+                opts.ModelBinderProviders.Insert(0, new ObjectIdBinderProvider()); // Adds the ObejctId model binder
+            }).AddJsonOptions(opts =>
+            {
+                opts.SerializerSettings.Converters.Add(new ObjectIDJsonConverter());
+            });
+
+
+
+
             services.AddCors();
             services.AddCors(options =>
             {
@@ -45,7 +57,7 @@ namespace ImprovedSchedulingSystemApi
             });
 
 
-
+            services.Configure<FormOptions>(options => options.BufferBody = true);
 
             // Register the Swagger gebnerator
             services.AddSwaggerGen(c =>
