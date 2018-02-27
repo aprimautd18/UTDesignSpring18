@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
-using ImprovedSchedulingSystemApi.Models.CustomerApiDTO;
 using ImprovedSchedulingSystemApi.Models.CustomerDTO;
 using MongoDB.Bson;
 
@@ -72,17 +71,23 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok(data);
         }
 
-/*
-        public IActionResult AddCustomer([FromBody]Customer customer)
+        /// <summary>
+        /// Allows a new Customer to be added given the customer model
+        /// </summary>
+        /// <param name="model">The data the api needs. Look at the example for more info. Leave the customer ID blank as we will generate it. If you need any clarification, send us a message</param>
+        /// <returns>The newly added customer containing the new id value generated for the customer</returns>
+        /// /// <response code="200">customer was sucessfully added</response>
+        [HttpPost("addCustomer")]
+        public IActionResult AddCustomer([FromBody]CustomerModel model)
         {
-            if (customer == null)
+            if (model == null)
             {
                 return BadRequest();
             }
 
-            testCustomers.Add(customer);
-            return CreatedAtRoute("GetCustomer", new {id = customer.Id}, customer);
+            model = db.addCustomer(model);
+            return Ok(model);
         }
-        */
+        
     }
 }
