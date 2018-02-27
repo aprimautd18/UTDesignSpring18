@@ -55,7 +55,7 @@ namespace ImprovedSchedulingSystemApi.Models.CustomModelBinders
                 return id;
             }
 
-            return null;
+            return ObjectId.Empty;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

@@ -84,7 +84,11 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [HttpPost("addAppointment")]
         public IActionResult addAppointment( [FromBody]addAppointmentViewModel model)
         {
-
+            if (model.Appointment == null || model.calendarId == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+            db.addAppointment(model.calendarId, model.Appointment);
             return Ok();
         }
 
