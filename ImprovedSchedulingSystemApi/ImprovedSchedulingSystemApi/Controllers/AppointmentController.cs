@@ -92,5 +92,30 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok(returnedItem);
         }
 
+        /// <summary>
+        /// Allows an Appointment to be updated given the appointment model
+        /// </summary>
+        /// <param name="model">The data the api needs. Look at the example for more info. Appointment Id Must be an existing id in the db or update will fail. If you need any clarification, send us a message</param>
+        /// <returns></returns>
+        /// <response code="200">Appointment was sucessfully updated</response>
+        /// <response code="404">Appointmentid was not found in the db</response>
+        [HttpPost("updateAppointment")]
+        public IActionResult updateAppointment([FromBody]addAppointmentViewModel model)
+        {
+            if (model.Appointment == null || model.calendarId == ObjectId.Empty || model.Appointment.id == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+
+            bool returnedItem = db.updateAppointment(model.calendarId, model.Appointment);
+            if (returnedItem)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+
+        }
+
     }
 }

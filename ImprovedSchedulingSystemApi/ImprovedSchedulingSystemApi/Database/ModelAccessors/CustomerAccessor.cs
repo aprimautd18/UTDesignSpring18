@@ -54,5 +54,11 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             return model;
         }
 
+        public bool updateCustomer(CustomerModel model)
+        {
+            var result = collection.ReplaceOne(x => x.id == model.id, model);
+            return result.IsAcknowledged;
+        }
+
     }
 }
