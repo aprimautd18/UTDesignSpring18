@@ -34,15 +34,15 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [Produces("application/json")]
         [HttpGet("appointmentLookupByCustomerId")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
-        public IActionResult appointmentLookupByCustomerId([FromQuery] string id)
+        public IActionResult appointmentLookupByCustomerId([FromQuery] ObjectId id)
         {
-            ObjectId parsedId = ObjectId.Parse(id);
-            if (parsedId == ObjectId.Empty)
+
+            if (id == ObjectId.Empty)
             {
                 return BadRequest();
             }
 
-            List<AppointmentModel> data = db.appointmentLookupByCustomerId(parsedId);
+            List<AppointmentModel> data = db.appointmentLookupByCustomerId(id);
             if (data == null)
             {
                 return NotFound();

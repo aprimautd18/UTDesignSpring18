@@ -54,16 +54,16 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [Produces("application/json")]
         [HttpGet("customerLookupByID")]
         [ProducesResponseType(typeof(CustomerModel), 200)]
-        public IActionResult customerLookupById([FromQuery]string _id)
+        public IActionResult customerLookupById([FromQuery]ObjectId _id)
         {
-            ObjectId objectIdStorage = ObjectId.Parse(_id);
-            if (objectIdStorage == ObjectId.Empty)
+            
+            if (_id == ObjectId.Empty)
             {
                 return BadRequest();
             }
 
             
-            CustomerModel data = db.searchByCustomerId(objectIdStorage);
+            CustomerModel data = db.searchByCustomerId(_id);
             if (data == null)
             {
                 return NotFound();

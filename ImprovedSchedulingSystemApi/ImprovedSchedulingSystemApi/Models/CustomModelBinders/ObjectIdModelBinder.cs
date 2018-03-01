@@ -26,6 +26,11 @@ namespace ImprovedSchedulingSystemApi.Models.CustomModelBinders
                 bindingContext.ModelState.SetModelValue(bindingContext.ModelName, id, values.FirstValue); //Update the given attempt parse to the newly parsed item
                 bindingContext.Result = ModelBindingResult.Success(id);
             }
+            else
+            {
+                bindingContext.ModelState.SetModelValue(bindingContext.ModelName, ObjectId.Empty, values.FirstValue); //Update the given attempt parse to the newly parsed item
+                bindingContext.Result = ModelBindingResult.Success(ObjectId.Empty);
+            }
             return Task.CompletedTask;
         }
     }
