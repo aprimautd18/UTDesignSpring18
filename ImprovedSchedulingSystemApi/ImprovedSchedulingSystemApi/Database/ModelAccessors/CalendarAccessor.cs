@@ -37,7 +37,7 @@ namespace ImprovedSchedulingSystemApi.Database
 
         }
 
-        public List<AppointmentModel> appointmentLookupById(ObjectId id)
+        public List<AppointmentModel> appointmentLookupByCustomerId(ObjectId id)
         {
             return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.CustomerId == id).ToList();
 
@@ -49,6 +49,37 @@ namespace ImprovedSchedulingSystemApi.Database
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1].status, newCode);
             UpdateResult updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
             return updateResult.IsAcknowledged;
+        }
+
+        public List<string> retreiveCalendarNames()
+        {
+            return collection.AsQueryable().Select(x => x.calName).Distinct().ToList();
+        }
+
+        public AppointmentModel addAppointment(ObjectId calendarId, AppointmentModel newAppointment)
+        {
+            newAppointment.id = ObjectId.GenerateNewId();
+            var findCalendarFilter = Builders<CalendarModel>.Filter.Where(x => x.id == calendarId);
+            var addAppointmentToListFilter = Builders<CalendarModel>.Update.Push(x => x.appointments, newAppointment);
+            UpdateResult updateResult = collection.UpdateOne(findCalendarFilter, addAppointmentToListFilter);
+            if (!updateResult.IsAcknowledged)
+            {
+                return null;
+            }
+
+            return newAppointment;
+        }
+
+        public bool updateAppointment(ObjectId calendarId, AppointmentModel newAppointment)
+        {
+            var findAppointmentFilter = Builders<CalendarModel>.Filter.And(
+                Builders<CalendarModel>.Filter.Where(x => x.id == calendarId),
+                Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == newAppointment.id));
+            var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1], newAppointment);
+
+            var result = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
+            
+            return result.IsAcknowledged;
         }
 
     }

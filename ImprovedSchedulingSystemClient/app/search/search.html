@@ -5,34 +5,38 @@
 <body>
 <div ng-app="search" ng-controller="searchCtrl">
     <div class="container searchContainerWrapper">
+        <h3>Search By Calendar</h3>
         <div class="searchContainer">
             <form>
                 <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
-                <input type="date" ng-model="searchDate">
-                <button type="submit" ng-click="searchEngine()">Submit</button>
+                <input type="date" ng-model="searchDate" style="margin: 2px">
+                <button type="submit" ng-click="apptSearchEngine()">Submit</button>
+
+                <input type="search" ng-model="firstName" style="margin: 2px">
+                <input type="search" ng-model="lastName">
+                <button type="submit" ng-click="customerSearchEngine()">Submit</button>
             </form>
+            <table>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Appt Start Time</td>
+                    <td>Appt End Time</td>
+                    <td>Status</td>
+                </tr>
+
+                <tr ng-repeat="x in searchResults">
+                    <td ng-if="apptSearch">{{ x.customer.firstName }}</td>
+                    <td ng-if="apptSearch">{{ x.customer.lastName }}</td>
+                    <td ng-if="customerSearch">{{ firstName }}</td>
+                    <td ng-if="customerSearch">{{ lastName }}</td>
+                    <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                    <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                    <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
+                        {{ statusCodes[x.status] }}</td>
+                </tr>
+            </table>
         </div>
-        <table>
-            <tr>
-                <td>First Name</td>
-                <td>Last Name</td>
-                <td>Appt Start Time</td>
-                <td>Appt End Time</td>
-                <td>Status</td>
-            </tr>
-
-            <tr ng-repeat="x in searchResults">
-                <td>{{ x.customer.firstName }}</td>
-                <td>{{ x.customer.lastName }}</td>
-                <td>{{ x.aptstartTime | date:'shortTime'}}</td>
-                <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
-                    {{ statusCodes[x.status] }}</td>
-            </tr>
-        </table>
-        <form>
-
-        </form>
     </div>
 </div>
 

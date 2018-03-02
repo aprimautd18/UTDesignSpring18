@@ -47,5 +47,18 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
         }
 
 
+        public CustomerModel addCustomer(CustomerModel model)
+        {
+            model.id = ObjectId.GenerateNewId();
+            collection.InsertOne(model);
+            return model;
+        }
+
+        public bool updateCustomer(CustomerModel model)
+        {
+            var result = collection.ReplaceOne(x => x.id == model.id, model);
+            return result.IsAcknowledged;
+        }
+
     }
 }
