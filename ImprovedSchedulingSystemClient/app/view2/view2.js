@@ -76,8 +76,6 @@ $scope.updatedStatus= function( a) {
         "id": ''+a,
         "newCode": $scope.data.selectedStatusCode
     };
-   console.log($scope.data.statusOptions[$scope.data.selectedStatusCode].statusName);
-   console.log($scope.data.selectedStatusCode);
     $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointmentStatus",data);
 };
 });
@@ -91,7 +89,7 @@ app.controller('dateController', function($scope, $http) {
         var selectedDate = new Date($scope.selectedDate);
         selectedDate.setDate(selectedDate.getDate() - 1);
         selectedDate = selectedDate.toISOString();
-        console.log(selectedDate);
+        console.log("get your selected data here"+selectedDate);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=" + selectedDate + "&range=7")
             .then(function (response) {
                 var appointments = (response.data);
@@ -107,8 +105,7 @@ app.controller('dateController', function($scope, $http) {
                     $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
                 }
                 $scope.data.calendarData[todayIndex].isCorrectDayToHighlight="correctHighlightedDay";
-                console.log("today index?");
-                console.log(todayIndex);
+                console.log("today index?" +todayIndex);
                 fillTimeSlots($scope);
             });
         if($scope.data.todayAppointment.length > 1) {

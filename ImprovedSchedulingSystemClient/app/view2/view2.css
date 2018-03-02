@@ -92,6 +92,10 @@ table tr:nth-child(even) {
 .dailyHeader {
     font-size: 14px;
 }
+.correctHighlightedDay{
+    font-size: 14px;
+    color: blue ;
+}
 
 .dailyContents {
     font-size: 12px;
@@ -121,10 +125,7 @@ table tr:nth-child(even) {
     background-size: 100px 50px;
     background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
-.correctHighlightedDay{
-    border:2px solid red;
-    border-radius: 5px;
-}
+
  .Scheduled{
     background-color: #f1f1f1 ;
 }

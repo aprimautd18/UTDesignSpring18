@@ -54,8 +54,8 @@
                            {{time}}
                        </div>
                     </div>
-                    <div class="calendarColumn" ng-repeat="day in data.calendarData">
-                        <div class="dayHeader">
+                    <div class="calendarColumn " ng-repeat="day in data.calendarData">
+                        <div class="dayHeader {{day.isCorrectDayToHighlight}}">
                             <div class="numericDay">
                                 {{day[0].aptstartTime | date: "d"}}
                             </div>
