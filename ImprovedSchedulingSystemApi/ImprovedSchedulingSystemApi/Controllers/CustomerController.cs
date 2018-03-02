@@ -113,5 +113,29 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return NotFound();
         }
 
+
+        /// <summary>
+        /// Deletes a customer given its id
+        /// </summary>
+        /// <param name="id">Id of customer to delete</param>
+        /// <returns></returns>
+        /// <response code="200">Customer was sucessfully delete</response>
+        /// <response code="404">Customerid was not found in the db</response>
+        [HttpPost("deleteCustomer")]
+        public IActionResult deleteCustomer([FromBody]ObjectId id)
+        {
+            if (id == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+
+            var result = db.deleteCustomer(id);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
     }
 }

@@ -7,6 +7,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ImprovedSchedulingSystemApi.Models.CustomerDTO
 {
+
+    /// <summary>
+    /// The model for a single customer
+    /// </summary>
     public class CustomerModel
     {
         [BsonId]

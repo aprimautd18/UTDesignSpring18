@@ -70,15 +70,23 @@ namespace ImprovedSchedulingSystemApi.Database
             return newAppointment;
         }
 
-        public bool updateAppointment(ObjectId calendarId, AppointmentModel newAppointment)
+        public bool updateAppointment(AppointmentModel newAppointment)
         {
-            var findAppointmentFilter = Builders<CalendarModel>.Filter.And(
-                Builders<CalendarModel>.Filter.Where(x => x.id == calendarId),
-                Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == newAppointment.id));
+            var findAppointmentFilter = Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == newAppointment.id);
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1], newAppointment);
 
             var result = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
             
+            return result.IsAcknowledged;
+        }
+
+        public bool deleteAppointment(ObjectId Appointment)
+        {
+            var findAppointmentFilter = Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == Appointment);
+            var updateAppointmentFilter = Builders<CalendarModel>.Update.Unset(x => x.appointments[-1]);
+
+            var result = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
+
             return result.IsAcknowledged;
         }
 
