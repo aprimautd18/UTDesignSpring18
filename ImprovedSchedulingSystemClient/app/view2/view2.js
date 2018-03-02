@@ -14,25 +14,46 @@ angular.module('myApp.view2', ['ngRoute'])
     }]);
 
 var app = angular.module('demo', []);
-app.controller('demoCtrl', function($scope,$http) {
+app.controller('onPageLoad', function($scope,$http) {
     $scope.firstname = "John";
     $scope.lastname = "Doe";
     $scope.data = {};
     $scope.data.calendarTimes = [];
     $scope.data.todayAppointment = [];
     $scope.data.calendarData = [];
+    $scope.officeApptTimes = [];
+    $scope.hasAppts = true;
 
+    //manually setting the office hours until someone decides differently
+    for(var i = 8; i< 12; i++) {
+        $scope.officeApptTimes.push(i + " am");
+    }
+    $scope.officeApptTimes.push("12 pm")
+    for(var i = 1; i< 6; i++) {
+        $scope.officeApptTimes.push(i + " pm");
+    }
 
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2023-10-09%2000%3A00%3A00&range=7")
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2024-12-06%2000%3A00%3A00&range=7")
         .then(function(response) {
             var appointments = (response.data);
             $scope.data.todayAppointment = appointments[0].appointments;
-
+            $scope.weeklyDate = {};
+            $scope.weeklyDate.firstDayOfCalendar = appointments[0].startTime;
+            $scope.weeklyDate.lastDayOfCalendar = appointments[appointments.length - 1].startTime;
             for(var daily in appointments) {
                 $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
             }
             fillTimeSlots($scope);
+            $scope.pageLoaded = true;
         });
+    if($scope.data.todayAppointment.length > 1) {
+        $scope.hasAppts = true;
+        $scope.hasNoAppts = false;
+    }
+    else {
+        $scope.hasNoAppts = true;
+        $scope.hasAppts = false;
+    }
     timeBarHeight($scope);
 
 });
@@ -47,9 +68,9 @@ app.controller('dateController', function($scope, $http) {
         console.log(selectedDate);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=" + selectedDate + "&range=7")
             .then(function (response) {
-                console.log("im fancy and new");
-                //console.log(response.data);
                 var appointments = (response.data);
+                $scope.weeklyDate.firstDayOfCalendar = appointments[0].startTime;
+                $scope.weeklyDate.lastDayOfCalendar = appointments[appointments.length - 1].startTime;
                 console.log("Refreshed Appts");
                 console.log(appointments);
 
@@ -61,10 +82,16 @@ app.controller('dateController', function($scope, $http) {
                     $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
                 }
                 $scope.data.calendarData[todayIndex].isCorrectDay="correct";
-                console.log("today index?");
-                console.log(todayIndex);
                 fillTimeSlots($scope);
             });
+        if($scope.data.todayAppointment.length > 1) {
+            $scope.hasAppts = true;
+            $scope.hasNoAppts = false;
+        }
+        else {
+            $scope.hasNoAppts = true;
+            $scope.hasAppts = false;
+        }
     }
 });
 
@@ -74,7 +101,7 @@ function timeBarHeight($scope) {
     dayStart.setHours(8);
     dayStart.setMinutes(0);
     var diff = Math.abs(currentTime - dayStart);
-    $scope.scrollableTimeBarHeight = Math.min(85 + (diff/47492), 765);
+    $scope.scrollableTimeBarHeight = Math.min(50 + (diff/47492), 695);
 
 }
 
