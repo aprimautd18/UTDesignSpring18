@@ -57,6 +57,31 @@ app.controller('onPageLoad', function($scope,$http) {
     timeBarHeight($scope);
 
 });
+app.controller('statusCodeController', function($scope,$http){
+$scope.data= {
+    model:null,
+    statusOptions:[
+        {statusID: '0', statusName: 'Scheduled'},
+        {statusID: '1', statusName: 'Checked In'},
+        {statusID: '2', statusName: 'In Process'},
+        {statusID: '3', statusName: 'Discharged'},
+        {statusID: '4', statusName: 'Canceled'}
+],
+
+    selectedStatusCode: null
+};
+
+$scope.updatedStatus= function( a) {
+   var data= {
+        "id": ''+a,
+        "newCode": $scope.data.selectedStatusCode
+    };
+
+    $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointmentStatus",data);
+};
+});
+
+
 app.controller('dateController', function($scope, $http) {
     var todayDate = new Date("2024-11-16");
     $scope.selectedDate = todayDate;
@@ -75,13 +100,14 @@ app.controller('dateController', function($scope, $http) {
                 console.log(appointments);
 
                 var todayIndex = daysBetween(appointments[0].startTime,selectedDate);
-                appointments[todayIndex].isCorrectDay="correct";
                 $scope.data.todayAppointment = appointments[todayIndex].appointments;
                 $scope.data.calendarData = [];
                 for (var daily in appointments) {
                     $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
                 }
-                $scope.data.calendarData[todayIndex].isCorrectDay="correct";
+                $scope.data.calendarData[todayIndex].isCorrectDayToHighlight="correctHighlightedDay";
+                console.log("today index?");
+                console.log(todayIndex);
                 fillTimeSlots($scope);
             });
         if($scope.data.todayAppointment.length > 1) {

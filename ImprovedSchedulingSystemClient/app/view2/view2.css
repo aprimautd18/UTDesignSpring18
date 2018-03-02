@@ -121,7 +121,7 @@ table tr:nth-child(even) {
     background-size: 100px 50px;
     background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
-.correct{
+.correctHighlightedDay{
     border:2px solid red;
     border-radius: 5px;
 }

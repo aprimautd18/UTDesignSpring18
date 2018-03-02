@@ -154,6 +154,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         public IActionResult getCalenderNames()
         {
             List<string> calNames = db.retreiveCalendarNames();
+            calNames.Sort();
             return Ok(calNames);
         }
     }
