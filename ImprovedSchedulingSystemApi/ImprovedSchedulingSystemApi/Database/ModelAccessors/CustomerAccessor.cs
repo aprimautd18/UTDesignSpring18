@@ -60,5 +60,10 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             return result.IsAcknowledged;
         }
 
+        public bool deleteCustomer(ObjectId id)
+        {
+            var result = collection.DeleteOne(x => x.id == id);
+            return result.IsAcknowledged;
+        }
     }
 }
