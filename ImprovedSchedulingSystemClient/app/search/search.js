@@ -52,6 +52,7 @@ app.controller('searchCtrl', function($scope,$http) {
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.firstName + "&lastName=" + $scope.lastName)
             .then(function (response) {
                 $scope.customerID = response.data[0].id;
+                //loop through and push all the customers onto an array
                 console.log($scope.customerID);
                 //nested them otherwise it would do the second call before saving the customer ID
                 $http.get("https://seniordesign2018dev.azurewebsites.net/api/Appointment/appointmentLookupByCustomerId?id=" + $scope.customerID)

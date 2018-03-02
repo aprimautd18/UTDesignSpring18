@@ -125,7 +125,7 @@ function timeBarHeight($scope) {
     dayStart.setHours(8);
     dayStart.setMinutes(0);
     var diff = Math.abs(currentTime - dayStart);
-    $scope.scrollableTimeBarHeight = Math.min(50 + (diff/47492), 695);
+    $scope.scrollableTimeBarHeight = Math.min(50 + (diff/50000), 695);
 
 }
 
