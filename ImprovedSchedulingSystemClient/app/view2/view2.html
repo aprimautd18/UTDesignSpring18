@@ -11,7 +11,7 @@
                 <div class="dailyAppointmentTitle">
                     <input type="date" ng-controller="dateController" ng-model="selectedDate" ng-change="updateDate()">
                 </div>
-                <div ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
+                <div ng-init="statusCodes = {0: 'Scheduled',1: 'Checked In',2: 'In Process',3: 'Discharged',4: 'Canceled'}">
                 </div>
                 <table>
                     <tr class="dailyHeader">
@@ -21,16 +21,19 @@
                         <td>Appt End Time</td>
                         <td>Status</td>
                     </tr>
-
-                    <tr class="dailyContents" ng-repeat="x in data.todayAppointment">
-                        <td>{{ x.customer.firstName }}</td>
-                        <td>{{ x.customer.lastName }}</td>
-                        <td>{{ x.aptstartTime | date:'shortTime'}}</td>
-                        <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                        <td>
-                            <select>
-                                <option ng-repeat="codes in statusCodes">{{codes}}</option>
-                            </select>
+                         <tr class="dailyContents" ng-repeat="x in data.todayAppointment">
+                             <td>{{ x.customer.firstName }}</td>
+                             <td>{{ x.customer.lastName }}</td>
+                             <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                             <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                             <td>
+                             <form name="myStatusCode" ng-controller="statusCodeController">
+                                <label for="statusCode"></label>
+                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id)">
+                                        <option value="">{{statusCodes[x.status]}}</option>
+                                        <option ng-repeat="option in data.statusOptions" ng-value="option.statusID">{{option.statusName}}
+                                   </select>
+                             </form>
                         </td>
                     </tr>
                 </table>
@@ -59,7 +62,7 @@
                             {{ timeSlot.time }}
                         </div>
                     </div>
-                    <div class="dailyColumn {{calendar.isCorrectDay}}" ng-repeat="calendar in data.calendarData">
+                    <div class="dailyColumn {{calendar.isCorrectDayToHighlight}}" ng-repeat="calendar in data.calendarData">
                         <div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">
                             <div class="appointmentMessaging" >
                                  {{ a.customer.lastName }} , {{ a.customer.firstName }}
