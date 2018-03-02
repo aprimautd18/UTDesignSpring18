@@ -1,6 +1,7 @@
 <html>
 <link rel="stylesheet" href="view2/view2.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 <body>
 
 
@@ -11,8 +12,11 @@
                 <div class="dailyAppointmentTitle">
                     <input type="date" ng-controller="dateController" ng-model="selectedDate" ng-change="updateDate()">
                 </div>
-                <div ng-init="statusCodes = {0: 'Scheduled',1: 'Checked In',2: 'In Process',3: 'Discharged',4: 'Canceled'}">
+                <div ng-init="statusCodes = {0: 'Scheduled',1: 'CheckedIn',2: 'InProcess',3: 'Discharged',4: 'Canceled'}">
                 </div>
+                <div ng-init="statusCodesWSpaces = {0: 'Scheduled',1: 'Checked In',2: 'In Process',3: 'Discharged',4: 'Canceled'}">
+                </div>
+
                 <table>
                     <tr class="dailyHeader">
                         <td>First Name</td>
@@ -21,7 +25,7 @@
                         <td>Appt End Time</td>
                         <td>Status</td>
                     </tr>
-                         <tr class="dailyContents" ng-repeat="x in data.todayAppointment">
+                         <tr class="dailyContents {{statusCodes[x.status]}}" ng-repeat="x in data.todayAppointment">
                              <td>{{ x.customer.firstName }}</td>
                              <td>{{ x.customer.lastName }}</td>
                              <td>{{ x.aptstartTime | date:'shortTime'}}</td>
@@ -30,7 +34,8 @@
                              <form name="myStatusCode" ng-controller="statusCodeController">
                                 <label for="statusCode"></label>
                                    <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id)">
-                                        <option value="">{{statusCodes[x.status]}}</option>
+
+                                        <option value="">{{statusCodesWSpaces[x.status]}}</option>
                                         <option ng-repeat="option in data.statusOptions" ng-value="option.statusID">{{option.statusName}}
                                    </select>
                              </form>

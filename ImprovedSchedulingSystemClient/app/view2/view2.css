@@ -19,12 +19,12 @@ table, th , td  {
     border-collapse: collapse;
     padding: 5px;
 }
-table tr:nth-child(odd) {
+/*table tr:nth-child(odd) {
     background-color: #f1f1f1;
 }
 table tr:nth-child(even) {
     background-color: #ffffff;
-}
+}*/
 
 .dailyHeader {
     font-size: 14px;
@@ -70,7 +70,23 @@ table tr:nth-child(even) {
 .correctHighlightedDay{
     border:2px solid red;
 }
+ .Scheduled{
+    background-color: #f1f1f1 ;
+}
+ .CheckedIn{
+     background-color:  #eaf298;
+ }
+ .InProcess{
+     background-color: lightblue;
+ }
+ .Discharged{
 
+     background-color: lightgreen;
+
+ }
+ .Canceled{
+     background-color: #ff596c;
+ }
 .calWrapper {
     max-width: 100% !important;
 }
