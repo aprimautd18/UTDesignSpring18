@@ -1,14 +1,77 @@
-
-.aprimaLogo {
-    display: inline-block;
-    height: 120px;
-    width: auto;
-}
-
 .headerMessage {
     display: inline-block;
     font-size: 24px;
     vertical-align: bottom;
+}
+
+.calendarContainer {
+    background-color: #e3e3e3;
+    padding-bottom: 15px;
+}
+
+.weekTitle {
+    font-size: 18px;
+    padding-left: 40px;
+}
+.innerCalContainer {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+.timeColumn {
+    width: 20%;
+    text-align: right;
+    background-color: #e3e3e3;
+    margin-top: 13px;
+    margin-bottom: -5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.timeRepeater {
+    z-index: 2;
+}
+
+.calendarColumn {
+    background-color: #f1f1f1;
+    width: 100%;
+    margin: 0px 1px;
+    text-align: center;
+}
+.appointmentWrapper {
+    background-size: 100px 72px;
+    background-image: linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+.appointment {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    font-size: 12px;
+}
+.appointmentMessaging {
+    background-color: #4dacfd4a;
+    width: 95%;
+    margin: 1px 2px;
+    overflow: hidden;
+}
+.dayHeader {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    background-color: #e3e3e3;
+}
+.numericDay {
+    align-self: flex-start;
+    margin-left: 5px;
+}
+.dayInWeek {
+    align-self: center;
+    width: 100%;
+}
+
+.innerWeek {
+    justify-content: center;
 }
 
 .dailyAppointmentTitle {
@@ -33,21 +96,9 @@ table tr:nth-child(even) {
 .dailyContents {
     font-size: 12px;
 }
-.appointment {
-    background-color: #8fdf82;
-    border-radius: 5px;
-    margin: 2px;
-    overflow: hidden;
-    border: 1px solid darkgray;
-
-}
-
-.appointmentMessaging {
-    padding: 2px;
-}
 
 .blank {
-    background-color: lightgrey;
+    border: none;
 }
 
 .blank .appointmentMessaging {
@@ -66,9 +117,13 @@ table tr:nth-child(even) {
     display: flex;
     flex-direction: row;
     font-size: 12px;
+    background-color: #ccc;
+    background-size: 100px 50px;
+    background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 .correctHighlightedDay{
     border:2px solid red;
+    border-radius: 5px;
 }
  .Scheduled{
     background-color: #f1f1f1 ;
@@ -108,4 +163,7 @@ table tr:nth-child(even) {
     position: relative;
     width: 100%;
     top: 100px;
-    border-bottom: 2px solid rgba(0, 0, 255, .5);}
+    border-bottom: 2px solid rgba(255, 10, 17, 0.81);
+    z-index: 1;
+}
+
