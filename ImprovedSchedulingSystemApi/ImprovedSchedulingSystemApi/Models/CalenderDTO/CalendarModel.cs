@@ -8,6 +8,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
 {
+
+    /// <summary>
+    /// The model for a single day calendar 
+    /// </summary>
     public class CalendarModel
     {
 		public CalendarModel()
