@@ -2,40 +2,65 @@
 
 <link rel="stylesheet" href="search/search.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js" type="text/javascript"></script>
+<script src="https://m-e-conroy.github.io/angular-dialog-service/javascripts/dialogs.min.js" type="text/javascript"></script>
 <body>
 <div ng-app="search" ng-controller="searchCtrl">
     <div class="container searchContainerWrapper">
         <h3>Search By Calendar</h3>
         <div class="searchContainer">
-            <form>
-                <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
-                <input type="date" ng-model="searchDate" style="margin: 2px">
-                <button type="submit" ng-click="apptSearchEngine()">Submit</button>
+            <!--<form>-->
+                <!--<select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>-->
+                <!--<input type="date" ng-model="searchDate" style="margin: 2px">-->
+                <!--<button type="submit" ng-click="apptSearchEngine()">Submit</button>-->
 
-                <input type="search" ng-model="firstName" style="margin: 2px">
-                <input type="search" ng-model="lastName">
-                <button type="submit" ng-click="customerSearchEngine()">Submit</button>
-            </form>
-            <table>
-                <tr>
-                    <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Appt Start Time</td>
-                    <td>Appt End Time</td>
-                    <td>Status</td>
-                </tr>
+                <!--<input type="search" ng-model="firstName" style="margin: 2px">-->
+                <!--<input type="search" ng-model="lastName">-->
+                <!--<button type="submit" ng-click="customerSearchEngine()">Submit</button>-->
+            <!--</form>-->
+            <!--<table>-->
+                <!--<tr>-->
+                    <!--<td>First Name</td>-->
+                    <!--<td>Last Name</td>-->
+                    <!--<td>Appt Start Time</td>-->
+                    <!--<td>Appt End Time</td>-->
+                    <!--<td>Status</td>-->
+                <!--</tr>-->
 
-                <tr ng-repeat="x in searchResults">
-                    <td ng-if="apptSearch">{{ x.customer.firstName }}</td>
-                    <td ng-if="apptSearch">{{ x.customer.lastName }}</td>
-                    <td ng-if="customerSearch">{{ firstName }}</td>
-                    <td ng-if="customerSearch">{{ lastName }}</td>
-                    <td>{{ x.aptstartTime | date:'shortTime'}}</td>
-                    <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                    <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
-                        {{ statusCodes[x.status] }}</td>
-                </tr>
-            </table>
+                <!--<tr ng-repeat="x in searchResults">-->
+                    <!--<td ng-if="apptSearch">{{ x.customer.firstName }}</td>-->
+                    <!--<td ng-if="apptSearch">{{ x.customer.lastName }}</td>-->
+                    <!--<td ng-if="customerSearch">{{ firstName }}</td>-->
+                    <!--<td ng-if="customerSearch">{{ lastName }}</td>-->
+                    <!--<td>{{ x.aptstartTime | date:'shortTime'}}</td>-->
+                    <!--<td>{{ x.aptendTime | date:'shortTime'}}</td>-->
+                    <!--<td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">-->
+                        <!--{{ statusCodes[x.status] }}</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+            <div class="add" ng-controller="dialogService">
+                <!-- Trigger/Open The Modal -->
+                <button id="addButton" ng-click="buttonPressed()">Add Patient</button>
+
+                <!-- The Modal -->
+                <div id="addModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form>
+                            First Name:
+                            <input type="text" ng-model="newPatientFirstName">
+                            Last Name:
+                            <input type="text" ng-model="newPatientLastName">
+                            Phone Number:
+                            <input type="text" ng-model="newPatientPhoneNumber">
+                            <button type="submit" ng-click="addNewPatient()">Submit</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
