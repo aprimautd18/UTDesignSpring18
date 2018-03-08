@@ -22,8 +22,11 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 
         public List<CustomerModel> searchByCustomerDetails(string firstName, string lastName, string phoneNumber)
         {
-            var builder = Builders<CustomerModel>.Filter; // Contructs a filter for the search.(Id normally use a lambda but in this case we need to incrumentally build the query)
-            FilterDefinition<CustomerModel> filter = FilterDefinition<CustomerModel>.Empty; // Place to store the filter for the find query
+            var builder =
+                Builders<CustomerModel>
+                    .Filter; // Contructs a filter for the search.(Id normally use a lambda but in this case we need to incrumentally build the query)
+            FilterDefinition<CustomerModel>
+                filter = FilterDefinition<CustomerModel>.Empty; // Place to store the filter for the find query
 
 
             if (firstName != null)
@@ -40,7 +43,7 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             {
                 filter = filter & builder.Eq(x => x.phoneNumber, phoneNumber);
             }
-           
+
 
             List<CustomerModel> returnedItems = collection.Find(filter).ToList();
             return returnedItems;
@@ -60,10 +63,19 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             return result.IsAcknowledged;
         }
 
-        public bool deleteCustomer(ObjectId id)
+        public int deleteCustomer(ObjectId id)
         {
-            var result = collection.DeleteOne(x => x.id == id);
-            return result.IsAcknowledged;
+            CalendarAccessor caldc = new CalendarAccessor();
+            if (caldc.appointmentLookupByCustomerId(id).Count == 0)
+            {
+                var result = collection.DeleteOne(x => x.id == id);
+                if (result.IsAcknowledged)
+                {
+                    return 0;
+                }
+                return 1;
+            }
+            return 2;
         }
     }
 }
