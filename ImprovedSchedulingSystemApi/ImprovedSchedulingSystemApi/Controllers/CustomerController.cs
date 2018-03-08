@@ -121,6 +121,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns></returns>
         /// <response code="200">Customer was sucessfully delete</response>
         /// <response code="404">Customerid was not found in the db</response>
+        /// <response code="409">Customer vcould not be delete becuase their are appointemnts still associated with them</response>
         [HttpPost("deleteCustomer")]
         public IActionResult deleteCustomer([FromBody]ObjectId id)
         {
@@ -130,12 +131,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             var result = db.deleteCustomer(id);
-            if (result)
+            switch (result)
             {
-                return Ok();
+                case 1: return Ok();
+                case 2: return NotFound();
+                case 3: return StatusCode(409);
+                default: return NotFound();
             }
 
-            return NotFound();
         }
     }
 }
