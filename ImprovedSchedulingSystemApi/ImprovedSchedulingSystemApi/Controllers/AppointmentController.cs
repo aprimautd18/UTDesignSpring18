@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
@@ -19,9 +20,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
     [Route("api/Appointment")]
     public class AppointmentController : Controller
     {
+
         CalendarAccessor db = new CalendarAccessor();
-
-
 
 
 
