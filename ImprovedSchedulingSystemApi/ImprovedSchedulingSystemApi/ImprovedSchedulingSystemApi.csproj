@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/b7fdc4af-9e33-45a8-9509-af1b02b351a2/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/ImprovedSchedulingSystemApi</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/b7fdc4af-9e33-45a8-9509-af1b02b351a2/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/ImprovedSchedulingSystemApi</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish"> 
@@ -26,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.4" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
@@ -39,6 +42,10 @@
     <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 
