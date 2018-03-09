@@ -18,11 +18,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\net461\ImprovedSchedulingSystemApi.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Database\**" />
+    <Content Remove="Database\**" />
+    <EmbeddedResource Remove="Database\**" />
+    <None Remove="Database\**" />
+  </ItemGroup>
   
   
 
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
