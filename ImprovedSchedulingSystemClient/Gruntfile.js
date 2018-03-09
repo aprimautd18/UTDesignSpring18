@@ -9,8 +9,8 @@ module.exports = function(grunt) {
             options: {
                 replacements: [
                     {
-                        pattern: 'https://seniordesign2018dev.azurewebsites.net',
-                        replacement: ''
+                        pattern: 'https://seniordesign2018dev.azurewebsites.net/',
+                        replacement: '/'
                     }
                 ]
             }
