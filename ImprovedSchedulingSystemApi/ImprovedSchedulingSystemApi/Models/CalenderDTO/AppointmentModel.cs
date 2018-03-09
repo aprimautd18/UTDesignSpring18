@@ -14,6 +14,9 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
         Scheduled = 0, CheckedIn = 1, InProcess = 2, Discharged = 4, Canceled = 5
     }
 
+    /// <summary>
+    /// The model for a single appointment
+    /// </summary>
     public class AppointmentModel
     {
         [BsonElement("appointmentID")]

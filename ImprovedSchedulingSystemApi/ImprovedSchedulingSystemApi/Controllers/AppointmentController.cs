@@ -95,19 +95,19 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <summary>
         /// Allows an Appointment to be updated given the appointment model
         /// </summary>
-        /// <param name="model">The data the api needs. Look at the example for more info. Appointment Id Must be an existing id in the db or update will fail. If you need any clarification, send us a message</param>
+        /// <param name="model">The model of the appointment to update. The id must match an existing appointment</param>
         /// <returns></returns>
         /// <response code="200">Appointment was sucessfully updated</response>
         /// <response code="404">Appointmentid was not found in the db</response>
         [HttpPost("updateAppointment")]
-        public IActionResult updateAppointment([FromBody]addAppointmentViewModel model)
+        public IActionResult updateAppointment([FromBody]AppointmentModel model)
         {
-            if (model.Appointment == null || model.calendarId == ObjectId.Empty || model.Appointment.id == ObjectId.Empty)
+            if (model == null || model.id == ObjectId.Empty)
             {
                 return BadRequest();
             }
 
-            bool returnedItem = db.updateAppointment(model.calendarId, model.Appointment);
+            bool returnedItem = db.updateAppointment(model);
             if (returnedItem)
             {
                 return Ok();
@@ -117,5 +117,29 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
         }
 
+        /// <summary>
+        /// Allows an Appointment to be delete given the appointment model
+        /// </summary>
+        /// <param name="id">The object Id for the appointment to delete</param>
+        /// <returns></returns>
+        /// <response code="200">Appointment was sucessfully delete</response>
+        /// <response code="404">Appointment id was not found in the db</response>
+        [HttpPost("deleteAppointment")]
+        public IActionResult deleteAppointment([FromBody]ObjectId id)
+        {
+            if (id == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
+
+            bool returnedItem = db.deleteAppointment(id);
+            if (returnedItem)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+
+        }
     }
 }
