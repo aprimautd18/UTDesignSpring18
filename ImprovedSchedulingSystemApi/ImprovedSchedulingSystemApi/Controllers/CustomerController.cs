@@ -76,7 +76,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// </summary>
         /// <param name="model">The data the api needs. Look at the example for more info. Leave the customer ID blank as we will generate it. If you need any clarification, send us a message</param>
         /// <returns>The newly added customer containing the new id value generated for the customer</returns>
-        /// <response code="200">customer was sucessfully added</response>
+        /// <response code="200">Customer was sucessfully added</response>
+        /// <response code="500">Customer Model is invaild</response>
         [HttpPost("addCustomer")]
         public IActionResult addCustomer([FromBody]CustomerModel model)
         {
@@ -96,6 +97,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns></returns>
         /// <response code="200">Customer was sucessfully updated</response>
         /// <response code="404">Customerid was not found in the db</response>
+        /// <response code="500">Customer model is invaild</response>
         [HttpPost("updateCustomer")]
         public IActionResult updateCustomer([FromBody]CustomerModel model)
         {
