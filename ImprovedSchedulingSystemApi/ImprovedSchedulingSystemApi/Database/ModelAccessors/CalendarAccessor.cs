@@ -43,6 +43,12 @@ namespace ImprovedSchedulingSystemApi.Database
 
         }
 
+        public List<AppointmentModel> appointmentLookupById(ObjectId id)
+        {
+            return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.id == id).ToList();
+
+        }
+
         public bool updateAppointmentStatus(ObjectId _id, StatusCodes newCode)
         {
             var findAppointmentFilter = Builders<CalendarModel>.Filter.Where(x => x.appointments.Any(y => y.id == _id));

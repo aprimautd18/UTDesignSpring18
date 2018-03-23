@@ -23,7 +23,31 @@ namespace ImprovedSchedulingSystemApi.Controllers
         CalendarAccessor db = new CalendarAccessor();
 
 
+        /// <summary>
+        /// Reterives all of the appointments associated with a specific ID 
+        /// </summary>
+        /// <param name="id">The id lookup appointments for </param>
+        /// <returns>A list of Appointments </returns>
+        /// <response code="200">Returns the appointments associated with the  ID</response>
+        [Produces("application/json")]
+        [HttpGet("appointmentLookupByCustomerId")]
+        [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
+        public IActionResult appointmentLookupById([FromQuery] string id)
+        {
+            ObjectId parsedId = ObjectId.Parse(id);
+            if (parsedId == ObjectId.Empty)
+            {
+                return BadRequest();
+            }
 
+            List<AppointmentModel> data = db.appointmentLookupById(parsedId);
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(data);
+        }
 
 
         /// <summary>
