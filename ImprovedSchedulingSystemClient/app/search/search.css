@@ -13,6 +13,8 @@ table tr:nth-child(odd) {
 table tr:nth-child(even) {
     background-color: #ffffff;
 }
+
+
 /* MODAL STYLES
 -------------------------------*/
 /* The Modal (background) */
@@ -53,3 +55,4 @@ table tr:nth-child(even) {
     text-decoration: none;
     cursor: pointer;
 }
+
