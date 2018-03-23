@@ -30,7 +30,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <response code="200">The calender id</response>
         /// <response code="404">The calender was not found</response>
         [Produces("application/json")]
-        [HttpGet("dateLookup")]
+        [HttpGet("calenderIdLookup")]
         [ProducesResponseType(typeof(List<dateLookup_CalendarViewModel>), 200)]
         public IActionResult calenderIdLookup([FromQuery] string calName, [FromQuery] string startTime)
         {
