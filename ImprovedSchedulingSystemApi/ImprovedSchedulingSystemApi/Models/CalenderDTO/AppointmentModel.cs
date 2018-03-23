@@ -41,5 +41,27 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
         [BsonElement("status")]
         public StatusCodes status { get; set; }
 
+
+        public static bool operator<=(AppointmentModel a, AppointmentModel b)
+        {
+            return (a.aptstartTime <= b.aptstartTime);
+        }
+
+        public static bool operator>=(AppointmentModel a, AppointmentModel b)
+        {
+            return (a.aptstartTime >= b.aptstartTime);
+        }
+
+        public static bool conflict(AppointmentModel a, AppointmentModel b)
+        {
+            return a.aptendTime >= b.aptstartTime || a.aptstartTime >= b.aptendTime;
+        }
+
+
+
+
     }
+
+        
+
 }
