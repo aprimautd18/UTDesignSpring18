@@ -72,7 +72,7 @@ $scope.data= {
 };
 
 $scope.updatedStatus= function( a) {
-   var data= {
+    var data= {
         "id": ''+a,
         "newCode": $scope.data.selectedStatusCode
     };

@@ -7,7 +7,6 @@
 <body>
 <div ng-app="search" ng-controller="searchCtrl">
     <div class="container searchContainerWrapper">
-        <h3>Search By Calendar</h3>
         <div class="searchContainer">
             <!--<form>-->
                 <!--<select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>-->
@@ -40,7 +39,7 @@
             <!--</table>-->
             <div class="add" ng-controller="dialogService">
                 <!-- Trigger/Open The Modal -->
-                <button id="addButton" ng-click="buttonPressed()">Add Patient</button>
+                <button id="addButton" ng-click="buttonPressed()">Add Appointment</button>
 
                 <!-- The Modal -->
                 <div id="addModal" class="modal">
@@ -48,13 +47,27 @@
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
-                        <form>
+                        <form name="newAppointmentForm">
                             First Name:
-                            <input type="text" ng-model="newPatientFirstName">
+                                <input ng-model="patientFirstName">
+                            <br>
                             Last Name:
-                            <input type="text" ng-model="newPatientLastName">
+                                <input ng-model="patientLastName">
+                            <br>
                             Phone Number:
-                            <input type="text" ng-model="newPatientPhoneNumber">
+                                <input ng-model="patientPhoneNumber">
+                                <button type="submit" ng-click="searchPatient()">Search</button>
+                            <br>
+                            <input type="date" ng-model="newApptDate">
+                            <br>
+                            Start Time:
+                            <input type="time" ng-model="newApptStartTime" step="60">
+                            <br>
+                            End Time:
+                            <input type="time" ng-model="newApptEndTime" step="60">
+                            <br>
+                            <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
+                            <br>
                             <button type="submit" ng-click="addNewPatient()">Submit</button>
                         </form>
                     </div>
