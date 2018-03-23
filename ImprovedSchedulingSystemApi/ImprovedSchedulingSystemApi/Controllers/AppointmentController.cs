@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
@@ -125,7 +126,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <response code="200">Appointment was sucessfully delete</response>
         /// <response code="404">Appointment id was not found in the db</response>
         [HttpPost("deleteAppointment")]
-        public IActionResult deleteAppointment([FromBody]AppointmentModel model)
+        public IActionResult deleteAppointment([FromBody]deleteObjectViewModel model)
         {
             
             if (model.id == ObjectId.Empty)

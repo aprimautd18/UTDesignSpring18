@@ -7,6 +7,7 @@ using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
 using ImprovedSchedulingSystemApi.Models.CustomerDTO;
+using ImprovedSchedulingSystemApi.ViewModels;
 using MongoDB.Bson;
 
 namespace ImprovedSchedulingSystemApi.Controllers
@@ -125,14 +126,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <response code="404">Customerid was not found in the db</response>
         /// <response code="409">Customer vcould not be delete becuase their are appointemnts still associated with them</response>
         [HttpPost("deleteCustomer")]
-        public IActionResult deleteCustomer([FromBody]ObjectId id)
+        public IActionResult deleteCustomer([FromBody]deleteObjectViewModel model)
         {
-            if (id == ObjectId.Empty)
+            if (model.id == ObjectId.Empty)
             {
                 return BadRequest();
             }
 
-            var result = db.deleteCustomer(id);
+            var result = db.deleteCustomer(model.id);
             switch (result)
             {
                 case 1: return Ok();
