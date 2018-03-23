@@ -7,10 +7,10 @@ using MongoDB.Bson;
 
 namespace ImprovedSchedulingSystemApi.ViewModels.addAppointment
 {
-    public class addAppointmentViewModel
+    public class addAppointmentWithCalIdViewModel
     {
 
-        public string calendarName { get; set; }
+        public ObjectId calendarId { get; set; }
 
         public AppointmentModel Appointment { get; set; }
 
