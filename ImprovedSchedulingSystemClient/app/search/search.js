@@ -103,8 +103,6 @@ app.controller('dialogService',function($scope, $http) {
     $scope.newApptStartTime = "";
     $scope.newApptEndTime = "";
     $scope.searchPatient = function () {
-      console.log("Searching for the patient id now");
-        console.log($scope.patientPhoneNumber);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.patientFirstName + "&lastName=" + $scope.patientLastName + "&phoneNumber=" + $scope.patientPhoneNumber)
             .then(function (response) {
                 console.log(response);
@@ -112,7 +110,6 @@ app.controller('dialogService',function($scope, $http) {
                 $scope.patientFirstName = response.data[0].firstName;
                 $scope.patientLastName = response.data[0].lastName;
                 $scope.patientPhoneNumber = response.data[0].phoneNumber;
-                console.log($scope.searchedPatientID);
             });
     };
 
@@ -125,7 +122,6 @@ app.controller('dialogService',function($scope, $http) {
         $scope.newApptEndDate = new Date($scope.newApptDate);
         $scope.newApptEndDate.setHours($scope.newApptEndTime.getHours());
         $scope.newApptEndDate.setMinutes($scope.newApptEndTime.getMinutes());
-        console.log($scope.newApptDate);
         var newAppt = {
             "calendarId": $scope.searchCalendar,
             "appointment": {
