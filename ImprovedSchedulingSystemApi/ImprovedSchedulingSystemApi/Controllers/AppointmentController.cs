@@ -125,14 +125,15 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <response code="200">Appointment was sucessfully delete</response>
         /// <response code="404">Appointment id was not found in the db</response>
         [HttpPost("deleteAppointment")]
-        public IActionResult deleteAppointment([FromBody]ObjectId id)
+        public IActionResult deleteAppointment([FromBody]AppointmentModel model)
         {
-            if (id == ObjectId.Empty)
+            
+            if (model.id == ObjectId.Empty)
             {
                 return BadRequest();
             }
 
-            bool returnedItem = db.deleteAppointment(id);
+            bool returnedItem = db.deleteAppointment(model.id);
             if (returnedItem)
             {
                 return Ok();
