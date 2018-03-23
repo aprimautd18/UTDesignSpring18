@@ -50,7 +50,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
 
-            CalendarModel test = db.dateLookup(calName, starttimeDateTime.AddDays(i));
+            CalendarModel test = db.dateLookup(calName, starttimeDateTime);
             if (test == null)
             {
                 return NotFound();
