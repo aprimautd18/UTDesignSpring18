@@ -135,6 +135,10 @@ namespace ImprovedSchedulingSystemApi.Controllers
             ObjectId calID = calDb.dateLookup(model.calendarName, model.Appointment.aptstartTime).id;
 
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
+            if (returnedItem == null)
+            {
+                //return somthing
+            }
             return Ok(returnedItem);
         }
 

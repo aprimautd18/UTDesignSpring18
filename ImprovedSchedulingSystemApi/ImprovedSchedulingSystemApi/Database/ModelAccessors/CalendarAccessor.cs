@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -72,7 +73,10 @@ namespace ImprovedSchedulingSystemApi.Database
             CalendarModel calender = collection.Find(findCalendarFilter).FirstOrDefault();
             calender.appointments.Add(newAppointment);
             calender.appointments.Sort();
-            
+            if (helperClasses.appointmentListConflict(calender.appointments))
+            {
+                return null;
+            }
             collection.ReplaceOne(x => x.id == calendarId, calender);
             return newAppointment;
         }
