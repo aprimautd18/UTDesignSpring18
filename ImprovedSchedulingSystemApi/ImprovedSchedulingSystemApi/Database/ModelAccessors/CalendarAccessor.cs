@@ -53,6 +53,7 @@ namespace ImprovedSchedulingSystemApi.Database
 
         public bool updateAppointmentStatus(ObjectId _id, StatusCodes newCode)
         {
+
             var findAppointmentFilter = Builders<CalendarModel>.Filter.Where(x => x.appointments.Any(y => y.id == _id));
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1].status, newCode);
             UpdateResult updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
@@ -68,13 +69,11 @@ namespace ImprovedSchedulingSystemApi.Database
         {
             newAppointment.id = ObjectId.GenerateNewId();
             var findCalendarFilter = Builders<CalendarModel>.Filter.Where(x => x.id == calendarId);
-            var addAppointmentToListFilter = Builders<CalendarModel>.Update.Push(x => x.appointments, newAppointment);
-            UpdateResult updateResult = collection.UpdateOne(findCalendarFilter, addAppointmentToListFilter);
-            if (!updateResult.IsAcknowledged)
-            {
-                return null;
-            }
-
+            CalendarModel calender = collection.Find(findCalendarFilter).FirstOrDefault();
+            calender.appointments.Add(newAppointment);
+            calender.appointments.Sort();
+            
+            collection.ReplaceOne(x => x.id == calendarId, calender);
             return newAppointment;
         }
 
