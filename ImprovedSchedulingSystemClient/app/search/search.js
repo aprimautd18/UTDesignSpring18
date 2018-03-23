@@ -123,7 +123,7 @@ app.controller('dialogService',function($scope, $http) {
         $scope.newApptEndDate.setHours($scope.newApptEndTime.getHours());
         $scope.newApptEndDate.setMinutes($scope.newApptEndTime.getMinutes());
         var newAppt = {
-            "calendarId": $scope.searchCalendar,
+            "calendarName": $scope.searchCalendar,
             "appointment": {
                 "customerId": $scope.searchedPatientID,
                 "aptstartTime": $scope.newApptDate,
