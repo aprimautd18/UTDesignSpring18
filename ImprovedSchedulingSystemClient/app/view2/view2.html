@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div class="appointmentWrapper">
-                            <div class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}">
+                            <div class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}" ng-controller="dateController" ng-model="selectedDate" ng-click="clickAppointment(a)">
                                 <div class="appointmentMessaging" >
                                     {{ a.customer.lastName }} , {{ a.customer.firstName }}
                                     <br>
