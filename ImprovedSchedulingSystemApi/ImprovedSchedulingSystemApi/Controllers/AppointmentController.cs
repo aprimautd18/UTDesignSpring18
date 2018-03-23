@@ -57,7 +57,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments associated with the customer</returns>
         /// <response code="200">Returns the appointments associated with the customer ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupByCustomerId")]
+        [HttpGet("appointmentLookupById")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupByCustomerId([FromQuery] string id)
         {
