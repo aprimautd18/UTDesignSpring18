@@ -26,6 +26,10 @@ namespace ImprovedSchedulingSystemApi.ViewModels.dateLookup
                 endTime = calendar.endTime;
                 foreach (var x in calendar.appointments)
                 {
+                    if (x == null)
+                    {
+                        continue;
+                    }
                     appointments.Add(new dateLookup_AppointmentViewModel(x, db.searchByCustomerId(x.CustomerId)));
                 }
             }
