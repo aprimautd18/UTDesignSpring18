@@ -78,34 +78,65 @@ app.controller('dialogService',function($scope, $http) {
 // When the user clicks the button, open the modal
     $scope.buttonPressed = function() {
         modal.style.display = "block";
-    }
+    };
 
 // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
         modal.style.display = "none";
-    }
+    };
 
 // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
-    $scope.newPatientFirstName = "";
-    $scope.newPatientLastName = "";
-    $scope.newPatientPhoneNumber = "";
+    };
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")
+        .then(function (response) {
+            $scope.calendarNames = response.data;
+        });
+    $scope.searchCalendar = "Kelly 441";
+    $scope.patientFirstName = " ";
+    $scope.patientLastName = " ";
+    $scope.patientPhoneNumber = " ";
+    $scope.newApptDate = "";
+    $scope.newApptStartTime = "";
+    $scope.newApptEndTime = "";
+    $scope.searchPatient = function () {
+      console.log("Searching for the patient id now");
+        console.log($scope.patientPhoneNumber);
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.patientFirstName + "&lastName=" + $scope.patientLastName + "&phoneNumber=" + $scope.patientPhoneNumber)
+            .then(function (response) {
+                console.log(response);
+                $scope.searchedPatientID = response.data[0].id;
+                $scope.patientFirstName = response.data[0].firstName;
+                $scope.patientLastName = response.data[0].lastName;
+                $scope.patientPhoneNumber = response.data[0].phoneNumber;
+                console.log($scope.searchedPatientID);
+            });
+    };
+
+
 
     $scope.addNewPatient = function () {
         console.log("Adding the patient now");
-        var newPatient = {
-            "firstName" : $scope.newPatientFirstName,
-            "lastName" : $scope.newPatientLastName,
-            "phoneNumber" : $scope.newPatientPhoneNumber
+        $scope.newApptDate.setHours($scope.newApptStartTime.getHours());
+        $scope.newApptDate.setMinutes($scope.newApptStartTime.getMinutes());
+        $scope.newApptEndDate = new Date($scope.newApptDate);
+        $scope.newApptEndDate.setHours($scope.newApptEndTime.getHours());
+        $scope.newApptEndDate.setMinutes($scope.newApptEndTime.getMinutes());
+        console.log($scope.newApptDate);
+        var newAppt = {
+            "calendarId": $scope.searchCalendar,
+            "appointment": {
+                "customerId": $scope.searchedPatientID,
+                "aptstartTime": $scope.newApptDate,
+                "aptendTime": $scope.newApptEndDate,
+            }
+
         };
-        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Customer/addCustomer", newPatient)
-            .then(function (response) {
-                console.log(response);
-            })
+        console.log(newAppt);
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/addAppointment",newAppt);
     };
 
 });
