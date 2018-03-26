@@ -56,7 +56,7 @@ app.controller('searchCtrl', function($scope,$http) {
 
 app.controller('dialogService',function($scope, $http) {
     // Get the modal
-    var modal = document.getElementById('addModal');
+    var addModal = document.getElementById('addModal');
 
 // Get the button that opens the modal
     var btn = document.getElementById("addButton");
@@ -66,18 +66,18 @@ app.controller('dialogService',function($scope, $http) {
 
 // When the user clicks the button, open the modal
     $scope.buttonPressed = function() {
-        modal.style.display = "block";
+        addModal.style.display = "block";
     };
 
 // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
-        modal.style.display = "none";
+        addModal.style.display = "none";
     };
 
 // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (event.target == addModal) {
+            addModal.style.display = "none";
         }
     };
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")

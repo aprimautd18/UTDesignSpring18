@@ -35,7 +35,7 @@
                         <td><button>Update</button></td>
                     </tr>
                 </table>
-                <button>Delete</button>
+                <button id="accept-favor" onclick="return confirm('Are you sure you would like to delete these appointments??');">Delete</button>
                 <button>Merge</button>
                 <h3>Search by Patient</h3>
                 First Name:
@@ -57,7 +57,7 @@
                     <td>{{ x.firstName }}</td>
                     <td>{{ x.lastName }}</td>
                     <td>{{ x.phoneNumber }}</td>
-                    <td> {{ x.id }}</td>
+                    <td class="clickablePatient"> {{ x.id }}</td>
                 </tr>
             </table>
             <div class="add" ng-controller="dialogService">
