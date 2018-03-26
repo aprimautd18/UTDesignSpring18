@@ -48,8 +48,6 @@ app.controller('searchCtrl', function($scope,$http) {
             .then(function (response) {
                 $scope.patientSearchResults = response.data;
                 $scope.customerID = response.data[0].id;
-                //loop through and push all the customers onto an array
-                console.log($scope.patientSearchResults);
             });
     }
 });

@@ -33,7 +33,7 @@ app.controller('onPageLoad', function($scope,$http) {
         $scope.officeApptTimes.push(i + " pm");
     }
 
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Kelly%20441&startTime=2024-12-06%2000%3A00%3A00&range=7")
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=2024-11-16%2000%3A00%3A00&range=7")
         .then(function(response) {
             var appointments = (response.data);
             $scope.data.todayAppointment = appointments[0].appointments;
@@ -43,7 +43,6 @@ app.controller('onPageLoad', function($scope,$http) {
             for(var daily in appointments) {
                 $scope.data.calendarData.push(addBlankAppts(appointments[daily]));
             }
-            fillTimeSlots($scope);
             $scope.pageLoaded = true;
         });
     if($scope.data.todayAppointment.length > 1) {
@@ -58,32 +57,32 @@ app.controller('onPageLoad', function($scope,$http) {
 
 });
 app.controller('statusCodeController', function($scope,$http){
-$scope.data= {
-    model:null,
-    statusOptions:[
-        {statusID: '0', statusName: 'Scheduled', Color: "gray"},
-        {statusID: '1', statusName: 'Checked In', Color: "yellow"},
-        {statusID: '2', statusName: 'In Process', Color: "blue"},
-        {statusID: '3', statusName: 'Discharged', Color: "green"},
-        {statusID: '4', statusName: 'Canceled',Color: "red"}
-],
+    $scope.data= {
+        model:null,
+        statusOptions:[
+            {statusID: '0', statusName: 'Scheduled', Color: "gray"},
+            {statusID: '1', statusName: 'Checked In', Color: "yellow"},
+            {statusID: '2', statusName: 'In Process', Color: "blue"},
+            {statusID: '3', statusName: 'Discharged', Color: "green"},
+            {statusID: '4', statusName: 'Canceled',Color: "red"}
+        ],
 
-    selectedStatusCode: null
-};
-
-$scope.updatedStatus= function( a) {
-    var data= {
-        "id": ''+a,
-        "newCode": $scope.data.selectedStatusCode
+        selectedStatusCode: null
     };
-    $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointmentStatus",data);
-};
+
+    $scope.updatedStatus= function( a) {
+        var data= {
+            "id": ''+a,
+            "newCode": $scope.data.selectedStatusCode
+        };
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointmentStatus",data);
+    };
 });
 
 
 app.controller('dateController', function($scope, $route, $http) {
     /***** THE SOURCE OF MOST OF OUR BUGS LIES RIGHT HERE*****/
-    var todayDate = new Date("2024-11-16");
+    var todayDate = new Date("2024-11-11");
     $scope.selectedDate = todayDate;
     $scope.searchCalendar = "Kelly 441";
     /************************** ^^^^These get reset every time something is changed^^^ *****************************/
@@ -159,9 +158,7 @@ function renderCalendar(response, selectedDate, $scope) {
         }
         $scope.data.calendarData.push(columnOfAppointments);
     }
-   // $scope.selectedDate = new Date(selectedDate);
     $scope.data.calendarData[todayIndex].isCorrectDayToHighlight="correctHighlightedDay";
-    fillTimeSlots($scope);
 }
 
 function timeBarHeight($scope) {
@@ -182,27 +179,6 @@ function daysBetween(firstDate, secondDate) {
     var daysApart = Math.abs(diff / 86400000);
     daysApart = Math.round(daysApart);
     return daysApart;
-}
-
-function fillTimeSlots($scope) {
-    var time;
-
-    for(var hour = 8; hour <= 12; hour++) {
-        for(var minute = 0; minute <= 45; minute += 15) {
-            time = {
-                time : " " + hour + ":" + minute
-            };
-            $scope.data.calendarTimes.push(time);
-        }
-    }
-    for(var hour = 13; hour < 17; hour++) {
-        for (var minute = 0; minute <= 45; minute += 15) {
-            time = {
-                time: " " + (hour-12) + ":" + minute
-            };
-            $scope.data.calendarTimes.push(time);
-        }
-    }
 }
 
 function calculatePixelHeights (appointment) {
