@@ -6,11 +6,12 @@
 
 
 <div ng-app="demo" ng-controller="onPageLoad">
-    <div class="container calWrapper" ng-if="pageLoaded">
+    <div class="container calWrapper" ng-if="pageLoaded" ng-controller="dateController">
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    <input type="date" ng-controller="dateController" ng-model="selectedDate" ng-change="updateDate()">
+                    <input type="date" ng-model="selectedDate" ng-change="updateDate()">
+                    <select ng-model="searchCalendar" ng-options="x for x in calendarNames"  ng-change="updateDate()"></select>
                 </div>
                 <div ng-init="statusCodes = {0: 'Scheduled',1: 'CheckedIn',2: 'InProcess',3: 'Discharged',4: 'Canceled'}">
                 </div>
@@ -66,7 +67,7 @@
                             </div>
                         </div>
                         <div class="appointmentWrapper">
-                            <div class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}" ng-controller="dateController" ng-model="selectedDate" ng-click="clickAppointment(a)">
+                            <div class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}" ng-model="selectedDate" ng-click="clickAppointment(a)">
                                 <div class="appointmentMessaging" >
                                     {{ a.customer.lastName }} , {{ a.customer.firstName }}
                                     <br>

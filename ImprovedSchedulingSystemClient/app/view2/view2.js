@@ -33,7 +33,7 @@ app.controller('onPageLoad', function($scope,$http) {
         $scope.officeApptTimes.push(i + " pm");
     }
 
-    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Ablaseau%20376&startTime=2024-12-06%2000%3A00%3A00&range=7")
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=Kelly%20441&startTime=2024-12-06%2000%3A00%3A00&range=7")
         .then(function(response) {
             var appointments = (response.data);
             $scope.data.todayAppointment = appointments[0].appointments;
@@ -82,15 +82,23 @@ $scope.updatedStatus= function( a) {
 
 
 app.controller('dateController', function($scope, $route, $http) {
+    /***** THE SOURCE OF MOST OF OUR BUGS LIES RIGHT HERE*****/
     var todayDate = new Date("2024-11-16");
     $scope.selectedDate = todayDate;
+    $scope.searchCalendar = "Kelly 441";
+    /************************** ^^^^These get reset every time something is changed^^^ *****************************/
+    $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")
+        .then(function (response) {
+            $scope.calendarNames = response.data;
+        });
     $scope.updateDate = function() {
         timeBarHeight($scope);
         var selectedDate = new Date($scope.selectedDate);
         selectedDate.setDate(selectedDate.getDate() - 1);
         selectedDate = selectedDate.toISOString();
         console.log("get your selected data here: "+selectedDate);
-        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=" + selectedDate + "&range=7")
+        console.log($scope.searchCalendar);
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=" + $scope.searchCalendar + "&startTime=" + selectedDate + "&range=7")
             .then(function (response) {
                 renderCalendar(response, selectedDate, $scope);
             });
