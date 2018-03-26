@@ -18,7 +18,8 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.input = "searchHere";
     $scope.searchCalendar = "Kelly 441";
     $scope.searchDate = new Date("2024-12-09");
-    $scope.searchResults = [];
+    $scope.apptSearchResults = {};
+    $scope.patientSearchResults = {};
     $scope.firstName = "Test96635";
     $scope.lastName = "Patient96635";
     $scope.customerID = "";
@@ -31,36 +32,24 @@ app.controller('searchCtrl', function($scope,$http) {
 
     $scope.apptSearchEngine = function () {
         console.log("in here");
-        $scope.apptSearch = true;
-        $scope.customerSearch = false;
-        var dummyDate = $scope.searchDate.toISOString();
+        var dummyDate = new Date($scope.searchDate);
         console.log(dummyDate);
-        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=" + $scope.searchCalendar + "&startTime=" + dummyDate + "&range=1")
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=" + $scope.searchCalendar + "&startTime=" + dummyDate.toISOString() + "&range=1")
             .then(function (response) {
-                console.log("im here biytg");
                 var appointments = (response.data);
-                $scope.searchResults = appointments[0].appointments;
+                $scope.apptSearchResults = appointments[0].appointments;
             });
     }
 
 
     $scope.customerSearchEngine = function () {
         console.log("searching customers");
-        $scope.apptSearch = false;
-        $scope.customerSearch = true;
-        //getting the customer ID back from the database to send it back again to get info about that customers appointments
-        //2 DB calls for one piece of data. Totally best method possible
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.firstName + "&lastName=" + $scope.lastName)
             .then(function (response) {
+                $scope.patientSearchResults = response.data;
                 $scope.customerID = response.data[0].id;
                 //loop through and push all the customers onto an array
-                console.log($scope.customerID);
-                //nested them otherwise it would do the second call before saving the customer ID
-                $http.get("https://seniordesign2018dev.azurewebsites.net/api/Appointment/appointmentLookupByCustomerId?id=" + $scope.customerID)
-                    .then(function (response) {
-                        $scope.searchResults = response.data;
-
-                    });
+                console.log($scope.patientSearchResults);
             });
     }
 });

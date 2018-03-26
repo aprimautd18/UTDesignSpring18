@@ -108,7 +108,7 @@ app.controller('dateController', function($scope, $route, $http) {
         console.log('Appointment Clicked!');
         console.log(appointment.id);
         var id = appointment.id;
-        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteAppointment", "99")
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteAppointment", {id: id})
             .then(onPost());
         //delete allAppointments[appointment.index.day][appointment.index.row];
         // renderCalendar({data: allAppointments}, null, $scope);
