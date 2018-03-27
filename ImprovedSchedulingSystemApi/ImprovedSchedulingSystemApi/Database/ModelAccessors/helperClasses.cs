@@ -20,5 +20,19 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 
             return output;
         }
+
+        public static List<AppointmentModel> fastSortAdd(List<AppointmentModel> list, AppointmentModel toAdd)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] >= toAdd)
+                {
+                    list.Insert(i,toAdd);
+                    break;
+                }
+            }
+
+            return list;
+        }
     }
 }
