@@ -71,6 +71,7 @@ namespace ImprovedSchedulingSystemApi.Database
             newAppointment.id = ObjectId.GenerateNewId();
             var findCalendarFilter = Builders<CalendarModel>.Filter.Where(x => x.id == calendarId);
             CalendarModel calender = collection.Find(findCalendarFilter).FirstOrDefault();
+            calender.appointments.RemoveAll(x => x == null); //Remove null values
             calender.appointments.Add(newAppointment);
             calender.appointments.Sort(); //CHange to qwucik add method
             if (helperClasses.appointmentListConflict(calender.appointments))
@@ -88,6 +89,7 @@ namespace ImprovedSchedulingSystemApi.Database
             CalendarModel result = collection.Find(findAppointmentFilter).FirstOrDefault();
             int index = result.appointments.FindIndex(x => x.id == newAppointment.id);
             result.appointments.RemoveAt(index);
+            result.appointments.RemoveAll(x => x == null);
             result.appointments.Add(newAppointment);
             result.appointments.Sort(); //CHange to qwucik add method
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments, result.appointments);
