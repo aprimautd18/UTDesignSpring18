@@ -119,7 +119,9 @@ app.controller('dialogService',function($scope, $http) {
 
         };
         console.log(newAppt);
-        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/addAppointment",newAppt);
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/addAppointment",newAppt)
+            .then(function (response) {
+            });
     };
 
 });

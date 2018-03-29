@@ -112,18 +112,14 @@ app.controller('dateController', function($scope, $route, $http) {
     }
 
     $scope.clickAppointment = function (appointment) {
+        var id = appointment.id;
+        if(confirm('Are you sure you want to delete this appointment?') == false) {
+            return;
+        }
         console.log('Appointment Clicked!');
         console.log(appointment.id);
-        var id = appointment.id;
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteAppointment", {id: id})
             .then(onPost());
-        //delete allAppointments[appointment.index.day][appointment.index.row];
-        // renderCalendar({data: allAppointments}, null, $scope);
-        // appointment.isBlank = true;
-        // console.log(appointment);
-        // console.log(appointment.id);
-        //$scope.$apply();
-        //$http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteAppointment",appointmentId);
     }
 
     function onPost () {
@@ -206,6 +202,19 @@ function addBlankAppts (input) {
         return output;
     }
     input = input.appointments;
+    console.log("input[0]");
+    var firstAptStartTime = new Date(input[0].aptstartTime);
+    if(firstAptStartTime.getHours()>8){
+        blank = {};
+        blank.aptstartTime = new Date(firstAptStartTime);
+        blank.aptstartTime.setHours(8);
+        blank.aptstartTime.setMinutes(0);
+        blank.aptendTime = new Date(firstAptStartTime);
+        blank.firstName = " ";
+        blank.isBlank = "blank";
+        blank.heightInPixels = calculatePixelHeights(blank);
+        output.push(blank);
+    }
     input[0].heightInPixels = calculatePixelHeights(input[0]);
     input[0].index = {}
     input[0].index.row = 0;
