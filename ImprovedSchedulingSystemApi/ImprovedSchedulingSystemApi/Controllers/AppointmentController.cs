@@ -9,6 +9,7 @@ using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
+using ImprovedSchedulingSystemApi.ViewModels.deleteModel;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -185,6 +186,37 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             bool returnedItem = db.deleteAppointment(model.id);
+            if (returnedItem)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+
+        }
+
+        /// <summary>
+        /// Allows multiple appointments to be deleted given a list of their ids
+        /// </summary>
+        /// <param name="model">The model containing the list of ids</param>
+        /// <returns></returns>
+        /// <response code="200">At least one appointment was deleted</response>
+        /// <response code="404">None of the appointments were valid</response>
+        [HttpPost("deleteMultipleAppointments")]
+        public IActionResult deleteMultipleAppointments([FromBody]deleteMultipleObjectViewModel model)
+        {
+
+            if (!model.id.TrueForAll(x => x != ObjectId.Empty))
+            {
+                return BadRequest();
+            }
+
+            bool returnedItem = false;
+            foreach (var x in model.id)
+            {
+                returnedItem = returnedItem || db.deleteAppointment(x);
+            }
+
             if (returnedItem)
             {
                 return Ok();
