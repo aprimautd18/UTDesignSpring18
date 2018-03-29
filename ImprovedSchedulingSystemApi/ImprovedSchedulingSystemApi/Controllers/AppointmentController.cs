@@ -126,10 +126,11 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [HttpPost("addAppointment")]
         public IActionResult addAppointment([FromBody]addAppointmentViewModel model)
         {
-            if (model.Appointment == null || model.calendarName == null)
+            if (model.Appointment == null || model.calendarName == null || model.Appointment.CustomerId == ObjectId.Empty || model.Appointment.aptstartTime == DateTime.MinValue || model.Appointment.aptendTime == DateTime.MinValue)
             {
                 return BadRequest();
             }
+
             CalendarAccessor calDb = new CalendarAccessor();
 
             ObjectId calID = calDb.dateLookup(model.calendarName, model.Appointment.aptstartTime).id;
@@ -152,7 +153,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [HttpPost("updateAppointment")]
         public IActionResult updateAppointment([FromBody]AppointmentModel model)
         {
-            if (model == null || model.id == ObjectId.Empty)
+            if (model == null || model.id == ObjectId.Empty || model.CustomerId == ObjectId.Empty || model.aptendTime == DateTime.MinValue || model.aptstartTime == DateTime.MinValue)
             {
                 return BadRequest();
             }
