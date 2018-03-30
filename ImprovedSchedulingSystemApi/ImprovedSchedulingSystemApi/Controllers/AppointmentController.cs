@@ -140,7 +140,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
             if (returnedItem == null)
             {
-                //return somthing
+                string testReturn = "Conflict between two appointments";
+                return BadRequest(testReturn);
             }
             return Ok(returnedItem);
         }
