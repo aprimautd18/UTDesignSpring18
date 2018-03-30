@@ -32,7 +32,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments </returns>
         /// <response code="200">Returns the appointments associated with the  ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupByCustomerId")]
+        [HttpGet("appointmentLookupById")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupById([FromQuery] string id)
         {
@@ -59,7 +59,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments associated with the customer</returns>
         /// <response code="200">Returns the appointments associated with the customer ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupById")]
+        [HttpGet("appointmentLookupByCustomerId")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupByCustomerId([FromQuery] string id)
         {
