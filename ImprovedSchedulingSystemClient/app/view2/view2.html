@@ -34,7 +34,7 @@
                              <td>
                              <form name="myStatusCode" ng-controller="statusCodeController">
                                 <label for="statusCode"></label>
-                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id)">
+                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id, $index)">
 
                                         <option value="">{{statusCodesWSpaces[x.status]}}</option>
                                         <option ng-repeat="option in data.statusOptions" ng-value="option.statusID">{{option.statusName}}

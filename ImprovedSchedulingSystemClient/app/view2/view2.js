@@ -60,21 +60,22 @@ app.controller('statusCodeController', function($scope,$http){
     $scope.data= {
         model:null,
         statusOptions:[
-            {statusID: '0', statusName: 'Scheduled', Color: "gray"},
-            {statusID: '1', statusName: 'Checked In', Color: "yellow"},
-            {statusID: '2', statusName: 'In Process', Color: "blue"},
-            {statusID: '3', statusName: 'Discharged', Color: "green"},
-            {statusID: '4', statusName: 'Canceled',Color: "red"}
+            {statusID: '0', statusName: 'Scheduled', Color: "#f1f1f1"},
+            {statusID: '1', statusName: 'Checked In', Color: "#eaf298"},
+            {statusID: '2', statusName: 'In Process', Color: "lightblue"},
+            {statusID: '3', statusName: 'Discharged', Color: "lightgreen"},
+            {statusID: '4', statusName: 'Canceled',Color: "#ff596c"}
         ],
 
         selectedStatusCode: null
     };
 
-    $scope.updatedStatus= function( a) {
+    $scope.updatedStatus= function( appointmentId, indexOfWorkingStatus) {
         var data= {
-            "id": ''+a,
+            "id": ''+appointmentId,
             "newCode": $scope.data.selectedStatusCode
         };
+        document.getElementsByTagName("TR")[indexOfWorkingStatus+1].style.backgroundColor=$scope.data.statusOptions[data.newCode].Color;
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointmentStatus",data);
     };
 });
