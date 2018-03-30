@@ -60,21 +60,22 @@ app.controller('statusCodeController', function($scope,$http){
     $scope.data= {
         model:null,
         statusOptions:[
-            {statusID: '0', statusName: 'Scheduled', Color: "gray"},
-            {statusID: '1', statusName: 'Checked In', Color: "yellow"},
-            {statusID: '2', statusName: 'In Process', Color: "blue"},
-            {statusID: '3', statusName: 'Discharged', Color: "green"},
-            {statusID: '4', statusName: 'Canceled',Color: "red"}
+            {statusID: '0', statusName: 'Scheduled', Color: "#f1f1f1"},
+            {statusID: '1', statusName: 'Checked In', Color: "#eaf298"},
+            {statusID: '2', statusName: 'In Process', Color: "lightblue"},
+            {statusID: '3', statusName: 'Discharged', Color: "lightgreen"},
+            {statusID: '4', statusName: 'Canceled',Color: "#ff596c"}
         ],
 
         selectedStatusCode: null
     };
 
-    $scope.updatedStatus= function( a) {
+    $scope.updatedStatus= function( appointmentId, indexOfWorkingStatus) {
         var data= {
-            "id": ''+a,
+            "id": ''+appointmentId,
             "newCode": $scope.data.selectedStatusCode
         };
+        document.getElementsByTagName("TR")[indexOfWorkingStatus+1].style.backgroundColor=$scope.data.statusOptions[data.newCode].Color;
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointmentStatus",data);
     };
 });
@@ -112,18 +113,14 @@ app.controller('dateController', function($scope, $route, $http) {
     }
 
     $scope.clickAppointment = function (appointment) {
+        var id = appointment.id;
+        if(confirm('Are you sure you want to delete this appointment?') == false) {
+            return;
+        }
         console.log('Appointment Clicked!');
         console.log(appointment.id);
-        var id = appointment.id;
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteAppointment", {id: id})
             .then(onPost());
-        //delete allAppointments[appointment.index.day][appointment.index.row];
-        // renderCalendar({data: allAppointments}, null, $scope);
-        // appointment.isBlank = true;
-        // console.log(appointment);
-        // console.log(appointment.id);
-        //$scope.$apply();
-        //$http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteAppointment",appointmentId);
     }
 
     function onPost () {
@@ -206,6 +203,19 @@ function addBlankAppts (input) {
         return output;
     }
     input = input.appointments;
+    console.log("input[0]");
+    var firstAptStartTime = new Date(input[0].aptstartTime);
+    if(firstAptStartTime.getHours()>8){
+        blank = {};
+        blank.aptstartTime = new Date(firstAptStartTime);
+        blank.aptstartTime.setHours(8);
+        blank.aptstartTime.setMinutes(0);
+        blank.aptendTime = new Date(firstAptStartTime);
+        blank.firstName = " ";
+        blank.isBlank = "blank";
+        blank.heightInPixels = calculatePixelHeights(blank);
+        output.push(blank);
+    }
     input[0].heightInPixels = calculatePixelHeights(input[0]);
     input[0].index = {}
     input[0].index.row = 0;

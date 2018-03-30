@@ -34,7 +34,7 @@
                              <td>
                              <form name="myStatusCode" ng-controller="statusCodeController">
                                 <label for="statusCode"></label>
-                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id)">
+                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id, $index)">
 
                                         <option value="">{{statusCodesWSpaces[x.status]}}</option>
                                         <option ng-repeat="option in data.statusOptions" ng-value="option.statusID">{{option.statusName}}
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <div class="appointmentWrapper">
-                            <div class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}" ng-model="selectedDate" ng-click="clickAppointment(a)" onclick="return confirm('Are you sure you want to delete this appointment?');">
+                            <div id="{{ a.id }}" class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}" ng-model="selectedDate" ng-click="clickAppointment(a)">
                                 <div class="appointmentMessaging" >
                                     {{ a.customer.lastName }} , {{ a.customer.firstName }}
                                     <br>

@@ -30,8 +30,13 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
                     list.Insert(i,toAdd);
                     break;
                 }
+
             }
 
+            if (!list.Contains(toAdd))
+            {
+                list.Add(toAdd);
+            }
             return list;
         }
     }

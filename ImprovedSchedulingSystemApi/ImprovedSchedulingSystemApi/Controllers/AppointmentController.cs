@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
+using ImprovedSchedulingSystemApi.ViewModels.deleteModel;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +32,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments </returns>
         /// <response code="200">Returns the appointments associated with the  ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupByCustomerId")]
+        [HttpGet("appointmentLookupById")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupById([FromQuery] string id)
         {
@@ -57,7 +59,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments associated with the customer</returns>
         /// <response code="200">Returns the appointments associated with the customer ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupById")]
+        [HttpGet("appointmentLookupByCustomerId")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupByCustomerId([FromQuery] string id)
         {
@@ -126,10 +128,11 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [HttpPost("addAppointment")]
         public IActionResult addAppointment([FromBody]addAppointmentViewModel model)
         {
-            if (model.Appointment == null || model.calendarName == null)
+            if (model.Appointment == null || model.calendarName == null || model.Appointment.CustomerId == ObjectId.Empty || model.Appointment.aptstartTime == DateTime.MinValue || model.Appointment.aptendTime == DateTime.MinValue)
             {
                 return BadRequest();
             }
+
             CalendarAccessor calDb = new CalendarAccessor();
 
             ObjectId calID = calDb.dateLookup(model.calendarName, model.Appointment.aptstartTime).id;
@@ -137,7 +140,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
             if (returnedItem == null)
             {
-                //return somthing
+                string testReturn = "Conflict between two appointments";
+                return BadRequest(testReturn);
             }
             return Ok(returnedItem);
         }
@@ -152,7 +156,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [HttpPost("updateAppointment")]
         public IActionResult updateAppointment([FromBody]AppointmentModel model)
         {
-            if (model == null || model.id == ObjectId.Empty)
+            if (model == null || model.id == ObjectId.Empty || model.CustomerId == ObjectId.Empty || model.aptendTime == DateTime.MinValue || model.aptstartTime == DateTime.MinValue)
             {
                 return BadRequest();
             }
@@ -184,6 +188,37 @@ namespace ImprovedSchedulingSystemApi.Controllers
             }
 
             bool returnedItem = db.deleteAppointment(model.id);
+            if (returnedItem)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+
+        }
+
+        /// <summary>
+        /// Allows multiple appointments to be deleted given a list of their ids
+        /// </summary>
+        /// <param name="model">The model containing the list of ids</param>
+        /// <returns></returns>
+        /// <response code="200">At least one appointment was deleted</response>
+        /// <response code="404">None of the appointments were valid</response>
+        [HttpPost("deleteMultipleAppointments")]
+        public IActionResult deleteMultipleAppointments([FromBody]deleteMultipleObjectViewModel model)
+        {
+
+            if (!model.id.TrueForAll(x => x != ObjectId.Empty))
+            {
+                return BadRequest();
+            }
+
+            bool returnedItem = false;
+            foreach (var x in model.id)
+            {
+                returnedItem = returnedItem || db.deleteAppointment(x);
+            }
+
             if (returnedItem)
             {
                 return Ok();
