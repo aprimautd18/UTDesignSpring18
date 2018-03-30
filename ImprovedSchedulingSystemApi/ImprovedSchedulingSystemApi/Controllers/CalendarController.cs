@@ -21,7 +21,44 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
 
 
+        /// <summary>
+        /// Returns the calendar id of the calender you lookup
+        /// </summary>
+        /// <param name="calName">The name of the calendar to retreive</param>
+        /// <param name="startTime">The date to retreive</param>
+        /// <returns></returns>
+        /// <response code="200">The calender id</response>
+        /// <response code="404">The calender was not found</response>
+        [Produces("application/json")]
+        [HttpGet("calenderIdLookup")]
+        [ProducesResponseType(typeof(List<dateLookup_CalendarViewModel>), 200)]
+        public IActionResult calenderIdLookup([FromQuery] string calName, [FromQuery] string startTime)
+        {
 
+
+            DateTime starttimeDateTime;
+
+
+            DateTime.TryParse(startTime, CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out starttimeDateTime);
+
+
+            if (calName == null || starttimeDateTime == DateTime.MinValue)
+            {
+                return BadRequest();
+            }
+
+
+            CalendarModel test = db.dateLookup(calName, starttimeDateTime);
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(test.id);
+        }
 
 
         /// <summary>

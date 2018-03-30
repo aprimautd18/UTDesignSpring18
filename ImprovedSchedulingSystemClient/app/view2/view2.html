@@ -6,11 +6,12 @@
 
 
 <div ng-app="demo" ng-controller="onPageLoad">
-    <div class="container calWrapper" ng-if="pageLoaded">
+    <div class="container calWrapper" ng-if="pageLoaded" ng-controller="dateController">
         <div class="row">
             <div class="appointmentsList col-4">
                 <div class="dailyAppointmentTitle">
-                    <input type="date" ng-controller="dateController" ng-model="selectedDate" ng-change="updateDate()">
+                    <input type="date" ng-model="selectedDate" ng-change="updateDate()">
+                    <select ng-model="searchCalendar" ng-options="x for x in calendarNames"  ng-change="updateDate()"></select>
                 </div>
                 <div ng-init="statusCodes = {0: 'Scheduled',1: 'CheckedIn',2: 'InProcess',3: 'Discharged',4: 'Canceled'}">
                 </div>
@@ -33,7 +34,7 @@
                              <td>
                              <form name="myStatusCode" ng-controller="statusCodeController">
                                 <label for="statusCode"></label>
-                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id)">
+                                   <select name="statusCode" id="statusCode" ng-model="data.selectedStatusCode" ng-change="updatedStatus(x.id, $index)">
 
                                         <option value="">{{statusCodesWSpaces[x.status]}}</option>
                                         <option ng-repeat="option in data.statusOptions" ng-value="option.statusID">{{option.statusName}}
@@ -66,7 +67,7 @@
                             </div>
                         </div>
                         <div class="appointmentWrapper">
-                            <div class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}">
+                            <div id="{{ a.id }}" class="appointment {{ a.isBlank }}" ng-repeat="a in day" ng-style="{height: a.heightInPixels+ 'px'}" ng-model="selectedDate" ng-click="clickAppointment(a)">
                                 <div class="appointmentMessaging" >
                                     {{ a.customer.lastName }} , {{ a.customer.firstName }}
                                     <br>
@@ -76,39 +77,6 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="scrollableTimeBar" ng-style="{top: scrollableTimeBarHeight+ 'px'}">-->
-
-                <!--</div>-->
-                <!--<div class="calendarTitle">-->
-                    <!--Weekly Calendar View-->
-                <!--</div>-->
-                <!--<div class="calenderHeaders">-->
-                    <!--<table class="weekContainer" ng-init="daysOfWeek = {0 :'Sunday', 1 : 'Monday', 2 : 'Tuesday',3 : 'Wednesday',4 : 'Thursday',5 : 'Friday',6 :  'Saturday'}">-->
-                        <!--<tr>-->
-                            <!--<td class="weekHeader" ng-repeat="day in daysOfWeek">{{day}}<br>-->
-                                <!--{{data.calendarData[$index][0].aptstartTime | date:"mediumDate"}}-->
-                            <!--</td>-->
-
-                        <!--</tr>-->
-                    <!--</table>-->
-                <!--</div>-->
-                <!--<div class="calenderContents">-->
-
-                    <!--<div class="calenderTimes">-->
-                        <!--<div class="times" ng-repeat="timeSlot in data.calendarTimes">-->
-                            <!--{{ timeSlot.time }}-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="dailyColumn {{calendar.isCorrectDay}}" ng-repeat="calendar in data.calendarData">-->
-                        <!--<div class="appointment {{ a.isBlank }}" ng-repeat="a in calendar" ng-style="{height: a.heightInPixels+ 'px'}">-->
-                            <!--<div class="appointmentMessaging" >-->
-                                 <!--{{ a.customer.lastName }} , {{ a.customer.firstName }}-->
-                                <!--<br>-->
-                                <!--{{ a.aptstartTime | date: 'shortTime' }} -  {{ a.aptendTime | date: 'shortTime' }}-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
     </div>

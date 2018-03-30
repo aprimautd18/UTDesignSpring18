@@ -13,6 +13,11 @@ table tr:nth-child(odd) {
 table tr:nth-child(even) {
     background-color: #ffffff;
 }
+.clickablePatient:hover {
+    text-decoration: underline;
+}
+
+
 /* MODAL STYLES
 -------------------------------*/
 /* The Modal (background) */
@@ -53,3 +58,4 @@ table tr:nth-child(even) {
     text-decoration: none;
     cursor: pointer;
 }
+

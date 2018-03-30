@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -37,14 +38,23 @@ namespace ImprovedSchedulingSystemApi.Database
 
         }
 
+        
+
         public List<AppointmentModel> appointmentLookupByCustomerId(ObjectId id)
         {
             return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.CustomerId == id).ToList();
 
         }
 
+        public List<AppointmentModel> appointmentLookupById(ObjectId id)
+        {
+            return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.id == id).ToList();
+
+        }
+
         public bool updateAppointmentStatus(ObjectId _id, StatusCodes newCode)
         {
+
             var findAppointmentFilter = Builders<CalendarModel>.Filter.Where(x => x.appointments.Any(y => y.id == _id));
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1].status, newCode);
             UpdateResult updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
@@ -60,24 +70,31 @@ namespace ImprovedSchedulingSystemApi.Database
         {
             newAppointment.id = ObjectId.GenerateNewId();
             var findCalendarFilter = Builders<CalendarModel>.Filter.Where(x => x.id == calendarId);
-            var addAppointmentToListFilter = Builders<CalendarModel>.Update.Push(x => x.appointments, newAppointment);
-            UpdateResult updateResult = collection.UpdateOne(findCalendarFilter, addAppointmentToListFilter);
-            if (!updateResult.IsAcknowledged)
+            CalendarModel calender = collection.Find(findCalendarFilter).FirstOrDefault();
+            calender.appointments.RemoveAll(x => x == null); //Remove null values
+            helperClasses.fastSortAdd(calender.appointments, newAppointment);
+            if (helperClasses.appointmentListConflict(calender.appointments))
             {
                 return null;
             }
-
+            collection.ReplaceOne(x => x.id == calendarId, calender);
             return newAppointment;
         }
 
         public bool updateAppointment(AppointmentModel newAppointment)
         {
             var findAppointmentFilter = Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == newAppointment.id);
-            var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments[-1], newAppointment);
 
-            var result = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
-            
-            return result.IsAcknowledged;
+            CalendarModel result = collection.Find(findAppointmentFilter).FirstOrDefault();
+            int index = result.appointments.FindIndex(x => x.id == newAppointment.id);
+            result.appointments.RemoveAt(index);
+            result.appointments.RemoveAll(x => x == null);
+            result.appointments.Add(newAppointment);
+            result.appointments.Sort(); //CHange to qwucik add method
+            var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments, result.appointments);
+
+            var updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
+            return updateResult.IsAcknowledged;
         }
 
         public bool deleteAppointment(ObjectId Appointment)
