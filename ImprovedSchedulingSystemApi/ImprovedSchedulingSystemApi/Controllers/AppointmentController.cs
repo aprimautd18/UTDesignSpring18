@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Controllers.Constants;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
@@ -130,7 +131,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (model.Appointment == null || model.calendarName == null || model.Appointment.CustomerId == ObjectId.Empty || model.Appointment.aptstartTime == DateTime.MinValue || model.Appointment.aptendTime == DateTime.MinValue)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
             CalendarAccessor calDb = new CalendarAccessor();
@@ -140,8 +141,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
             if (returnedItem == null)
             {
-                string testReturn = "Conflict between two appointments";
-                return BadRequest(testReturn);
+                
+                return BadRequest(ErrorMessageConstants.APPOINTMENT_CONFLICT);
             }
             return Ok(returnedItem);
         }
