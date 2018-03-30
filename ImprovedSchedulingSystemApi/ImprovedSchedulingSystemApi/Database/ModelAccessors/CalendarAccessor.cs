@@ -89,8 +89,7 @@ namespace ImprovedSchedulingSystemApi.Database
             int index = result.appointments.FindIndex(x => x.id == newAppointment.id);
             result.appointments.RemoveAt(index);
             result.appointments.RemoveAll(x => x == null);
-            result.appointments.Add(newAppointment);
-            result.appointments.Sort(); //CHange to qwucik add method
+            helperClasses.fastSortAdd(result.appointments, newAppointment);
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments, result.appointments);
 
             var updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
