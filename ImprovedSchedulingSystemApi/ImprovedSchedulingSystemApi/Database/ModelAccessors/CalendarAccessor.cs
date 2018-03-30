@@ -14,9 +14,15 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
     {
         public override IMongoCollection<CalendarModel> collectionSet()
         {
-            return db.GetCollection<CalendarModel>("CalendarData");
+            return db.GetCollection<CalendarModel>("CalendarData"); //Sets the collection to the mongo CalenderData collection
         }
 
+        /// <summary>
+        /// Searches the database for a specific calender date
+        /// </summary>
+        /// <param name="calender_name">The string name of the calender</param>
+        /// <param name="start_datetime">A date for the calender(Time component doesn't matter, only the Data component</param>
+        /// <returns>A CalenderModel retrieved from the DB</returns>
          public CalendarModel dateLookup(string calender_name, DateTime start_datetime)
         {
 
@@ -25,7 +31,7 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 
             ;
 
-            filter = filter & builder.Eq(x => x.calName, calender_name);
+            filter = filter & builder.Eq(x => x.calName, calender_name); 
 
             filter = filter & builder.Gte(x => x.startTime, start_datetime.Date);
 
@@ -39,19 +45,34 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
         }
 
         
-
+        /// <summary>
+        /// Retrieves a list of appointments from the db from a given customer ID
+        /// </summary>
+        /// <param name="id">The id of the customer</param>
+        /// <returns>A list of appointments associated with the customer id</returns>
         public List<AppointmentModel> appointmentLookupByCustomerId(ObjectId id)
         {
             return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.CustomerId == id).ToList();
 
         }
 
+        /// <summary>
+        /// Retrieves an appointment by the appointment ID
+        /// </summary>
+        /// <param name="id">The appointment ID</param>
+        /// <returns>The list of appointments associated with the id(should be one but just to be safe)</returns>
         public List<AppointmentModel> appointmentLookupById(ObjectId id)
         {
             return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.id == id).ToList();
 
         }
 
+        /// <summary>
+        /// Updates the status of a single appointment
+        /// </summary>
+        /// <param name="_id">The id of the appointment to update</param>
+        /// <param name="newCode">The new status code to associate wit the appointment</param>
+        /// <returns>A bool on whether the update was accepted</returns>
         public bool updateAppointmentStatus(ObjectId _id, StatusCodes newCode)
         {
 
@@ -61,11 +82,21 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             return updateResult.IsAcknowledged;
         }
 
+        /// <summary>
+        /// Retrieves a list of all of the calender name strings
+        /// </summary>
+        /// <returns>The list of calender name strings</returns>
         public List<string> retreiveCalendarNames()
         {
             return collection.AsQueryable().Select(x => x.calName).Distinct().ToList();
         }
 
+        /// <summary>
+        /// Adds a new appointment to the db    
+        /// </summary>
+        /// <param name="calendarId">The id of the calender </param>
+        /// <param name="newAppointment">The new appointment to add to the calender</param>
+        /// <returns>The appointment object added to the db(now contains the id object if needed by frontend</returns>
         public AppointmentModel addAppointment(ObjectId calendarId, AppointmentModel newAppointment)
         {
             newAppointment.id = ObjectId.GenerateNewId();
@@ -81,6 +112,11 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             return newAppointment;
         }
 
+        /// <summary>
+        /// Update an appointment in the db
+        /// </summary>
+        /// <param name="newAppointment">The appointment to update(updates the apponinemnt with the id given in the model, rest is updated)</param>
+        /// <returns>A bool stating whether or not the update is a success</returns>
         public bool updateAppointment(AppointmentModel newAppointment)
         {
             var findAppointmentFilter = Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == newAppointment.id);
@@ -96,6 +132,11 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             return updateResult.IsAcknowledged;
         }
 
+        /// <summary>
+        /// Delete an appointment from the db
+        /// </summary>
+        /// <param name="Appointment">The id of the appointment to delete</param>
+        /// <returns>A bool stating whether it is successful</returns>
         public bool deleteAppointment(ObjectId Appointment)
         {
             var findAppointmentFilter = Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == Appointment);
