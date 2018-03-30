@@ -8,7 +8,7 @@ using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace ImprovedSchedulingSystemApi.Database
+namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 {
     public class CalendarAccessor : MongoAbstract<CalendarModel>
     {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
