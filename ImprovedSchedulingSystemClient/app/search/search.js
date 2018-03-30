@@ -23,6 +23,7 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.firstName = "Test96635";
     $scope.lastName = "Patient96635";
     $scope.customerID = "";
+    $scope.deleteList = [];
 
     //get the list of calendar names
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")
@@ -33,6 +34,7 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.apptSearchEngine = function () {
         console.log("in here");
         var dummyDate = new Date($scope.searchDate);
+        dummyDate.setDate(dummyDate.getDate() - 1);
         console.log(dummyDate);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=" + $scope.searchCalendar + "&startTime=" + dummyDate.toISOString() + "&range=1")
             .then(function (response) {
@@ -41,7 +43,6 @@ app.controller('searchCtrl', function($scope,$http) {
             });
     }
 
-
     $scope.customerSearchEngine = function () {
         console.log("searching customers");
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.firstName + "&lastName=" + $scope.lastName)
@@ -49,6 +50,30 @@ app.controller('searchCtrl', function($scope,$http) {
                 $scope.patientSearchResults = response.data;
                 $scope.customerID = response.data[0].id;
             });
+    }
+
+    $scope.addToList = function (id) {
+        var indexOfAppt = $scope.deleteList.indexOf(id);
+        if(indexOfAppt > -1) {
+            console.log("deleting from list");
+            delete $scope.deleteList[indexOfAppt];
+        }
+        else
+        {
+            console.log("adding to list");
+            $scope.deleteList.push(id);
+        }
+    }
+
+    $scope.deleteFromSearchResults = function () {
+        if(confirm('Are you sure you want to delete this appointment?') == false) {
+            return;
+        }
+        var id = {
+            id : $scope.deleteList
+        }
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteMultipleAppointments", id)
+            .then(function (response) {$scope.apptSearchEngine();});
     }
 });
 

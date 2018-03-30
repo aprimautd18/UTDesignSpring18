@@ -25,7 +25,7 @@
                         <td>Status</td>
                     </tr>
                     <tr ng-repeat="x in apptSearchResults">
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" ng-click="addToList(x.id)"></td>
                         <td>{{ x.customer.firstName }}</td>
                         <td>{{ x.customer.lastName }}</td>
                         <td>{{ x.aptstartTime | date:'shortTime'}}</td>
@@ -35,7 +35,7 @@
                         <td><button>Update</button></td>
                     </tr>
                 </table>
-                <button id="accept-favor" onclick="return confirm('Are you sure you would like to delete these appointments??');">Delete</button>
+                <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
                 <button>Merge</button>
                 <h3>Search by Patient</h3>
                 First Name:
