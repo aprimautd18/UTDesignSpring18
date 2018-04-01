@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Controllers.Constants;
 using ImprovedSchedulingSystemApi.Database;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
+using ImprovedSchedulingSystemApi.ViewModels.mergeCalender;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -194,6 +197,23 @@ namespace ImprovedSchedulingSystemApi.Controllers
             List<string> calNames = db.retreiveCalendarNames();
             calNames.Sort();
             return Ok(calNames);
+        }
+
+        [HttpPost("mergeCalendersByID")]
+        public IActionResult mergeCalendersByID([FromBody] MergeCalenderViewModel model)
+        {
+            if (model.calenderA == ObjectId.Empty || model.calenderB == ObjectId.Empty)
+            {
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
+            }
+
+            List<AppointmentConflictModel> conflicts = db.mergeCalenders(model.calenderA, model.calenderB);
+            if (conflicts.Count > 0) // If there is a conflict
+            {
+                return StatusCode(409, conflicts);
+            }
+
+            return Ok();//Otherwise merge was successful so indicate this
         }
     }
 }
