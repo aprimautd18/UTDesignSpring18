@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Controllers.Constants;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using Microsoft.AspNetCore.Mvc;
 using ImprovedSchedulingSystemApi.Models;
@@ -36,7 +37,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (firstName == null && lastName == null && phoneNumber == null)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
             List<CustomerModel> data = db.searchByCustomerDetails(firstName, lastName, phoneNumber);
             if (data.Count == 0)
@@ -60,14 +61,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
             ObjectId objectIdStorage = ObjectId.Parse(_id);
             if (objectIdStorage == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             
             CustomerModel data = db.searchByCustomerId(objectIdStorage);
             if (data == null)
             {
-                return NotFound();
+                return NotFound(ErrorMessageConstants.MODEL_INVAILD);
             }
             return Ok(data);
         }
@@ -84,7 +85,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (model == null)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
             model = db.addCustomer(model);
@@ -104,7 +105,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (model == null || model.id == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
             var result = db.updateCustomer(model);
@@ -130,7 +131,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (model.id == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             var result = db.deleteCustomer(model.id);
