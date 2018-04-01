@@ -199,6 +199,15 @@ namespace ImprovedSchedulingSystemApi.Controllers
             return Ok(calNames);
         }
 
+
+        /// <summary>
+        /// Merges two calender objext
+        /// </summary>
+        /// <param name="model">CalenderA is merged into. CalenderB will be deleted</param>
+        /// <returns></returns>
+        /// <response code="200">Success. Returns nothing</response>
+        /// <response code="400">Error. Check return data</response>
+        /// <response code="409">Conflict during the merge. Check the returned list of conflicting objects</response>
         [HttpPost("mergeCalendersByID")]
         public IActionResult mergeCalendersByID([FromBody] MergeCalenderViewModel model)
         {

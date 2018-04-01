@@ -188,6 +188,12 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             //Database update code
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments, newAppointmentList);
             var result = collection.UpdateOne(x => x.id == calenderA, updateAppointmentFilter);
+
+
+            //Delete old calender
+            collection.DeleteOne(x => x.id == calenderB);
+
+
             return conflictList; // Return the list of conflicts(which will be empty to signal the update happened with no conflicts. 
         }
 
