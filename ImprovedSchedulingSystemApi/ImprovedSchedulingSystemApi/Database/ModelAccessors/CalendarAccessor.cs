@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
@@ -145,6 +146,56 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             var result = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
 
             return result.IsAcknowledged;
+        }
+
+        /// <summary>
+        /// Merges two calenders given their id
+        /// </summary>
+        /// <param name="calenderA">The calender to merge into</param>
+        /// <param name="calenderB">The calender to put into calenderA</param>
+        /// <returns>A list of appointment Conflict models that contains conflict info</returns>
+        public List<AppointmentConflictModel> mergeCalenders(ObjectId calenderA, ObjectId calenderB)
+        {
+            List<AppointmentConflictModel> conflictList = new List<AppointmentConflictModel>();
+
+            CalendarModel keepCalender = collection.Find(x => x.id == calenderA).SingleOrDefault();
+            CalendarModel deleteCalender = collection.Find(x => x.id == calenderB).SingleOrDefault();
+            List<AppointmentModel> newAppointmentList = new List<AppointmentModel>();
+
+            //Generates the new Appointment list will all appointments in sorted order
+            newAppointmentList.AddRange(keepCalender.appointments);
+            newAppointmentList.AddRange(deleteCalender.appointments);
+            newAppointmentList.Sort();
+
+
+            //Finds conflicts to return
+            for (int i = 1; i < newAppointmentList.Count; i++)
+            {
+                if (AppointmentModel.conflict(newAppointmentList[i - 1], newAppointmentList[i])) //Check every possible conflict
+                {
+                    conflictList.Add(new AppointmentConflictModel(newAppointmentList[i - 1], newAppointmentList[i])); // Add a conflict to the list
+                }
+            }
+
+
+            //Handle conflicts
+            if (conflictList.Count > 0) // If there is at least on conflict
+            {
+                return conflictList; //Return the list so the api can return it.
+            }
+
+
+            //Database update code
+            var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments, newAppointmentList);
+            var result = collection.UpdateOne(x => x.id == calenderA, updateAppointmentFilter);
+
+
+            //Delete old calender
+            updateAppointmentFilter = Builders<CalendarModel>.Update.Unset(x => x.appointments);
+            collection.UpdateOne(x => x.id == calenderB, updateAppointmentFilter);
+
+
+            return conflictList; // Return the list of conflicts(which will be empty to signal the update happened with no conflicts. 
         }
 
     }
