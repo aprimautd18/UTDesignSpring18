@@ -191,7 +191,8 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 
 
             //Delete old calender
-            collection.DeleteOne(x => x.id == calenderB);
+            updateAppointmentFilter = Builders<CalendarModel>.Update.Unset(x => x.appointments);
+            collection.UpdateOne(x => x.id == calenderB, updateAppointmentFilter);
 
 
             return conflictList; // Return the list of conflicts(which will be empty to signal the update happened with no conflicts. 
