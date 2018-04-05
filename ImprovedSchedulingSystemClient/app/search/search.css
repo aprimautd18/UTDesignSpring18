@@ -1,5 +1,7 @@
 .searchContainerWrapper {
+    max-width: 9999px !important;
     margin-left: 0px !important;
+
 }
 
 table, th , td  {
@@ -8,16 +10,66 @@ table, th , td  {
     padding: 5px;
 }
 table tr:nth-child(odd) {
-    background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
     background-color: #ffffff;
 }
-.clickablePatient:hover {
-    text-decoration: underline;
+table tr:nth-child(even) {
+    background-color: #4dacfd4a;
 }
 
+.calSearchHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    max-height: 30px;
+    padding-bottom: 25px;
+}
 
+.searchTitle {
+    display: flex;
+    font-size: 18px;
+    width: 165px;
+}
+
+.calInputTitles {
+    font-size: 14px;
+    width: 140px;
+    padding: 0px 5px;
+}
+
+.calListing {
+    margin-top: 2px;
+}
+
+.inputTitles {
+    font-size: 14px;
+    width: 90px;
+    padding: 0px 5px;
+}
+
+.calSearchDateTitle {
+    font-size: 14px;
+    width: 110px;
+    padding: 0px 5px;
+}
+
+.patientSearch{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    max-height: 32px;
+}
+
+.patientSearchInputFields {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding-top: 3px;
+}
+
+.searchWrapper {
+    flex-wrap: nowrap !important;
+    flex-direction: column;
+}
 /* MODAL STYLES
 -------------------------------*/
 /* The Modal (background) */

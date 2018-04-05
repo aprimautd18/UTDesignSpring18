@@ -8,58 +8,69 @@
 <div ng-app="search" ng-controller="searchCtrl">
     <div class="container searchContainerWrapper">
         <div class="searchContainer">
-            <form>
-                Calendar to search:
-                <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
-                <br>
-                Date to Search:
-                <input type="date" ng-model="searchDate" style="margin: 2px">
-                <button type="submit" ng-click="apptSearchEngine()">Submit</button>
-                <table>
-                    <tr>
-                        <td></td>
-                        <td>First Name</td>
-                        <td>Last Name</td>
-                        <td>Appt Start Time</td>
-                        <td>Appt End Time</td>
-                        <td>Status</td>
-                    </tr>
-                    <tr ng-repeat="x in apptSearchResults">
-                        <td><input type="checkbox" ng-click="addToList(x.id)"></td>
-                        <td>{{ x.customer.firstName }}</td>
-                        <td>{{ x.customer.lastName }}</td>
-                        <td>{{ x.aptstartTime | date:'shortTime'}}</td>
-                        <td>{{ x.aptendTime | date:'shortTime'}}</td>
-                        <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
-                            {{ statusCodes[x.status] }}</td>
-                        <td><button>Update</button></td>
-                    </tr>
-                </table>
-                <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
-                <button>Merge</button>
-                <h3>Search by Patient</h3>
-                First Name:
-                <input type="search" ng-model="firstName" style="margin: 2px">
-                <br>
-                Last Name:
-                <input type="search" ng-model="lastName">
-                <button type="submit" ng-click="customerSearchEngine()">Submit</button>
-            </form>
-            <table style="display: inline-block">
-                <tr>
-                    <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Phone Number</td>
-                    <td>ID</td>
-                </tr>
+            <div class="row">
+                <div class="dailySearchAppts col-6">
+                    <div class="calSearchHeader">
+                        <div class="calInputTitles">Calendar to search:</div>
 
-                <tr ng-repeat="x in patientSearchResults">
-                    <td>{{ x.firstName }}</td>
-                    <td>{{ x.lastName }}</td>
-                    <td>{{ x.phoneNumber }}</td>
-                    <td class="clickablePatient"> {{ x.id }}</td>
-                </tr>
-            </table>
+                        <select class="calListing" ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
+                        <div class="calSearchDateTitle">Date to Search:</div>
+                        <input type="date" ng-model="searchDate" style="margin: 0px 2px;">
+                        <button type="submit" ng-click="apptSearchEngine()">Submit</button>
+                    </div>
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>Appt Start Time</td>
+                            <td>Appt End Time</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr ng-repeat="x in apptSearchResults">
+                            <td><input type="checkbox" ng-click="addToList(x.id)"></td>
+                            <td>{{ x.customer.firstName }}</td>
+                            <td>{{ x.customer.lastName }}</td>
+                            <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                            <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                            <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
+                                {{ statusCodes[x.status] }}</td>
+                            <td><button>Update</button></td>
+                        </tr>
+                    </table>
+                    <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
+                    <button>Merge</button>
+                </div>
+                <div class="col-6 row searchWrapper">
+                    <div class="patientSearch col-12">
+                        <div class="searchTitle">Search by Patient:</div>
+                        <div class="patientSearchInputFields">
+                            <div class="inputTitles">First Name:</div>
+                            <input type="search" ng-model="firstName" style="margin: 2px">
+                            <div class="inputTitles">Last Name:</div>
+                            <input type="search" ng-model="lastName">
+                            <button type="submit" ng-click="customerSearchEngine()">Submit</button>
+                        </div>
+                    </div>
+                    <div class="tableWrapper col-12">
+                        <table>
+                            <tr>
+                                <td>First Name</td>
+                                <td>Last Name</td>
+                                <td>Phone Number</td>
+                            </tr>
+
+                            <tr ng-repeat="x in patientSearchResults">
+                                <td>{{ x.firstName }}</td>
+                                <td>{{ x.lastName }}</td>
+                                <td>{{ x.phoneNumber }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="add" ng-controller="dialogService">
                 <!-- Trigger/Open The Modal -->
                 <button id="addButton" ng-click="buttonPressed()">Add Appointment</button>
