@@ -164,6 +164,12 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 
             //Generates the new Appointment list will all appointments in sorted order
             newAppointmentList.AddRange(keepCalender.appointments);
+            DateTime dateModel = keepCalender.startTime;
+            foreach (var x in deleteCalender.appointments)
+            {
+                x.aptstartTime = new DateTime(dateModel.Year, dateModel.Month, dateModel.Day, x.aptstartTime.Hour, x.aptstartTime.Minute, x.aptstartTime.Second);
+                x.aptendTime = new DateTime(dateModel.Year, dateModel.Month, dateModel.Day, x.aptendTime.Hour, x.aptendTime.Minute, x.aptendTime.Second);
+            }
             newAppointmentList.AddRange(deleteCalender.appointments);
             newAppointmentList.Sort();
 
