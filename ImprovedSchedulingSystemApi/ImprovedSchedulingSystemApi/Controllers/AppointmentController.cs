@@ -144,8 +144,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
             if (returnedItem == null)
             {
-                
-                return BadRequest(ErrorMessageConstants.APPOINTMENT_CONFLICT);
+                return StatusCode(409, ErrorMessageConstants.APPOINTMENT_CONFLICT);
             }
             return Ok(returnedItem);
         }
