@@ -73,6 +73,24 @@ table tr:nth-child(even) {
 /* MODAL STYLES
 -------------------------------*/
 /* The Modal (background) */
+.newApptModalHeader {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding-bottom: 10px;
+}
+
+.patientButton {
+    border-top: solid 1px;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -93,7 +111,7 @@ table tr:nth-child(even) {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 50% !important;
 }
 
 /* The Close Button */
@@ -102,6 +120,9 @@ table tr:nth-child(even) {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
 }
 
 .close:hover,
