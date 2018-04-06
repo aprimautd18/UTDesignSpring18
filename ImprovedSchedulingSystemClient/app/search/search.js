@@ -73,7 +73,10 @@ app.controller('searchCtrl', function($scope,$http) {
             id : $scope.deleteList
         }
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteMultipleAppointments", id)
-            .then(function (response) {$scope.apptSearchEngine();});
+            .then(function () {$scope.apptSearchEngine();}, function (response) {
+                console.log(response);
+                alert("Bad request\n" + response.statusText);
+            });
     }
 });
 

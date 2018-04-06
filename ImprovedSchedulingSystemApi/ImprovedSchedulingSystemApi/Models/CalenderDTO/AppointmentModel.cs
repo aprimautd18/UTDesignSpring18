@@ -17,7 +17,7 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
     /// <summary>
     /// The model for a single appointment
     /// </summary>
-    public class AppointmentModel
+    public class AppointmentModel : IComparable<AppointmentModel>
     {
         [BsonElement("appointmentID")]
 
@@ -51,15 +51,31 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
         {
             return (a.aptstartTime >= b.aptstartTime);
         }
+        public static bool operator <(AppointmentModel a, AppointmentModel b)
+        {
+            return (a.aptstartTime < b.aptstartTime);
+        }
 
+        public static bool operator >(AppointmentModel a, AppointmentModel b)
+        {
+            return (a.aptstartTime > b.aptstartTime);
+        }
         public static bool conflict(AppointmentModel a, AppointmentModel b)
         {
-            return a.aptendTime >= b.aptstartTime || a.aptstartTime >= b.aptendTime;
+            return a.aptendTime > b.aptstartTime || a.aptstartTime > b.aptendTime;
         }
 
 
+        public int CompareTo(AppointmentModel other)
+        {
+            if (this < other)
+                return -1;
+            
+            if (this == other)
+                return 0;
 
-
+            return 1;
+        }
     }
 
         

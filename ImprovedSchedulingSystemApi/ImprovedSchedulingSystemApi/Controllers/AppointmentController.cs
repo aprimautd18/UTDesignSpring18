@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Controllers.Constants;
 using ImprovedSchedulingSystemApi.Database;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
@@ -31,14 +33,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments </returns>
         /// <response code="200">Returns the appointments associated with the  ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupByCustomerId")]
+        [HttpGet("appointmentLookupById")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupById([FromQuery] string id)
         {
             ObjectId parsedId = ObjectId.Parse(id);
             if (parsedId == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             List<AppointmentModel> data = db.appointmentLookupById(parsedId);
@@ -58,14 +60,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
         /// <returns>A list of Appointments associated with the customer</returns>
         /// <response code="200">Returns the appointments associated with the customer ID</response>
         [Produces("application/json")]
-        [HttpGet("appointmentLookupById")]
+        [HttpGet("appointmentLookupByCustomerId")]
         [ProducesResponseType(typeof(List<AppointmentModel>), 200)]
         public IActionResult appointmentLookupByCustomerId([FromQuery] string id)
         {
             ObjectId parsedId = ObjectId.Parse(id);
             if (parsedId == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             List<AppointmentModel> data = db.appointmentLookupByCustomerId(parsedId);
@@ -89,13 +91,13 @@ namespace ImprovedSchedulingSystemApi.Controllers
             ObjectId parsedId = ObjectId.Parse(model.id);
             if (parsedId == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             bool success = db.updateAppointmentStatus(parsedId, model.newCode);
             if (success == false)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.UPDATE_FAILED);
             }
 
             return Ok();
@@ -110,9 +112,12 @@ namespace ImprovedSchedulingSystemApi.Controllers
         [HttpPost("addAppointmentWithCalId")]
         public IActionResult addAppointmentWithCalId( [FromBody]addAppointmentWithCalIdViewModel model)
         {
-            if (model.Appointment == null || model.calendarId == ObjectId.Empty)
+            if (model.calendarId == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
+            }else if (model.Appointment == null)
+            {
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
             AppointmentModel returnedItem = db.addAppointment(model.calendarId, model.Appointment);
             return Ok(returnedItem);
@@ -129,7 +134,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (model.Appointment == null || model.calendarName == null || model.Appointment.CustomerId == ObjectId.Empty || model.Appointment.aptstartTime == DateTime.MinValue || model.Appointment.aptendTime == DateTime.MinValue)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
             CalendarAccessor calDb = new CalendarAccessor();
@@ -139,7 +144,8 @@ namespace ImprovedSchedulingSystemApi.Controllers
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
             if (returnedItem == null)
             {
-                //return somthing
+                
+                return BadRequest(ErrorMessageConstants.APPOINTMENT_CONFLICT);
             }
             return Ok(returnedItem);
         }
@@ -156,7 +162,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
         {
             if (model == null || model.id == ObjectId.Empty || model.CustomerId == ObjectId.Empty || model.aptendTime == DateTime.MinValue || model.aptstartTime == DateTime.MinValue)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
             bool returnedItem = db.updateAppointment(model);
@@ -182,7 +188,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
             
             if (model.id == ObjectId.Empty)
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             bool returnedItem = db.deleteAppointment(model.id);
@@ -208,7 +214,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
             if (!model.id.TrueForAll(x => x != ObjectId.Empty))
             {
-                return BadRequest();
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
             bool returnedItem = false;

@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using ImprovedSchedulingSystemApi.Controllers.Constants;
 using ImprovedSchedulingSystemApi.Database;
+using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
+using ImprovedSchedulingSystemApi.ViewModels.mergeCalender;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -193,6 +197,32 @@ namespace ImprovedSchedulingSystemApi.Controllers
             List<string> calNames = db.retreiveCalendarNames();
             calNames.Sort();
             return Ok(calNames);
+        }
+
+
+        /// <summary>
+        /// Merges two calender objext
+        /// </summary>
+        /// <param name="model">CalenderA is merged into. CalenderB will be deleted</param>
+        /// <returns></returns>
+        /// <response code="200">Success. Returns nothing</response>
+        /// <response code="400">Error. Check return data</response>
+        /// <response code="409">Conflict during the merge. Check the returned list of conflicting objects</response>
+        [HttpPost("mergeCalendersByID")]
+        public IActionResult mergeCalendersByID([FromBody] MergeCalenderViewModel model)
+        {
+            if (model.calenderA == ObjectId.Empty || model.calenderB == ObjectId.Empty)
+            {
+                return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
+            }
+
+            List<AppointmentConflictModel> conflicts = db.mergeCalenders(model.calenderA, model.calenderB);
+            if (conflicts.Count > 0) // If there is a conflict
+            {
+                return StatusCode(409, conflicts);
+            }
+
+            return Ok();//Otherwise merge was successful so indicate this
         }
     }
 }
