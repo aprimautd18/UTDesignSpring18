@@ -53,17 +53,34 @@
                         </div>
                     </div>
                     <div class="tableWrapper col-12">
-                        <table>
+                        <table id="patientSearchTable">
                             <tr>
-                                <td>First Name</td>
                                 <td>Last Name</td>
+                                <td>First Name</td>
                                 <td>Phone Number</td>
                             </tr>
 
                             <tr ng-repeat="x in patientSearchResults">
+                                <td ng-click="searchPatientAppointments(x)">{{ x.lastName }}</td>
                                 <td>{{ x.firstName }}</td>
-                                <td>{{ x.lastName }}</td>
                                 <td>{{ x.phoneNumber }}</td>
+                            </tr>
+                        </table>
+                        <table id="patientAppointmentTable">
+                            <tr>
+                                <td>Date</td>
+                                <td>Start Time</td>
+                                <td>End Time</td>
+                                <td>Status</td>
+                                <td>Reason</td>
+                            </tr>
+                            <tr ng-repeat="x in patientAppointmentSearchResults">
+                                <td>{{ x.aptstartTime | date:'shortDate'}}</td>
+                                <td>{{ x.aptstartTime | date:'shortTime'}}</td>
+                                <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                                <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
+                                    {{ statusCodes[x.status] }}</td>
+                                <td>{{ x.reason }}</td>
                             </tr>
                         </table>
                     </div>

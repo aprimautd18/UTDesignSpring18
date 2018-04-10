@@ -24,6 +24,12 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.lastName = "Patient96635";
     $scope.customerID = "";
     $scope.deleteList = [];
+    $scope.newApptDate = "";
+    $scope.newApptStartTime = "";
+    $scope.newApptEndTime = "";
+    var patientTable = document.getElementById("patientSearchTable");
+    var patientAppointmentTable = document.getElementById("patientAppointmentTable");
+    patientAppointmentTable.style.display = "none";
 
     //get the list of calendar names
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")
@@ -49,6 +55,8 @@ app.controller('searchCtrl', function($scope,$http) {
             .then(function (response) {
                 $scope.patientSearchResults = response.data;
                 $scope.customerID = response.data[0].id;
+                patientTable.style.display = "inline";
+                patientAppointmentTable.style.display = "none";
             });
     }
 
@@ -78,6 +86,45 @@ app.controller('searchCtrl', function($scope,$http) {
                 alert("Bad request\n" + response.statusText);
             });
     }
+    // Get the modal
+    var addModal = document.getElementById('addModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("addButton");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    $scope.buttonPressed = function() {
+        addModal.style.display = "block";
+    };
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        addModal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == addModal) {
+            addModal.style.display = "none";
+        }
+    };
+    $scope.searchPatientAppointments = function (patient) {
+        console.log("Searching for the patients appointments");
+        var patientID = patient.id;
+        $scope.patientAppointmentSearchResults = [];
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Appointment/appointmentLookupByCustomerId?id=" + patientID)
+            .then(function (response) {
+                patientTable.style.display = "none";
+                patientAppointmentTable.style.display = "inline";
+                console.log(response.data);
+                $scope.patientAppointmentSearchResults = response.data;
+            }, function (response) {
+                alert(response.statusText);
+            });
+    };
 });
 
 app.controller('dialogService',function($scope, $http) {
@@ -149,6 +196,8 @@ app.controller('dialogService',function($scope, $http) {
         console.log(newAppt);
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/addAppointment",newAppt)
             .then(function (response) {
+            }, function (response) {
+                alert(response.statusText);
             });
     };
 
