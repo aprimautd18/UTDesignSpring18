@@ -68,6 +68,7 @@
                         </table>
                         <table id="patientAppointmentTable">
                             <tr>
+                                <td>Calendar</td>
                                 <td>Date</td>
                                 <td>Start Time</td>
                                 <td>End Time</td>
@@ -75,12 +76,14 @@
                                 <td>Reason</td>
                             </tr>
                             <tr ng-repeat="x in patientAppointmentSearchResults">
-                                <td>{{ x.aptstartTime | date:'shortDate'}}</td>
-                                <td>{{ x.aptstartTime | date:'shortTime'}}</td>
-                                <td>{{ x.aptendTime | date:'shortTime'}}</td>
+                                <td>{{ x.calName }}</td>
+                                <td>{{ x.appointment.aptstartTime | date:'shortDate'}}</td>
+                                <td>{{ x.appointment.aptstartTime | date:'shortTime'}}</td>
+                                <td>{{ x.appointment.aptendTime | date:'shortTime'}}</td>
                                 <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
-                                    {{ statusCodes[x.status] }}</td>
-                                <td>{{ x.reason }}</td>
+                                    {{ statusCodes[x.appointment.status] }}</td>
+                                <td>{{ x.appointment.reason }}</td>
+                                <td><button ng-click="buttonPressed(x)">Update</button></td>
                             </tr>
                         </table>
                     </div>
@@ -88,7 +91,7 @@
 
             </div>
 
-            <div class="add" ng-controller="dialogService">
+            <div class="add">
                 <!-- Trigger/Open The Modal -->
                 <button id="addButton" ng-click="buttonPressed()">Add Appointment</button>
 
@@ -104,15 +107,13 @@
                         <form name="newAppointmentForm" class="row">
                             <div class="col-6">
                                 First Name:
-                                <input ng-model="patientFirstName">
+                                <input ng-model="firstName" disabled="disabled">
                                 <br>
                                 Last Name:
-                                <input ng-model="patientLastName">
+                                <input ng-model="lastName" disabled="disabled">
                                 <br>
                                 Phone Number:
-                                <input ng-model="patientPhoneNumber">
-                                <button type="submit" ng-click="searchPatient()">Search</button>
-                                <br>
+                                <input ng-model="patientPhoneNumber" disabled="disabled">
                             </div>
                            <div class="col-6">
                                Appt Date:
@@ -125,11 +126,11 @@
                                <input type="time" ng-model="newApptEndTime" step="60">
                                <br>
                                Calendar:
-                               <select ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
+                               <select ng-model="modalCalendar" ng-options="x for x in calendarNames"></select>
                                <br>
                            </div>
                             <div class="patientButton">
-                                <button type="submit" ng-click="addNewPatient()">Submit</button>
+                                <button type="submit" ng-click="updateAppointment()">Submit</button>
                             </div>
                         </form>
                     </div>

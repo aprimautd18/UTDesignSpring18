@@ -17,6 +17,7 @@ var app = angular.module('search', []);
 app.controller('searchCtrl', function($scope,$http) {
     $scope.input = "searchHere";
     $scope.searchCalendar = "Kelly 441";
+    $scope.modalCalendar = "";
     $scope.searchDate = new Date("2024-12-09");
     $scope.apptSearchResults = {};
     $scope.patientSearchResults = {};
@@ -27,6 +28,7 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.newApptDate = "";
     $scope.newApptStartTime = "";
     $scope.newApptEndTime = "";
+    $scope.appointmentID = "";
     var patientTable = document.getElementById("patientSearchTable");
     var patientAppointmentTable = document.getElementById("patientAppointmentTable");
     patientAppointmentTable.style.display = "none";
@@ -47,7 +49,7 @@ app.controller('searchCtrl', function($scope,$http) {
                 var appointments = (response.data);
                 $scope.apptSearchResults = appointments[0].appointments;
             });
-    }
+    };
 
     $scope.customerSearchEngine = function () {
         console.log("searching customers");
@@ -58,30 +60,31 @@ app.controller('searchCtrl', function($scope,$http) {
                 patientTable.style.display = "inline";
                 patientAppointmentTable.style.display = "none";
             });
-    }
+    };
 
     $scope.addToList = function (id) {
         var indexOfAppt = $scope.deleteList.indexOf(id);
-        if(indexOfAppt > -1) {
+        if (indexOfAppt > -1) {
             console.log("deleting from list");
             delete $scope.deleteList[indexOfAppt];
         }
-        else
-        {
+        else {
             console.log("adding to list");
             $scope.deleteList.push(id);
         }
     }
 
     $scope.deleteFromSearchResults = function () {
-        if(confirm('Are you sure you want to delete this appointment?') == false) {
+        if (confirm('Are you sure you want to delete this appointment?') == false) {
             return;
         }
         var id = {
-            id : $scope.deleteList
+            id: $scope.deleteList
         }
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/deleteMultipleAppointments", id)
-            .then(function () {$scope.apptSearchEngine();}, function (response) {
+            .then(function () {
+                $scope.apptSearchEngine();
+            }, function (response) {
                 console.log(response);
                 alert("Bad request\n" + response.statusText);
             });
@@ -96,24 +99,33 @@ app.controller('searchCtrl', function($scope,$http) {
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal
-    $scope.buttonPressed = function() {
+    $scope.buttonPressed = function (clickedAppointment) {
         addModal.style.display = "block";
+        $scope.appointmentID = clickedAppointment.appointment.id;
+        $scope.modalCalendar = clickedAppointment.calName;
+        $scope.newApptDate = new Date(clickedAppointment.appointment.aptstartTime);
+        $scope.newApptStartTime = new Date($scope.newApptDate);
+        $scope.newApptEndTime = new Date(clickedAppointment.appointment.aptendTime);
     };
-
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
+    span.onclick = function () {
         addModal.style.display = "none";
     };
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == addModal) {
             addModal.style.display = "none";
         }
     };
     $scope.searchPatientAppointments = function (patient) {
+        $scope.patient = patient;
         console.log("Searching for the patients appointments");
         var patientID = patient.id;
+        $scope.firstName = patient.firstName;
+        $scope.lastName = patient.lastName;
+        $scope.patientPhoneNumber = patient.phoneNumber;
+        $scope.customerID = patientID;
         $scope.patientAppointmentSearchResults = [];
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Appointment/appointmentLookupByCustomerId?id=" + patientID)
             .then(function (response) {
@@ -121,6 +133,28 @@ app.controller('searchCtrl', function($scope,$http) {
                 patientAppointmentTable.style.display = "inline";
                 console.log(response.data);
                 $scope.patientAppointmentSearchResults = response.data;
+            }, function (response) {
+                alert(response.statusText);
+            });
+    };
+    $scope.updateAppointment = function () {
+        console.log("Adding the patient now");
+        $scope.newApptDate.setHours($scope.newApptStartTime.getHours());
+        $scope.newApptDate.setMinutes($scope.newApptStartTime.getMinutes());
+        $scope.newApptEndDate = new Date($scope.newApptDate);
+        $scope.newApptEndDate.setHours($scope.newApptEndTime.getHours());
+        $scope.newApptEndDate.setMinutes($scope.newApptEndTime.getMinutes());
+        var newAppt = {
+            "id": $scope.appointmentID,
+            "customerId": $scope.customerID,
+            "aptstartTime": $scope.newApptDate.toISOString(),
+            "aptendTime": $scope.newApptEndDate.toISOString(),
+        }
+        console.log(newAppt);
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointment", newAppt)
+            .then(function (response) {
+                $scope.searchPatientAppointments($scope.patient);
+                addModal.style.display = "none";
             }, function (response) {
                 alert(response.statusText);
             });
