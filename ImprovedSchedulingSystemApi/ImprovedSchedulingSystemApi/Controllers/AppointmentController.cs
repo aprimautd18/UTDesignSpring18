@@ -12,6 +12,7 @@ using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using ImprovedSchedulingSystemApi.ViewModels.deleteModel;
+using ImprovedSchedulingSystemApi.ViewModels.lookupAppiontmentsWithCustomerID;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,7 +71,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
-            List<AppointmentModel> data = db.appointmentLookupByCustomerId(parsedId);
+            List<lookupAppointmentWithCustomerIdViewModel> data = db.appointmentLookupByCustomerId(parsedId);
             if (data == null)
             {
                 return NotFound();
