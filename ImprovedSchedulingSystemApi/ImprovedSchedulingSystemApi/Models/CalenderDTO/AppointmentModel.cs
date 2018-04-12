@@ -62,7 +62,7 @@ namespace ImprovedSchedulingSystemApi.Models.CalenderDTO
         }
         public static bool conflict(AppointmentModel a, AppointmentModel b)
         {
-            return a.aptendTime >= b.aptstartTime || a.aptstartTime >= b.aptendTime;
+            return a.aptendTime > b.aptstartTime || a.aptstartTime > b.aptendTime;
         }
 
 

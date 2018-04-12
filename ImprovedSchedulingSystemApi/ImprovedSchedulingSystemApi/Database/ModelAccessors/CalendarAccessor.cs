@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ImprovedSchedulingSystemApi.Database.ModelAccessors;
 using ImprovedSchedulingSystemApi.Models.CalenderDTO;
+using ImprovedSchedulingSystemApi.ViewModels.lookupAppiontmentsWithCustomerID;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -51,9 +52,23 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
         /// </summary>
         /// <param name="id">The id of the customer</param>
         /// <returns>A list of appointments associated with the customer id</returns>
-        public List<AppointmentModel> appointmentLookupByCustomerId(ObjectId id)
+        public List<lookupAppointmentWithCustomerIdViewModel> appointmentLookupByCustomerId(ObjectId id)
         {
-            return collection.AsQueryable().SelectMany(x => x.appointments).Where(x => x.CustomerId == id).ToList();
+            var findAppointmentFilter = Builders<CalendarModel>.Filter.Where(x => x.appointments.Any(y => y.CustomerId == id));
+            List<CalendarModel> test = collection.Find(findAppointmentFilter).ToList();
+            List<lookupAppointmentWithCustomerIdViewModel> appointmentViewList = new List<lookupAppointmentWithCustomerIdViewModel>();
+            foreach (var cal in test)
+            {
+                foreach (var appoint in cal.appointments)
+                {
+                    appointmentViewList.Add(new lookupAppointmentWithCustomerIdViewModel(cal.id, cal.calName, appoint));
+                }
+            }
+
+            appointmentViewList.RemoveAll(x => x.Appointment.CustomerId != id);
+;
+            
+            return appointmentViewList;
 
         }
 
@@ -164,6 +179,12 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
 
             //Generates the new Appointment list will all appointments in sorted order
             newAppointmentList.AddRange(keepCalender.appointments);
+            DateTime dateModel = keepCalender.startTime;
+            foreach (var x in deleteCalender.appointments)
+            {
+                x.aptstartTime = new DateTime(dateModel.Year, dateModel.Month, dateModel.Day, x.aptstartTime.Hour, x.aptstartTime.Minute, x.aptstartTime.Second);
+                x.aptendTime = new DateTime(dateModel.Year, dateModel.Month, dateModel.Day, x.aptendTime.Hour, x.aptendTime.Minute, x.aptendTime.Second);
+            }
             newAppointmentList.AddRange(deleteCalender.appointments);
             newAppointmentList.Sort();
 

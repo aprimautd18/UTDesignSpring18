@@ -1,26 +1,95 @@
 .searchContainerWrapper {
+    max-width: 9999px !important;
     margin-left: 0px !important;
-}
 
-table, th , td  {
+}
+th , td  {
     border: 1px solid grey;
     border-collapse: collapse;
     padding: 5px;
 }
 table tr:nth-child(odd) {
-    background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
     background-color: #ffffff;
 }
-.clickablePatient:hover {
-    text-decoration: underline;
+table tr:nth-child(even) {
+    background-color: #4dacfd4a;
 }
 
+.calSearchHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    max-height: 30px;
+    padding-bottom: 25px;
+}
 
+.searchTitle {
+    display: flex;
+    font-size: 18px;
+    width: 165px;
+}
+
+.calInputTitles {
+    font-size: 14px;
+    width: 140px;
+    padding: 0px 5px;
+}
+
+.calListing {
+    margin-top: 2px;
+}
+
+.inputTitles {
+    font-size: 14px;
+    width: 90px;
+    padding: 0px 5px;
+}
+
+.calSearchDateTitle {
+    font-size: 14px;
+    width: 110px;
+    padding: 0px 5px;
+}
+
+.patientSearch{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    max-height: 32px;
+}
+
+.patientSearchInputFields {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding-top: 3px;
+}
+
+.searchWrapper {
+    flex-wrap: nowrap !important;
+    flex-direction: column;
+}
 /* MODAL STYLES
 -------------------------------*/
 /* The Modal (background) */
+.newApptModalHeader {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding-bottom: 10px;
+}
+
+.patientButton {
+    border-top: solid 1px;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -41,7 +110,7 @@ table tr:nth-child(even) {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 50% !important;
 }
 
 /* The Close Button */
@@ -50,6 +119,9 @@ table tr:nth-child(even) {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
 }
 
 .close:hover,
