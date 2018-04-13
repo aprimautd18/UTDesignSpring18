@@ -101,6 +101,7 @@ app.controller('searchCtrl', function($scope,$http) {
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
+    var span1 = document.getElementsByClassName("close")[1];
 
     // When the user clicks the button, open the modal
     $scope.buttonPressed = function (clickedAppointment) {
@@ -120,11 +121,17 @@ app.controller('searchCtrl', function($scope,$http) {
     span.onclick = function () {
         addModal.style.display = "none";
     };
+    span1.onclick = function() {
+        mergeModal.style.display = "none";
+    };
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         if (event.target == addModal) {
             addModal.style.display = "none";
+        }
+        if (event.target == mergeModal) {
+            mergeModal.style.display = "none";
         }
     };
     $scope.searchPatientAppointments = function (patient) {
@@ -189,7 +196,7 @@ app.controller('searchCtrl', function($scope,$http) {
 app.controller('dialogService',function($scope, $http) {
     // Get the modal
     var addModal = document.getElementById('addModal');
-    var mergeModal = document.getElementById('mergeModal');
+
 
 
 // Get the button that opens the modal
@@ -197,7 +204,7 @@ app.controller('dialogService',function($scope, $http) {
 
 // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
-    var span1 = document.getElementsByClassName("close")[1];
+
 
 
 // When the user clicks the button, open the modal
@@ -209,17 +216,11 @@ app.controller('dialogService',function($scope, $http) {
     span.onclick = function() {
         addModal.style.display = "none";
     };
-    span1.onclick = function() {
-        mergeModal.style.display = "none";
-    };
 
 // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == addModal) {
             addModal.style.display = "none";
-        }
-        if (event.target != mergeModal) {
-            mergeModal.style.display = "none";
         }
     };
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")

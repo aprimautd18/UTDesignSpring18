@@ -35,7 +35,7 @@
                             <td>{{ x.aptendTime | date:'shortTime'}}</td>
                             <td ng-init="statusCodes = ['Scheduled', 'Checked In', 'In Process', 'Discharged', 'Canceled']">
                                 {{ statusCodes[x.status] }}</td>
-                            <td><button>Update</button></td>
+                            <!--<td><button ng-click="buttonPressed(x)">Update</button></td>-->
                         </tr>
                     </table>
                     <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
