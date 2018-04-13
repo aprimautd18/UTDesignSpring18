@@ -133,7 +133,7 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
         /// </summary>
         /// <param name="newAppointment">The appointment to update(updates the apponinemnt with the id given in the model, rest is updated)</param>
         /// <returns>A bool stating whether or not the update is a success</returns>
-        public bool updateAppointment(AppointmentModel newAppointment)
+        public int updateAppointment(AppointmentModel newAppointment)
         {
             var findAppointmentFilter = Builders<CalendarModel>.Filter.ElemMatch(x => x.appointments, x => x.id == newAppointment.id);
 
@@ -142,10 +142,21 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             result.appointments.RemoveAt(index);
             result.appointments.RemoveAll(x => x == null);
             helperClasses.fastSortAdd(result.appointments, newAppointment);
+            for (int i = 1; i < result.appointments.Count; i++)
+            {
+                if (AppointmentModel.conflict(result.appointments[i - 1], result.appointments[i])) //Check every possible conflict
+                {
+                    return 1;
+                }
+            }
             var updateAppointmentFilter = Builders<CalendarModel>.Update.Set(x => x.appointments, result.appointments);
 
             var updateResult = collection.UpdateOne(findAppointmentFilter, updateAppointmentFilter);
-            return updateResult.IsAcknowledged;
+            if (updateResult.IsAcknowledged)
+            {
+                return 0;
+            }
+            return 2;
         }
 
         /// <summary>
@@ -180,13 +191,16 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             //Generates the new Appointment list will all appointments in sorted order
             newAppointmentList.AddRange(keepCalender.appointments);
             DateTime dateModel = keepCalender.startTime;
+
+            //Updates the date for each of the date times so they are correct. Otherwise the dates for the appointments will be different that the new calender page
             foreach (var x in deleteCalender.appointments)
             {
                 x.aptstartTime = new DateTime(dateModel.Year, dateModel.Month, dateModel.Day, x.aptstartTime.Hour, x.aptstartTime.Minute, x.aptstartTime.Second);
                 x.aptendTime = new DateTime(dateModel.Year, dateModel.Month, dateModel.Day, x.aptendTime.Hour, x.aptendTime.Minute, x.aptendTime.Second);
             }
+            //Add all of the fixed appointments
             newAppointmentList.AddRange(deleteCalender.appointments);
-            newAppointmentList.Sort();
+            newAppointmentList.Sort(); //Sort them for storageand conflict checking
 
 
             //Finds conflicts to return
@@ -211,7 +225,7 @@ namespace ImprovedSchedulingSystemApi.Database.ModelAccessors
             var result = collection.UpdateOne(x => x.id == calenderA, updateAppointmentFilter);
 
 
-            //Delete old calender
+            //Delete old calender appointments
             updateAppointmentFilter = Builders<CalendarModel>.Update.Unset(x => x.appointments);
             collection.UpdateOne(x => x.id == calenderB, updateAppointmentFilter);
 

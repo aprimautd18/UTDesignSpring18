@@ -165,10 +165,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
-            bool returnedItem = db.updateAppointment(model);
-            if (returnedItem)
+            int returnedItem = db.updateAppointment(model);
+            if (returnedItem == 0)
             {
                 return Ok();
+            }
+            if (returnedItem == 1)
+            {
+                return StatusCode(409);
             }
 
             return NotFound();
