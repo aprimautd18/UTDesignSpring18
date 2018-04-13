@@ -39,7 +39,42 @@
                         </tr>
                     </table>
                     <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
-                    <button>Merge</button>
+                    <div class="merge">
+                        <!-- Trigger/Open The Modal -->
+                        <button id="mergeButton" ng-click="mergeButtonPressed()">Merge</button>
+
+                        <!-- The Modal -->
+                        <div id="mergeModal" class="modal">
+
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div class="newApptModalHeader">
+                                    Merge Appointments
+                                </div>
+                                <form name="newAppointmentForm" class="row">
+                                    <div class="col-6">
+                                        <div class="calInputTitles mergeTitles">Calendar to Merge From:</div>
+
+                                        <select class="calListing" ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
+                                        <div class="calSearchDateTitle mergeTitles">Date to Merge From:</div>
+                                        <input type="date" ng-model="searchDate" style="margin: 0px 2px;">
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="calInputTitles mergeTitles">Calendar to Merge To:</div>
+
+                                        <select class="calListing" ng-model="searchCalendarMerge" ng-options="x for x in calendarNames"></select>
+                                        <div class="calSearchDateTitle mergeTitles">Date to Merge To:</div>
+                                        <input type="date" ng-model="searchDateMerge" style="margin: 0px 2px;">
+                                    </div>
+                                    <div class="patientButton">
+                                        <button type="submit" ng-click="mergeAppointment()">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 <div class="col-6 row searchWrapper">
                     <div class="patientSearch col-12">
@@ -102,7 +137,7 @@
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="newApptModalHeader">
-                            New Appointment
+                            Update Appointment
                         </div>
                         <form name="newAppointmentForm" class="row">
                             <div class="col-6">

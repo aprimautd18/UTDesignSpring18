@@ -29,6 +29,8 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.newApptStartTime = "";
     $scope.newApptEndTime = "";
     $scope.appointmentID = "";
+    $scope.searchCalendarMerge = "";
+    $scope.searchDateMerge = "";
     var patientTable = document.getElementById("patientSearchTable");
     var patientAppointmentTable = document.getElementById("patientAppointmentTable");
     patientAppointmentTable.style.display = "none";
@@ -91,6 +93,8 @@ app.controller('searchCtrl', function($scope,$http) {
     }
     // Get the modal
     var addModal = document.getElementById('addModal');
+    var mergeModal = document.getElementById('mergeModal');
+
 
     // Get the button that opens the modal
     var btn = document.getElementById("addButton");
@@ -106,6 +110,11 @@ app.controller('searchCtrl', function($scope,$http) {
         $scope.newApptDate = new Date(clickedAppointment.appointment.aptstartTime);
         $scope.newApptStartTime = new Date($scope.newApptDate);
         $scope.newApptEndTime = new Date(clickedAppointment.appointment.aptendTime);
+    };
+
+    // When the user clicks the button, open the modal
+    $scope.mergeButtonPressed = function () {
+        mergeModal.style.display = "block";
     };
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
@@ -159,17 +168,37 @@ app.controller('searchCtrl', function($scope,$http) {
                 alert(response.statusText);
             });
     };
+    //For Merge
+    $scope.mergeAppointment = function () {
+        console.log("Merging the Appointments now");
+        var mergeAppt = {
+            "keepCalenderName": $scope.searchCalendarMerge,
+            "keepCalenderTime": $scope.searchDateMerge.toISOString(),
+            "deleteCalenderName": $scope.searchCalendar,
+            "deleteCalenderTime": $scope.searchDate.toISOString()
+        }
+        $http.post("https://seniordesign2018dev.azurewebsites.net/api/Calendar/mergeCalendersByName", mergeAppt)
+            .then(function (response) {
+                mergeModal.style.display = "none";
+            }, function (response) {
+                alert(response.statusText);
+            });
+    };
 });
 
 app.controller('dialogService',function($scope, $http) {
     // Get the modal
     var addModal = document.getElementById('addModal');
+    var mergeModal = document.getElementById('mergeModal');
+
 
 // Get the button that opens the modal
     var btn = document.getElementById("addButton");
 
 // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
+    var span1 = document.getElementsByClassName("close")[1];
+
 
 // When the user clicks the button, open the modal
     $scope.buttonPressed = function() {
@@ -180,11 +209,17 @@ app.controller('dialogService',function($scope, $http) {
     span.onclick = function() {
         addModal.style.display = "none";
     };
+    span1.onclick = function() {
+        mergeModal.style.display = "none";
+    };
 
 // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == addModal) {
             addModal.style.display = "none";
+        }
+        if (event.target != mergeModal) {
+            mergeModal.style.display = "none";
         }
     };
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")
