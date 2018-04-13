@@ -237,8 +237,15 @@ namespace ImprovedSchedulingSystemApi.Controllers
         public IActionResult mergeCalendersByName([FromBody] MergeCalenderNameViewModel model)
         {
 
-            ObjectId keepCalenderId = db.dateLookup(model.keepCalenderName, model.keepCalenderTime).id;
-            ObjectId deleteCalenderId = db.dateLookup(model.deleteCalenderName, model.deleteCalenderTime).id;
+            CalendarModel keepCalender = db.dateLookup(model.keepCalenderName, model.keepCalenderTime);
+            CalendarModel deleteCalender = db.dateLookup(model.deleteCalenderName, model.deleteCalenderTime);
+            if (keepCalender == null || deleteCalender == null)
+            {
+                return NotFound();
+            }
+
+            ObjectId keepCalenderId = keepCalender.id;
+            ObjectId deleteCalenderId = deleteCalender.id;
 
             if (keepCalenderId == ObjectId.Empty || deleteCalenderId == ObjectId.Empty)
             {
