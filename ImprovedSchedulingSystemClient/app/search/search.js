@@ -31,6 +31,9 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.appointmentID = "";
     $scope.searchCalendarMerge = "";
     $scope.searchDateMerge = "";
+    $scope.addApptDate = "";
+    $scope.addApptStartTime = "";
+    $scope.addApptEndTime = "";
     var patientTable = document.getElementById("patientSearchTable");
     var patientAppointmentTable = document.getElementById("patientAppointmentTable");
     patientAppointmentTable.style.display = "none";
@@ -92,12 +95,12 @@ app.controller('searchCtrl', function($scope,$http) {
             });
     }
     // Get the modal
-    var addModal = document.getElementById('addModal');
+    var updateModal = document.getElementById('updateModal');
     var mergeModal = document.getElementById('mergeModal');
-
+    var addModal = document.getElementById('addModal');
 
     // Get the button that opens the modal
-    var btn = document.getElementById("addButton");
+    var btn = document.getElementById("updateButton");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
@@ -105,12 +108,15 @@ app.controller('searchCtrl', function($scope,$http) {
 
     // When the user clicks the button, open the modal
     $scope.buttonPressed = function (clickedAppointment) {
-        addModal.style.display = "block";
+        updateModal.style.display = "block";
         $scope.appointmentID = clickedAppointment.appointment.id;
         $scope.modalCalendar = clickedAppointment.calName;
         $scope.newApptDate = new Date(clickedAppointment.appointment.aptstartTime);
         $scope.newApptStartTime = new Date($scope.newApptDate);
         $scope.newApptEndTime = new Date(clickedAppointment.appointment.aptendTime);
+    };
+    $scope.addButtonPressed = function() {
+        addModal.style.display = "block";
     };
 
     // When the user clicks the button, open the modal
@@ -119,7 +125,7 @@ app.controller('searchCtrl', function($scope,$http) {
     };
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
-        addModal.style.display = "none";
+        updateModal.style.display = "none";
     };
     span1.onclick = function() {
         mergeModal.style.display = "none";
@@ -127,11 +133,14 @@ app.controller('searchCtrl', function($scope,$http) {
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
-        if (event.target == addModal) {
-            addModal.style.display = "none";
+        if (event.target == updateModal) {
+            updateModal.style.display = "none";
         }
         if (event.target == mergeModal) {
             mergeModal.style.display = "none";
+        }
+        if (event.target == addModal) {
+            addModal.style.display = "none";
         }
     };
     $scope.searchPatientAppointments = function (patient) {
@@ -170,7 +179,7 @@ app.controller('searchCtrl', function($scope,$http) {
         $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/updateAppointment", newAppt)
             .then(function (response) {
                 $scope.searchPatientAppointments($scope.patient);
-                addModal.style.display = "none";
+                updateModal.style.display = "none";
             }, function (response) {
                 alert(response.statusText);
             });
@@ -191,16 +200,44 @@ app.controller('searchCtrl', function($scope,$http) {
                 alert(response.statusText);
             });
     };
+    $scope.addNewAppointment = function () {
+        $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.firstName + "&lastName=" + $scope.lastName)
+            .then(function (response) {
+                console.log(response);
+                $scope.searchedPatientID = response.data[0].id;
+                console.log("Adding the patient now");
+                $scope.addApptDate.setHours($scope.addApptStartTime.getHours());
+                $scope.addApptDate.setMinutes($scope.addApptStartTime.getMinutes());
+                $scope.addApptEndDate = new Date($scope.addApptDate);
+                $scope.addApptEndDate.setHours($scope.addApptEndTime.getHours());
+                $scope.addApptEndDate.setMinutes($scope.addApptEndTime.getMinutes());
+                var newAppt = {
+                    "calendarName": $scope.searchCalendar,
+                    "appointment": {
+                        "customerId": $scope.searchedPatientID,
+                        "aptstartTime": $scope.addApptDate.toISOString(),
+                        "aptendTime": $scope.addApptEndDate.toISOString(),
+                    }
+
+                };
+                console.log(newAppt);
+                $http.post("https://seniordesign2018dev.azurewebsites.net/api/Appointment/addAppointment",newAppt)
+                    .then(function (response) {
+                    }, function (response) {
+                        alert(response.statusText);
+                    });
+            });
+    };
 });
 
 app.controller('dialogService',function($scope, $http) {
     // Get the modal
-    var addModal = document.getElementById('addModal');
+    var updateModal = document.getElementById('updateModal');
 
 
 
 // Get the button that opens the modal
-    var btn = document.getElementById("addButton");
+    var btn = document.getElementById("updateButton");
 
 // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
@@ -209,18 +246,18 @@ app.controller('dialogService',function($scope, $http) {
 
 // When the user clicks the button, open the modal
     $scope.buttonPressed = function() {
-        addModal.style.display = "block";
+        updateModal.style.display = "block";
     };
 
 // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
-        addModal.style.display = "none";
+        updateModal.style.display = "none";
     };
 
 // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
-        if (event.target == addModal) {
-            addModal.style.display = "none";
+        if (event.target == updateModal) {
+            updateModal.style.display = "none";
         }
     };
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")

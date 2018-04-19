@@ -49,7 +49,7 @@
                             <!-- Modal content -->
                             <div class="modal-content">
                                 <span class="close">&times;</span>
-                                <div class="newApptModalHeader">
+                                <div class="updateApptModalHeader">
                                     Merge Appointments
                                 </div>
                                 <form name="newAppointmentForm" class="row">
@@ -69,6 +69,52 @@
                                     </div>
                                     <div class="patientButton">
                                         <button type="submit" ng-click="mergeAppointment()">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="add">
+                        <!-- Trigger/Open The Modal -->
+                        <button id="addButton" ng-click="addButtonPressed()">Add Appointment</button>
+
+                        <!-- The Modal -->
+                        <div id="addModal" class="modal">
+
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div class="updateApptModalHeader">
+                                    Add Appointment
+                                </div>
+                                <form name="newAppointmentForm" class="row">
+                                    <div class="col-6">
+                                        First Name:
+                                        <input ng-model="firstName">
+                                        <br>
+                                        Last Name:
+                                        <input ng-model="lastName">
+                                        <br>
+                                        Phone Number:
+                                        <input ng-model="patientPhoneNumber">
+                                    </div>
+                                    <div class="col-6">
+                                        Appt Date:
+                                        <input type="date" ng-model="addApptDate">
+                                        <br>
+                                        Start Time:
+                                        <input type="time" ng-model="addApptStartTime" step="60">
+                                        <br>
+                                        End Time:
+                                        <input type="time" ng-model="addApptEndTime" step="60">
+                                        <br>
+                                        Calendar:
+                                        <select ng-model="modalCalendar" ng-options="x for x in calendarNames"></select>
+                                        <br>
+                                    </div>
+                                    <div class="patientButton">
+                                        <button type="submit" ng-click="addNewAppointment()">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -126,20 +172,17 @@
 
             </div>
 
-            <div class="add">
-                <!-- Trigger/Open The Modal -->
-                <button id="addButton" ng-click="buttonPressed()">Add Appointment</button>
-
+            <div class="update">
                 <!-- The Modal -->
-                <div id="addModal" class="modal">
+                <div id="updateModal" class="modal">
 
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
-                        <div class="newApptModalHeader">
+                        <div class="updateApptModalHeader">
                             Update Appointment
                         </div>
-                        <form name="newAppointmentForm" class="row">
+                        <form name="updateAppointmentForm" class="row">
                             <div class="col-6">
                                 First Name:
                                 <input ng-model="firstName" disabled="disabled">
