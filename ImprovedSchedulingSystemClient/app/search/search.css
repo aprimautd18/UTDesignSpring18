@@ -116,6 +116,9 @@ table tr:nth-child(even) {
     border: 1px solid #888;
     width: 50% !important;
 }
+.modalInputHeaders {
+    width: 60px;
+}
 
 /* The Close Button */
 .close {
