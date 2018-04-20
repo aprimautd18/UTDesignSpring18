@@ -34,6 +34,7 @@ app.controller('searchCtrl', function($scope,$http) {
     $scope.addApptDate = "";
     $scope.addApptStartTime = "";
     $scope.addApptEndTime = "";
+    var realUpdateDateToSend = "";
     var patientTable = document.getElementById("patientSearchTable");
     var patientAppointmentTable = document.getElementById("patientAppointmentTable");
     patientAppointmentTable.style.display = "none";
@@ -114,6 +115,7 @@ app.controller('searchCtrl', function($scope,$http) {
         $scope.newApptDate = new Date(clickedAppointment.appointment.aptstartTime);
         $scope.newApptStartTime = new Date($scope.newApptDate);
         $scope.newApptEndTime = new Date(clickedAppointment.appointment.aptendTime);
+        realUpdateDateToSend = new Date($scope.newApptDate);
     };
     $scope.addButtonPressed = function() {
         addModal.style.display = "block";
@@ -164,15 +166,15 @@ app.controller('searchCtrl', function($scope,$http) {
     };
     $scope.updateAppointment = function () {
         console.log("Adding the patient now");
-        $scope.newApptDate.setHours($scope.newApptStartTime.getHours());
-        $scope.newApptDate.setMinutes($scope.newApptStartTime.getMinutes());
-        $scope.newApptEndDate = new Date($scope.newApptDate);
+        realUpdateDateToSend.setHours($scope.newApptStartTime.getHours());
+        realUpdateDateToSend.setMinutes($scope.newApptStartTime.getMinutes());
+        $scope.newApptEndDate = new Date(realUpdateDateToSend);
         $scope.newApptEndDate.setHours($scope.newApptEndTime.getHours());
         $scope.newApptEndDate.setMinutes($scope.newApptEndTime.getMinutes());
         var newAppt = {
             "id": $scope.appointmentID,
             "customerId": $scope.customerID,
-            "aptstartTime": $scope.newApptDate.toISOString(),
+            "aptstartTime": realUpdateDateToSend.toISOString(),
             "aptendTime": $scope.newApptEndDate.toISOString(),
         }
         console.log(newAppt);
