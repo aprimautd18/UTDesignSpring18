@@ -15,8 +15,16 @@ table tr:nth-child(even) {
     background-color: #4dacfd4a;
 }
 
+.buttonWrapper {
+    padding: 10px;
+}
+
+.buttonFormat {
+    padding: 0px 5px;
+}
+
 .calSearchHeader {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     align-items: flex-start;
     max-height: 30px;
@@ -24,7 +32,7 @@ table tr:nth-child(even) {
 }
 
 .searchTitle {
-    display: flex;
+    display: inline-flex;
     font-size: 18px;
     width: 165px;
 }
@@ -117,7 +125,9 @@ table tr:nth-child(even) {
     width: 50% !important;
 }
 .modalInputHeaders {
-    width: 60px;
+    display: inline-block;
+    width: 75px;
+    padding-bottom: 10px;
 }
 
 /* The Close Button */

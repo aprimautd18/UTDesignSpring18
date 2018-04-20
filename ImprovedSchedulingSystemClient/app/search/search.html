@@ -10,8 +10,9 @@
         <div class="searchContainer">
             <div class="row">
                 <div class="dailySearchAppts col-6">
+                    <div class="searchTitle">Calendar Search:</div>
                     <div class="calSearchHeader">
-                        <div class="calInputTitles">Calendar to search:</div>
+                        <div class="calInputTitles">Calendar Name:</div>
 
                         <select class="calListing" ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
                         <div class="calSearchDateTitle">Date to Search:</div>
@@ -38,89 +39,95 @@
                             <!--<td><button ng-click="buttonPressed(x)">Update</button></td>-->
                         </tr>
                     </table>
-                    <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
-                    <div class="merge">
-                        <!-- Trigger/Open The Modal -->
-                        <button id="mergeButton" ng-click="mergeButtonPressed()">Merge</button>
+                    <div class="row buttonWrapper">
+                        <div class="add buttonFormat">
+                            <!-- Trigger/Open The Modal -->
+                            <button id="addButton" ng-click="addButtonPressed()">Add Appointment</button>
 
-                        <!-- The Modal -->
-                        <div id="mergeModal" class="modal">
+                            <!-- The Modal -->
+                            <div id="addModal" class="modal">
 
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <div class="updateApptModalHeader">
-                                    Merge Appointments
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <div class="updateApptModalHeader">
+                                        Add Appointment
+                                    </div>
+                                    <form name="newAppointmentForm" class="row">
+                                        <div class="col-6">
+                                            <div class="modalInputHeaders">First Name:</div>
+                                            <input ng-model="firstName">
+                                            <br>
+                                            <div class="modalInputHeaders">Last Name:</div>
+                                            <input ng-model="lastName">
+                                            <br>
+                                            <div class="modalInputHeaders">Phone Number:</div>
+                                            <input ng-model="patientPhoneNumber">
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="modalInputHeaders">Appt Date:</div>
+                                            <input type="date" ng-model="addApptDate">
+                                            <br>
+                                            <div class="modalInputHeaders">Start Time:</div>
+                                            <input type="time" ng-model="addApptStartTime" step="60">
+                                            <br>
+                                            <div class="modalInputHeaders">End Time:</div>
+                                            <input type="time" ng-model="addApptEndTime" step="60">
+                                            <br>
+                                            <div class="modalInputHeaders">Calendar:</div>
+                                            <select ng-model="modalCalendar" ng-options="x for x in calendarNames"></select>
+                                            <br>
+                                        </div>
+                                        <div class="patientButton">
+                                            <button type="submit" ng-click="addNewAppointment()">Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <form name="newAppointmentForm" class="row">
-                                    <div class="col-6">
-                                        <div class="calInputTitles mergeTitles">Calendar to Merge From:</div>
 
-                                        <select class="calListing" ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
-                                        <div class="calSearchDateTitle mergeTitles">Date to Merge From:</div>
-                                        <input type="date" ng-model="searchDate" style="margin: 0px 2px;">
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="calInputTitles mergeTitles">Calendar to Merge To:</div>
-
-                                        <select class="calListing" ng-model="searchCalendarMerge" ng-options="x for x in calendarNames"></select>
-                                        <div class="calSearchDateTitle mergeTitles">Date to Merge To:</div>
-                                        <input type="date" ng-model="searchDateMerge" style="margin: 0px 2px;">
-                                    </div>
-                                    <div class="patientButton">
-                                        <button type="submit" ng-click="mergeAppointment()">Submit</button>
-                                    </div>
-                                </form>
                             </div>
-
                         </div>
-                    </div>
-                    <div class="add">
-                        <!-- Trigger/Open The Modal -->
-                        <button id="addButton" ng-click="addButtonPressed()">Add Appointment</button>
+                        <div class="merge buttonFormat">
+                            <!-- Trigger/Open The Modal -->
+                            <button id="mergeButton" ng-click="mergeButtonPressed()">Merge</button>
 
-                        <!-- The Modal -->
-                        <div id="addModal" class="modal">
+                            <!-- The Modal -->
+                            <div id="mergeModal" class="modal">
 
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <div class="updateApptModalHeader">
-                                    Add Appointment
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <div class="updateApptModalHeader">
+                                        Merge Appointments
+                                    </div>
+                                    <form name="newAppointmentForm" class="row">
+                                        <div class="col-6">
+                                            <div class="calInputTitles mergeTitles">Calendar to Merge From:</div>
+
+                                            <select class="calListing" ng-model="searchCalendar" ng-options="x for x in calendarNames"></select>
+                                            <div class="calSearchDateTitle mergeTitles">Date to Merge From:</div>
+                                            <input type="date" ng-model="searchDate" style="margin: 0px 2px;">
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="calInputTitles mergeTitles">Calendar to Merge To:</div>
+
+                                            <select class="calListing" ng-model="searchCalendarMerge" ng-options="x for x in calendarNames"></select>
+                                            <div class="calSearchDateTitle mergeTitles">Date to Merge To:</div>
+                                            <input type="date" ng-model="searchDateMerge" style="margin: 0px 2px;">
+                                        </div>
+                                        <div class="patientButton">
+                                            <button type="submit" ng-click="mergeAppointment()">Submit</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <form name="newAppointmentForm" class="row">
-                                    <div class="col-6">
-                                        First Name:
-                                        <input ng-model="firstName">
-                                        <br>
-                                        Last Name:
-                                        <input ng-model="lastName">
-                                        <br>
-                                        Phone Number:
-                                        <input ng-model="patientPhoneNumber">
-                                    </div>
-                                    <div class="col-6">
-                                        <span class="modalInputHeaders">Appt Date:</span>
-                                        <input type="date" ng-model="addApptDate">
-                                        <br>
-                                        <span class="modalInputHeaders">Start Time:</span>
-                                        <input type="time" ng-model="addApptStartTime" step="60">
-                                        <br>
-                                        <span class="modalInputHeaders">End Time:</span>
-                                        <input type="time" ng-model="addApptEndTime" step="60">
-                                        <br>
-                                        <span class="modalInputHeaders">Calendar:</span>
-                                        <select ng-model="modalCalendar" ng-options="x for x in calendarNames"></select>
-                                        <br>
-                                    </div>
-                                    <div class="patientButton">
-                                        <button type="submit" ng-click="addNewAppointment()">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
 
+                            </div>
                         </div>
+                        <div class="delete buttonFormat">
+                            <button id="accept-favor" ng-click="deleteFromSearchResults()">Delete</button>
+                        </div>
+
                     </div>
+
                 </div>
                 <div class="col-6 row searchWrapper">
                     <div class="patientSearch col-12">
@@ -184,29 +191,29 @@
                         </div>
                         <form name="updateAppointmentForm" class="row">
                             <div class="col-6">
-                                First Name:
+                                <div class="modalInputHeaders">First Name:</div>
                                 <input ng-model="firstName" disabled="disabled">
                                 <br>
-                                Last Name:
+                                <div class="modalInputHeaders">Last Name:</div>
                                 <input ng-model="lastName" disabled="disabled">
                                 <br>
-                                Phone Number:
+                                <div class="modalInputHeaders">Phone Number:</div>
                                 <input ng-model="patientPhoneNumber" disabled="disabled">
                             </div>
-                           <div class="col-6">
-                               <span class="modalInputHeaders">Appt Date:</span>
-                               <input type="date" ng-model="newApptDate">
-                               <br>
-                               <span class="modalInputHeaders">Start Time:</span>
-                               <input type="time" ng-model="newApptStartTime" step="60">
-                               <br>
-                               <span class="modalInputHeaders">End Time:</span>
-                               <input type="time" ng-model="newApptEndTime" step="60">
-                               <br>
-                               <span class="modalInputHeaders">Calendar:</span>
-                               <select ng-model="modalCalendar" ng-options="x for x in calendarNames"></select>
-                               <br>
-                           </div>
+                            <div class="col-6">
+                                <div class="modalInputHeaders">Appt Date:</div>
+                                <input type="date" ng-model="addApptDate">
+                                <br>
+                                <div class="modalInputHeaders">Start Time:</div>
+                                <input type="time" ng-model="addApptStartTime" step="60">
+                                <br>
+                                <div class="modalInputHeaders">End Time:</div>
+                                <input type="time" ng-model="addApptEndTime" step="60">
+                                <br>
+                                <div class="modalInputHeaders">Calendar:</div>
+                                <select ng-model="modalCalendar" ng-options="x for x in calendarNames"></select>
+                                <br>
+                            </div>
                             <div class="patientButton">
                                 <button type="submit" ng-click="updateAppointment()">Submit</button>
                             </div>
