@@ -224,5 +224,41 @@ namespace ImprovedSchedulingSystemApi.Controllers
 
             return Ok();//Otherwise merge was successful so indicate this
         }
+
+        /// <summary>
+        /// Calender keep will be merged into, Calender delete will be removed
+        /// </summary>
+        /// <param name="model">The date to use for the merge. Give a name and the date and we will take all of the appointments from one and put it in the other. The time component of the DateTime object is ignored.</param>
+        /// <returns></returns>
+        /// <response code="200">Success. Returns nothing</response>
+        /// <response code="404">The calenders were not found given the names and date you have given</response>
+        /// <response code="409">Conflict during the merge. Check the returned list of conflicting objects</response>
+        [HttpPost("mergeCalendersByName")]
+        public IActionResult mergeCalendersByName([FromBody] MergeCalenderNameViewModel model)
+        {
+
+            CalendarModel keepCalender = db.dateLookup(model.keepCalenderName, model.keepCalenderTime);
+            CalendarModel deleteCalender = db.dateLookup(model.deleteCalenderName, model.deleteCalenderTime);
+            if (keepCalender == null || deleteCalender == null)
+            {
+                return NotFound();
+            }
+
+            ObjectId keepCalenderId = keepCalender.id;
+            ObjectId deleteCalenderId = deleteCalender.id;
+
+            if (keepCalenderId == ObjectId.Empty || deleteCalenderId == ObjectId.Empty)
+            {
+                return NotFound();
+            }
+
+            List<AppointmentConflictModel> conflicts = db.mergeCalenders(keepCalenderId, deleteCalenderId);
+            if (conflicts.Count > 0) // If there is a conflict
+            {
+                return StatusCode(409, conflicts);
+            }
+
+            return Ok();//Otherwise merge was successful so indicate this
+        }
     }
 }

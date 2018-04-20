@@ -12,6 +12,7 @@ using ImprovedSchedulingSystemApi.ViewModels;
 using ImprovedSchedulingSystemApi.ViewModels.addAppointment;
 using ImprovedSchedulingSystemApi.ViewModels.dateLookup;
 using ImprovedSchedulingSystemApi.ViewModels.deleteModel;
+using ImprovedSchedulingSystemApi.ViewModels.lookupAppiontmentsWithCustomerID;
 using ImprovedSchedulingSystemApi.ViewModels.updateAppointmentStatus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,7 +71,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 return BadRequest(ErrorMessageConstants.OBJECT_ID_INVALID);
             }
 
-            List<AppointmentModel> data = db.appointmentLookupByCustomerId(parsedId);
+            List<lookupAppointmentWithCustomerIdViewModel> data = db.appointmentLookupByCustomerId(parsedId);
             if (data == null)
             {
                 return NotFound();
@@ -144,8 +145,7 @@ namespace ImprovedSchedulingSystemApi.Controllers
             AppointmentModel returnedItem = db.addAppointment(calID, model.Appointment);
             if (returnedItem == null)
             {
-                
-                return BadRequest(ErrorMessageConstants.APPOINTMENT_CONFLICT);
+                return StatusCode(409, ErrorMessageConstants.APPOINTMENT_CONFLICT);
             }
             return Ok(returnedItem);
         }
@@ -165,10 +165,14 @@ namespace ImprovedSchedulingSystemApi.Controllers
                 return BadRequest(ErrorMessageConstants.MODEL_INVAILD);
             }
 
-            bool returnedItem = db.updateAppointment(model);
-            if (returnedItem)
+            int returnedItem = db.updateAppointment(model);
+            if (returnedItem == 0)
             {
                 return Ok();
+            }
+            if (returnedItem == 1)
+            {
+                return StatusCode(409);
             }
 
             return NotFound();

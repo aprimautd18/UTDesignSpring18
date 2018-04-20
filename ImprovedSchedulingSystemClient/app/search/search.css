@@ -3,11 +3,11 @@
     margin-left: 0px !important;
 
 }
-
-table, th , td  {
+th , td  {
     border: 1px solid grey;
     border-collapse: collapse;
     padding: 5px;
+    height: 31px;
 }
 table tr:nth-child(odd) {
     background-color: #ffffff;
@@ -16,8 +16,16 @@ table tr:nth-child(even) {
     background-color: #4dacfd4a;
 }
 
+.buttonWrapper {
+    padding: 10px;
+}
+
+.buttonFormat {
+    padding: 0px 5px;
+}
+
 .calSearchHeader {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     align-items: flex-start;
     max-height: 30px;
@@ -25,7 +33,7 @@ table tr:nth-child(even) {
 }
 
 .searchTitle {
-    display: flex;
+    display: inline-flex;
     font-size: 18px;
     width: 165px;
 }
@@ -52,6 +60,10 @@ table tr:nth-child(even) {
     padding: 0px 5px;
 }
 
+.mergeTitles {
+    width: 100% !important;
+}
+
 .patientSearch{
     display: flex;
     flex-direction: row;
@@ -65,6 +77,10 @@ table tr:nth-child(even) {
     align-items: flex-start;
     padding-top: 3px;
 }
+.clickableLastName {
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 .searchWrapper {
     flex-wrap: nowrap !important;
@@ -73,7 +89,7 @@ table tr:nth-child(even) {
 /* MODAL STYLES
 -------------------------------*/
 /* The Modal (background) */
-.newApptModalHeader {
+.updateApptModalHeader {
     font-size: 18px;
     display: flex;
     justify-content: center;
@@ -112,6 +128,11 @@ table tr:nth-child(even) {
     padding: 20px;
     border: 1px solid #888;
     width: 50% !important;
+}
+.modalInputHeaders {
+    display: inline-block;
+    width: 75px;
+    padding-bottom: 10px;
 }
 
 /* The Close Button */

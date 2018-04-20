@@ -1,0 +1,1 @@
+.agz filetype is to be imported with the mongodump tool
