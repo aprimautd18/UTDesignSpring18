@@ -76,6 +76,10 @@ table tr:nth-child(even) {
     align-items: flex-start;
     padding-top: 3px;
 }
+.clickableLastName {
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 .searchWrapper {
     flex-wrap: nowrap !important;

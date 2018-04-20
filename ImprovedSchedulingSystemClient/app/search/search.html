@@ -149,7 +149,7 @@
                             </tr>
 
                             <tr ng-repeat="x in patientSearchResults">
-                                <td ng-click="searchPatientAppointments(x)">{{ x.lastName }}</td>
+                                <td ng-click="searchPatientAppointments(x)" class="clickableLastName">{{ x.lastName }}</td>
                                 <td>{{ x.firstName }}</td>
                                 <td>{{ x.phoneNumber }}</td>
                             </tr>
