@@ -12,6 +12,7 @@ angular.module('myApp.search', ['ngRoute'])
 
 }]);
 
+//This is the controller for the Search.html page
 
 var app = angular.module('search', []);
 app.controller('searchCtrl', function($scope,$http) {
@@ -45,9 +46,11 @@ app.controller('searchCtrl', function($scope,$http) {
             $scope.calendarNames = response.data;
         });
 
+    //Searches the Database for appointments given the selected date and calendar name
     $scope.apptSearchEngine = function () {
         console.log("in here");
         var dummyDate = new Date($scope.searchDate);
+        //the -1 is required to retrieve the desired date, otherwise the next day
         dummyDate.setDate(dummyDate.getDate() - 1);
         console.log(dummyDate);
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/dateLookup?calName=" + $scope.searchCalendar + "&startTime=" + dummyDate.toISOString() + "&range=1")
@@ -57,6 +60,7 @@ app.controller('searchCtrl', function($scope,$http) {
             });
     };
 
+    //Searches the Database for a list of patients with matching names, either first, last, or both
     $scope.customerSearchEngine = function () {
         console.log("searching customers");
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.firstName + "&lastName=" + $scope.lastName)
@@ -67,7 +71,7 @@ app.controller('searchCtrl', function($scope,$http) {
                 patientAppointmentTable.style.display = "none";
             });
     };
-
+    //Adds the checked appointment to the list of the appointments to delete
     $scope.addToList = function (id) {
         var indexOfAppt = $scope.deleteList.indexOf(id);
         if (indexOfAppt > -1) {
@@ -79,7 +83,7 @@ app.controller('searchCtrl', function($scope,$http) {
             $scope.deleteList.push(id);
         }
     }
-
+    //When ana ppointment is unchecked it is removed from the list of appointments to delete.
     $scope.deleteFromSearchResults = function () {
         if (confirm('Are you sure you want to delete this appointment?') == false) {
             return;
@@ -107,7 +111,7 @@ app.controller('searchCtrl', function($scope,$http) {
     var span = document.getElementsByClassName("close")[0];
     var span1 = document.getElementsByClassName("close")[1];
 
-    // When the user clicks the button, open the modal
+    // When the user clicks the update button, open the  update appointment modal
     $scope.buttonPressed = function (clickedAppointment) {
         updateModal.style.display = "block";
         $scope.appointmentID = clickedAppointment.appointment.id;
@@ -117,11 +121,12 @@ app.controller('searchCtrl', function($scope,$http) {
         $scope.newApptEndTime = new Date(clickedAppointment.appointment.aptendTime);
         realUpdateDateToSend = new Date($scope.newApptDate);
     };
+    //opens the add appointment modal
     $scope.addButtonPressed = function() {
         addModal.style.display = "block";
     };
 
-    // When the user clicks the button, open the modal
+    // When the user clicks the button, open the merge modal
     $scope.mergeButtonPressed = function () {
         mergeModal.style.display = "block";
     };
@@ -129,6 +134,7 @@ app.controller('searchCtrl', function($scope,$http) {
     span.onclick = function () {
         updateModal.style.display = "none";
     };
+    //hides the merge modal when clicked x of the modal
     span1.onclick = function() {
         mergeModal.style.display = "none";
     };
@@ -145,6 +151,7 @@ app.controller('searchCtrl', function($scope,$http) {
             addModal.style.display = "none";
         }
     };
+    //when the patients last name is clicked, this function searches the database for all appointments associated with that patiend
     $scope.searchPatientAppointments = function (patient) {
         $scope.patient = patient;
         console.log("Searching for the patients appointments");
@@ -164,6 +171,8 @@ app.controller('searchCtrl', function($scope,$http) {
                 alert(response.statusText);
             });
     };
+    //This function sends the updated data to the database when the submit button on the modal is pressed
+    //The endpoint currently only allows the times to be updated while the modal shows the opportunity to offer more functionality
     $scope.updateAppointment = function () {
         console.log("Adding the patient now");
         realUpdateDateToSend.setHours($scope.newApptStartTime.getHours());
@@ -186,7 +195,8 @@ app.controller('searchCtrl', function($scope,$http) {
                 alert(response.statusText);
             });
     };
-    //For Merge
+    //When submit is pressed in the submit modal, this builds the object and sends it to the database.
+    //Currently an entire day's appointment is sent to the DB
     $scope.mergeAppointment = function () {
         console.log("Merging the Appointments now");
         var mergeAppt = {
@@ -202,6 +212,9 @@ app.controller('searchCtrl', function($scope,$http) {
                 alert(response.statusText);
             });
     };
+    //This function is called when the submit button on the add modal is pressed.
+    //It builds the object and sends the post request.
+    //The alert is supposed to show the error if any is generated by the server.
     $scope.addNewAppointment = function () {
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Customer/customerLookup?firstName=" + $scope.firstName + "&lastName=" + $scope.lastName)
             .then(function (response) {
