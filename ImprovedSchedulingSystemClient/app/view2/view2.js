@@ -1,5 +1,5 @@
 'use strict';
-
+//Config for angular
 angular.module('myApp.view2', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
@@ -14,6 +14,7 @@ angular.module('myApp.view2', ['ngRoute'])
     }]);
 
 var app = angular.module('demo', []);
+//These functions run on page load.
 app.controller('onPageLoad', function($scope,$http) {
     $scope.firstname = "John";
     $scope.lastname = "Doe";
@@ -33,6 +34,7 @@ app.controller('onPageLoad', function($scope,$http) {
         $scope.officeApptTimes.push(i + " pm");
     }
 
+    //AJAX call to populate the calender data
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=Kelly%20441&startTime=2024-11-16%2000%3A00%3A00&range=7")
         .then(function(response) {
             var appointments = (response.data);
@@ -45,6 +47,7 @@ app.controller('onPageLoad', function($scope,$http) {
             }
             $scope.pageLoaded = true;
         });
+
     if($scope.data.todayAppointment.length > 1) {
         $scope.hasAppts = true;
         $scope.hasNoAppts = false;
@@ -53,9 +56,12 @@ app.controller('onPageLoad', function($scope,$http) {
         $scope.hasNoAppts = true;
         $scope.hasAppts = false;
     }
+    //calling the time bar function
     timeBarHeight($scope);
 
 });
+
+//the status code function on the daily schedule
 app.controller('statusCodeController', function($scope,$http){
     $scope.data= {
         model:null,
@@ -69,7 +75,7 @@ app.controller('statusCodeController', function($scope,$http){
 
         selectedStatusCode: null
     };
-
+    //persisting the data to the DB
     $scope.updatedStatus= function( appointmentId, indexOfWorkingStatus) {
         var data= {
             "id": ''+appointmentId,
@@ -80,24 +86,25 @@ app.controller('statusCodeController', function($scope,$http){
     };
 });
 
-
+//this controller controls the left side of the view2Page.
 app.controller('dateController', function($scope, $route, $http) {
-    /***** THE SOURCE OF MOST OF OUR BUGS LIES RIGHT HERE*****/
     var todayDate = new Date("2024-11-11");
     $scope.selectedDate = todayDate;
     $scope.searchCalendar = "Kelly 441";
-    /************************** ^^^^These get reset every time something is changed^^^ *****************************/
     $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/getCalendarNames")
         .then(function (response) {
             $scope.calendarNames = response.data;
         });
+    //Function for the timebar height, will move the bar on every update.
     $scope.updateDate = function() {
         timeBarHeight($scope);
         var selectedDate = new Date($scope.selectedDate);
+        //Hack because of USA date time
         selectedDate.setDate(selectedDate.getDate() - 1);
         selectedDate = selectedDate.toISOString();
         console.log("get your selected data here: "+selectedDate);
         console.log($scope.searchCalendar);
+        //get 7 days of calender
         $http.get("https://seniordesign2018dev.azurewebsites.net/api/Calendar/weekLookup?calName=" + $scope.searchCalendar + "&startTime=" + selectedDate + "&range=7")
             .then(function (response) {
                 renderCalendar(response, selectedDate, $scope);
@@ -111,7 +118,7 @@ app.controller('dateController', function($scope, $route, $http) {
             $scope.hasAppts = false;
         }
     }
-
+//  On click, delete the appointment stuff
     $scope.clickAppointment = function (appointment) {
         var id = appointment.id;
         if(confirm('Are you sure you want to delete this appointment?') == false) {
@@ -130,7 +137,7 @@ app.controller('dateController', function($scope, $route, $http) {
     }
 });
 
-
+//Creates the full calender object and displays to the user
 function renderCalendar(response, selectedDate, $scope) {
     if(!selectedDate) {
         selectedDate = new Date($scope.selectedDate);
@@ -157,7 +164,7 @@ function renderCalendar(response, selectedDate, $scope) {
     }
     $scope.data.calendarData[todayIndex].isCorrectDayToHighlight="correctHighlightedDay";
 }
-
+//Manual function to determine the timebar height math
 function timeBarHeight($scope) {
     var currentTime = new Date();
     var dayStart = new Date(currentTime);
@@ -167,7 +174,7 @@ function timeBarHeight($scope) {
     $scope.scrollableTimeBarHeight = Math.min(50 + (diff/50000), 695);
 
 }
-
+//the pixel height between functions
 function daysBetween(firstDate, secondDate) {
     var newDate1 = new Date(firstDate);
     newDate1.setHours(0);
@@ -177,6 +184,7 @@ function daysBetween(firstDate, secondDate) {
     daysApart = Math.round(daysApart);
     return daysApart;
 }
+//the pixel height between functions
 
 function calculatePixelHeights (appointment) {
     var pixelHeight, current, next;
@@ -188,7 +196,7 @@ function calculatePixelHeights (appointment) {
 
     return pixelHeight;
 }
-
+//add blakc appointments into the column of the day appointments
 function addBlankAppts (input) {
     var output = [];
     var current, next, blank, blankDateTime;
